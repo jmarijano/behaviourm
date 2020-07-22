@@ -1,0 +1,52 @@
+.logo {
+    width: auto;
+    height: 45px;
+    margin-right: 10px;
+    padding-bottom: 9px;
+}
+
+.estudent {
+    font-size: 30px !important;
+    padding-left: 5px;
+    padding-right: 20px;
+    padding-top: 5px;
+    color: #0766ce;
+    vertical-align: bottom;
+}
+
+.navbar {
+    background-color: #f5f6f8;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+    height: 110px;
+    margin-bottom: 55px;
+}
+
+.nav-text {
+    padding-top: 5px;
+}
+
+.toggle-button:focus {
+    outline: none !important;
+}
+
+.collapse-navbar {
+    background: #f5f6f8 !important;
+    z-index: 1;
+}
+
+.navbar-link {
+    color: rgb(194, 194, 194) !important;
+    margin: auto 4px;
+    padding: 24px 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.navbar-link:hover {
+	color: #29353d !important;
+    text-decoration: none;
+}
+
+.active {
+    color: #29353d !important;
+}
