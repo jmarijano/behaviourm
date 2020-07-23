@@ -6,36 +6,38 @@ from database.schemas import CountrySchema
 from flask_restful import Resource
 
 country_schema = CountrySchema()
-countries_schema= CountrySchema(many=True)
+countries_schema = CountrySchema(many=True)
+
 
 class CountriesApi(Resource):
     @cross_origin()
     def get(self):
-        all_countries=Country.query.all()
+        all_countries = Country.query.all()
         result = countries_schema.dump(all_countries)
-        return jsonify({'data':result})
+        return jsonify({'data': result})
 
     def post(self):
         name = request.json['name']
-        new_product=Country(name)
+        new_product = Country(name)
         db.session.add(new_product)
         db.session.commit()
-        return country_schema.jsonify({'data':new_product})
+        return country_schema.jsonify({'data': new_product})
+
 
 class CountryApi(Resource):
-    def get(self,id):
+    def get(self, id):
         country = Country.query.get(id)
         return country_schema.jsonify(country)
 
-    def put(self,id):
+    def put(self, id):
         country = Country.query.get(id)
         name = request.json['name']
-        country.name=name
+        country.name = name
         country.updated_on = db.func.now()
         db.session.commit()
-        return country_schema.jsonify({'data':country})
+        return country_schema.jsonify({'data': country})
 
-    def delete(self,id):
+    def delete(self, id):
         country = Country.query.get(id)
         db.session.delete(country)
         db.session.commit()

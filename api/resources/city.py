@@ -6,36 +6,38 @@ from database.schemas import CitySchema
 from flask_restful import Resource
 
 city_schema = CitySchema()
-cities_schema= CitySchema(many=True)
+cities_schema = CitySchema(many=True)
+
 
 class CitiesApi(Resource):
     @cross_origin()
     def get(self):
-        all_cities=City.query.all()
+        all_cities = City.query.all()
         result = cities_schema.dump(all_cities)
-        return jsonify({'data':result})
+        return jsonify({'data': result})
 
     def post(self):
         name = request.json['name']
-        new_product=City(name)
+        new_product = City(name)
         db.session.add(new_product)
         db.session.commit()
-        return city_schema.jsonify({'data':new_product})
+        return city_schema.jsonify({'data': new_product})
+
 
 class CityApi(Resource):
-    def get(self,id):
+    def get(self, id):
         city = City.query.get(id)
         return city_schema.jsonify(city)
 
-    def put(self,id):
+    def put(self, id):
         city = City.query.get(id)
         name = request.json['name']
-        city.name=name
+        city.name = name
         city.updated_on = db.func.now()
         db.session.commit()
-        return city_schema.jsonify({'data':city})
+        return city_schema.jsonify({'data': city})
 
-    def delete(self,id):
+    def delete(self, id):
         city = City.query.get(id)
         db.session.delete(city)
         db.session.commit()
