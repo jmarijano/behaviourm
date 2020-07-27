@@ -17,8 +17,9 @@ class AddressesApi(Resource):
         return jsonify({'data': result})
 
     def post(self):
-        name = request.json['name']
-        new_product = Address(name)
+        street_name = request.json['street_name']
+        city_id = request.json['city_id']
+        new_product = Address(street_name, city_id)
         db.session.add(new_product)
         db.session.commit()
         return address_schema.jsonify({'data': new_product})
@@ -31,8 +32,9 @@ class AddressApi(Resource):
 
     def put(self, id):
         address = Address.query.get(id)
-        name = request.json['name']
-        address.name = name
+        street_name = request.json['street_name']
+        city_id = request.json['city_id']
+        address.street_name = street_name
         address.updated_on = db.func.now()
         db.session.commit()
         return address_schema.jsonify({'data': address})

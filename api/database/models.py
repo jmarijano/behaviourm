@@ -46,8 +46,9 @@ class Address(db.Model):
     updated_on = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
-    def __init__(self, classname, bases, dict_):
-        super().__init__(classname, bases, dict_)
+    def __init__(self, street_name, city_id):
+        self.street_name = street_name
+        self.city_id = city_id
 
 
 class User(db.Model):
@@ -62,3 +63,11 @@ class User(db.Model):
     created_on = db.Column(db.DateTime, server_default=db.func.now())
     updated_on = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
+
+    def __init__(self, name, surname, email, password, role_id, address_id):
+        self.name = name
+        self.surname = surname
+        self.email = email
+        self.password = password
+        self.role_id = role_id
+        self.address_id = address_id

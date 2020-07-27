@@ -18,7 +18,12 @@ class UsersApi(Resource):
 
     def post(self):
         name = request.json['name']
-        new_product = User(name)
+        surname = request.json['surname']
+        email = request.json['email']
+        password = request.json['password']
+        role_id = request.json['role_id']
+        address_id = request.json['address_id']
+        new_product = User(name, surname, email, password, role_id, address_id)
         db.session.add(new_product)
         db.session.commit()
         return user_schema.jsonify({'data': new_product})
@@ -32,7 +37,17 @@ class UserApi(Resource):
     def put(self, id):
         user = User.query.get(id)
         name = request.json['name']
+        surname = request.json['surname']
+        email = request.json['email']
+        password = request.json['password']
+        role_id = request.json['role_id']
+        address_id = request.json['address_id']
         user.name = name
+        user.surname = surname
+        user.email = email
+        user.password = password
+        user.role_id = role_id
+        user.address_id = address_id
         user.updated_on = db.func.now()
         db.session.commit()
         return user_schema.jsonify({'data': user})
