@@ -15,7 +15,7 @@ class RoleSchema(ma.Schema):
 
 class CountrySchema(ma.Schema):
     class Meta:
-        fields = ('name, created_on', 'updated_on')
+        fields = ('name', 'created_on', 'updated_on')
 
 
 class CitySchema(ma.Schema):

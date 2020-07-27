@@ -4,7 +4,7 @@ from database.db import db
 from flask_cors import CORS, cross_origin
 from database.schemas import CountrySchema
 from flask_restful import Resource
-
+from sqlalchemy import func
 country_schema = CountrySchema()
 countries_schema = CountrySchema(many=True)
 
@@ -27,6 +27,7 @@ class CountriesApi(Resource):
 class CountryApi(Resource):
     def get(self, id):
         country = Country.query.get(id)
+        print (country.cities[0].name)
         return country_schema.jsonify(country)
 
     def put(self, id):

@@ -4,6 +4,7 @@ from database.db import db
 from flask_cors import CORS, cross_origin
 from database.schemas import AddressSchema
 from flask_restful import Resource
+import json
 
 address_schema = AddressSchema()
 addresses_schema = AddressSchema(many=True)
@@ -13,6 +14,7 @@ class AddressesApi(Resource):
     @cross_origin()
     def get(self):
         all_addresses = Address.query.all()
+        print("Broj zapisa: " + str(Address.query.count()))
         result = addresses_schema.dump(all_addresses)
         return jsonify({'data': result})
 

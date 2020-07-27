@@ -4,6 +4,8 @@ from database.db import db
 from flask_cors import CORS, cross_origin
 from database.schemas import CitySchema
 from flask_restful import Resource
+import json
+import sys
 
 city_schema = CitySchema()
 cities_schema = CitySchema(many=True)
@@ -11,8 +13,9 @@ cities_schema = CitySchema(many=True)
 
 class CitiesApi(Resource):
     @cross_origin()
-    def get(self):
+    def get(self):               
         all_cities = City.query.all()
+        print(City.query.count())
         result = cities_schema.dump(all_cities)
         return jsonify({'data': result})
 
