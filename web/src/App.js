@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Layout from "./hoc/Layout/Layout";
 import RoleList from "./containers/RoleList/RoleList"
+import CountryList from "./containers/CountryList/CountryList"
 
 function App() {
 
@@ -10,7 +11,7 @@ function App() {
     <BrowserRouter>
       <Layout>
         <Switch>
-          <Route path="/studentList" component={RoleList}></Route>
+          <Route path="/countryList" component={CountryList}></Route>
           <Route path="/" component={RoleList}></Route>
         </Switch>
       </Layout>
