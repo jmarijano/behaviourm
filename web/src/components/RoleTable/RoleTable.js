@@ -7,6 +7,16 @@ const roleTable = (props) => {
         <tr key={role.id}>
             <td>{i + 1}</td>
             <td>{role.name}</td>
+            <td>
+                <Button className="table-button-promijeni">
+                    Promijeni
+                </Button>
+            </td>
+            <td>
+                <Button className="table-button-ponisti">
+                    Obriši
+                </Button>
+            </td>
         </tr>
     ));
     return (
@@ -16,6 +26,8 @@ const roleTable = (props) => {
                     <tr>
                         <th>Redni broj</th>
                         <th>Naziv role</th>
+                        <th>Promijeni</th>
+                        <th>Poništi</th>
                     </tr>
                 </thead>
                 <tbody>

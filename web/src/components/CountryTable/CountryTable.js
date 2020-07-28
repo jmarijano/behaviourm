@@ -7,6 +7,16 @@ const countryTable = (props) => {
         <tr key={country.id}>
             <td>{i + 1}</td>
             <td>{country.name}</td>
+            <td>
+                <Button className="table-button-promijeni">
+                    Promijeni
+                </Button>
+            </td>
+            <td>
+                <Button className="table-button-ponisti">
+                    Obriši
+                </Button>
+            </td>
         </tr>
     ));
     return (
@@ -16,6 +26,8 @@ const countryTable = (props) => {
                     <tr>
                         <th>Redni broj</th>
                         <th>Naziv države</th>
+                        <th>Promijeni</th>
+                        <th>Poništi</th>
                     </tr>
                 </thead>
                 <tbody>
