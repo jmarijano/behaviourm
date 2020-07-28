@@ -1,0 +1,18 @@
+.data-table {
+    text-align: center;
+}
+
+.table-button {
+    background-color: #c8c8c8 !important;
+    border: 1px solid #b8b8b8 !important;
+}
+
+.table-button-promijeni {
+    background-color: #d8ae2f !important;
+    border: 1px solid #bb941f !important;
+}
+
+.table-button-ponisti {
+    background-color: #a2222e !important;
+    border: 1px solid #861823 !important;
+}
