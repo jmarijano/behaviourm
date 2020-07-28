@@ -4,6 +4,7 @@ from database.db import initialize_db
 from database.schemas import initialize_ma
 import os
 from resources.routes import initialize_routes
+from setup import kae
 
 
 app = Flask(__name__)

@@ -4,6 +4,8 @@ from database.db import db
 from flask_cors import CORS, cross_origin
 from database.schemas import CitySchema
 from flask_restful import Resource
+import json
+import sys
 
 city_schema = CitySchema()
 cities_schema = CitySchema(many=True)
@@ -11,14 +13,16 @@ cities_schema = CitySchema(many=True)
 
 class CitiesApi(Resource):
     @cross_origin()
-    def get(self):
+    def get(self):               
         all_cities = City.query.all()
+        print(City.query.count())
         result = cities_schema.dump(all_cities)
         return jsonify({'data': result})
 
     def post(self):
         name = request.json['name']
-        new_product = City(name)
+        country_id = request.json['country_id']
+        new_product = City(name, country_id)
         db.session.add(new_product)
         db.session.commit()
         return city_schema.jsonify({'data': new_product})
@@ -32,7 +36,9 @@ class CityApi(Resource):
     def put(self, id):
         city = City.query.get(id)
         name = request.json['name']
+        country_id = request.json['country_id']
         city.name = name
+        city.country_id = country_id
         city.updated_on = db.func.now()
         db.session.commit()
         return city_schema.jsonify({'data': city})
