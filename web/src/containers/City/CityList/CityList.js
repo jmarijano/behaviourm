@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import AxiosInstance from "../../api/utils/AxiosInstance"
-import CityTable from "../../components/CityTable/CityTable"
+import AxiosInstance from "../../../api/utils/AxiosInstance"
+import CityTable from "../../../components/City/CityTable/CityTable"
 
 export default class CityList extends Component {
 

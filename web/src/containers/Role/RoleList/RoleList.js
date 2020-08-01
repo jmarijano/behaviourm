@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import AxiosInstance from "../../api/utils/AxiosInstance"
-import RoleTable from "../../components/RoleTable/RoleTable"
+import AxiosInstance from "../../../api/utils/AxiosInstance"
+import RoleTable from "../../../components/Role/RoleTable/RoleTable"
 
 export default class RoleList extends Component {
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import AxiosInstance from "../../api/utils/AxiosInstance"
-import CountryTable from "../../components/CountryTable/CountryTable"
+import AxiosInstance from "../../../api/utils/AxiosInstance"
+import CountryTable from "../../../components/Country/CountryTable/CountryTable"
 
 export default class CountryList extends Component {
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import AxiosInstance from "../../api/utils/AxiosInstance"
-import AddressTable from "../../components/AddressTable/AddressTable"
+import AxiosInstance from "../../../api/utils/AxiosInstance"
+import AddressTable from "../../../components/Adress/AddressTable/AddressTable"
 
 export default class AddressList extends Component {
 

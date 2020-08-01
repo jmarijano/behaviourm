@@ -2,10 +2,10 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Layout from "./hoc/Layout/Layout";
-import RoleList from "./containers/RoleList/RoleList"
-import CountryList from "./containers/CountryList/CountryList"
-import CityList from './containers/CityList/CityList';
-import AddressList from './containers/AddressList/AddressList';
+import RoleList from "./containers/Role/RoleList/RoleList"
+import CountryList from "./containers/Country/CountryList/CountryList"
+import CityList from './containers/City/CityList/CityList';
+import AddressList from './containers/Address/AddressList/AddressList';
 
 function App() {
 
