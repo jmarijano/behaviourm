@@ -13,12 +13,13 @@ cities_schema = CitySchema(many=True)
 
 class CitiesApi(Resource):
     @cross_origin()
-    def get(self):               
+    def get(self):
         all_cities = City.query.all()
         print(City.query.count())
         result = cities_schema.dump(all_cities)
         return jsonify({'data': result})
 
+    @cross_origin()
     def post(self):
         name = request.json['name']
         country_id = request.json['country_id']
@@ -29,10 +30,12 @@ class CitiesApi(Resource):
 
 
 class CityApi(Resource):
+    @cross_origin()
     def get(self, id):
         city = City.query.get(id)
         return city_schema.jsonify(city)
 
+    @cross_origin()
     def put(self, id):
         city = City.query.get(id)
         name = request.json['name']
@@ -42,7 +45,8 @@ class CityApi(Resource):
         city.updated_on = db.func.now()
         db.session.commit()
         return city_schema.jsonify({'data': city})
-
+    
+    @cross_origin()
     def delete(self, id):
         city = City.query.get(id)
         db.session.delete(city)

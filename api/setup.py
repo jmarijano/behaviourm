@@ -29,8 +29,8 @@ import pickle
 def kae():
 
     
-    mymodel = tf.keras.models.load_model('my_model_cnn.h5')
-    myvectorizer = pickle.load(open("vectorizer_cnn", 'rb'))
+    mymodel = tf.keras.models.load_model('assets/my_model_cnn.h5')
+    myvectorizer = pickle.load(open("assets/vectorizer_cnn", 'rb'))
 
     input_val="i select this sentence but this should not be injection it is like injection but from my point of view it should not be even if i include union in it like before"
     input_val=clean_data(input_val)

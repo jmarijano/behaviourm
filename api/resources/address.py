@@ -18,6 +18,7 @@ class AddressesApi(Resource):
         result = addresses_schema.dump(all_addresses)
         return jsonify({'data': result})
 
+    @cross_origin()
     def post(self):
         street_name = request.json['street_name']
         city_id = request.json['city_id']
@@ -28,10 +29,12 @@ class AddressesApi(Resource):
 
 
 class AddressApi(Resource):
+    @cross_origin()
     def get(self, id):
         address = Address.query.get(id)
         return address_schema.jsonify(address)
 
+    @cross_origin()
     def put(self, id):
         address = Address.query.get(id)
         street_name = request.json['street_name']
@@ -41,6 +44,7 @@ class AddressApi(Resource):
         db.session.commit()
         return address_schema.jsonify({'data': address})
 
+    @cross_origin()
     def delete(self, id):
         address = Address.query.get(id)
         db.session.delete(address)

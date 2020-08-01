@@ -14,8 +14,10 @@ class CountriesApi(Resource):
     def get(self):
         all_countries = Country.query.all()
         result = countries_schema.dump(all_countries)
-        return jsonify({'data': result})
-
+        return jsonify(
+            data=result,
+        )
+    @cross_origin()
     def post(self):
         name = request.json['name']
         new_product = Country(name)
@@ -25,11 +27,14 @@ class CountriesApi(Resource):
 
 
 class CountryApi(Resource):
+
+    @cross_origin()
     def get(self, id):
         country = Country.query.get(id)
-        print (country.cities[0].name)
+        print(country.cities[0].name)
         return country_schema.jsonify(country)
 
+    @cross_origin()
     def put(self, id):
         country = Country.query.get(id)
         name = request.json['name']
@@ -37,7 +42,8 @@ class CountryApi(Resource):
         country.updated_on = db.func.now()
         db.session.commit()
         return country_schema.jsonify({'data': country})
-
+        
+    @cross_origin()
     def delete(self, id):
         country = Country.query.get(id)
         db.session.delete(country)

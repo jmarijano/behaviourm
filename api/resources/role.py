@@ -16,6 +16,7 @@ class RolesApi(Resource):
         result = roles_schema.dump(all_roles)
         return jsonify({'data': result})
 
+    @cross_origin()
     def post(self):
         name = request.json['name']
         new_product = Role(name)
@@ -25,10 +26,12 @@ class RolesApi(Resource):
 
 
 class RoleApi(Resource):
+    @cross_origin()
     def get(self, id):
         role = Role.query.get(id)
         return role_schema.jsonify(role)
 
+    @cross_origin()
     def put(self, id):
         role = Role.query.get(id)
         name = request.json['name']
@@ -37,6 +40,7 @@ class RoleApi(Resource):
         db.session.commit()
         return role_schema.jsonify({'data': role})
 
+    @cross_origin()
     def delete(self, id):
         role = Role.query.get(id)
         db.session.delete(role)
