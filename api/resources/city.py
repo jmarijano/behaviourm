@@ -22,7 +22,7 @@ class CitiesApi(Resource):
     @cross_origin()
     def post(self):
         name = request.json['name']
-        country_id = request.json['country_id']
+        country_id = request.json['countryId']
         new_product = City(name, country_id)
         db.session.add(new_product)
         db.session.commit()

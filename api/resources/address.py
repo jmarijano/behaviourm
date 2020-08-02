@@ -20,8 +20,8 @@ class AddressesApi(Resource):
 
     @cross_origin()
     def post(self):
-        street_name = request.json['street_name']
-        city_id = request.json['city_id']
+        street_name = request.json['streetName']
+        city_id = request.json['cityId']
         new_product = Address(street_name, city_id)
         db.session.add(new_product)
         db.session.commit()
@@ -41,8 +41,8 @@ class AddressApi(Resource):
     @cross_origin()
     def put(self, id):
         address = Address.query.get(id)
-        street_name = request.json['street_name']
-        city_id = request.json['city_id']
+        street_name = request.json['streetName']
+        city_id = request.json['cityId']
         address.street_name = street_name
         address.updated_on = db.func.now()
         db.session.commit()
