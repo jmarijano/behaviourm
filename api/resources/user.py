@@ -28,10 +28,15 @@ class UsersApi(Resource):
         password = request.json['password']
         role_id = request.json['role_id']
         address_id = request.json['address_id']
-        new_product = User(name, surname, email, generate_password_hash(password, method='sha256'), role_id, address_id)
+        new_product = User(name, surname, email, generate_password_hash(
+            password, method='sha256'), role_id, address_id)
         db.session.add(new_product)
         db.session.commit()
         return user_schema.jsonify({'data': new_product})
+
+    @cross_origin()
+    def options(self):
+        return jsonify()
 
 
 class UserApi(Resource):
@@ -65,3 +70,7 @@ class UserApi(Resource):
         db.session.delete(user)
         db.session.commit()
         return user_schema.jsonify(user)
+
+    @cross_origin()
+    def options(self):
+        return jsonify()

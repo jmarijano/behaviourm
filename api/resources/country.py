@@ -25,6 +25,9 @@ class CountriesApi(Resource):
         db.session.commit()
         return country_schema.jsonify({'data': new_product})
 
+    @cross_origin()
+    def options(self):
+        return jsonify()
 
 class CountryApi(Resource):
 
@@ -49,3 +52,7 @@ class CountryApi(Resource):
         db.session.delete(country)
         db.session.commit()
         return country_schema.jsonify(country)
+
+    @cross_origin()
+    def options(self):
+        return jsonify()

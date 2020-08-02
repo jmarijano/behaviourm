@@ -23,6 +23,10 @@ class RolesApi(Resource):
         db.session.add(new_product)
         db.session.commit()
         return role_schema.jsonify({'data': new_product})
+    
+    @cross_origin()
+    def options(self):
+        return jsonify()
 
 
 class RoleApi(Resource):
@@ -46,3 +50,7 @@ class RoleApi(Resource):
         db.session.delete(role)
         db.session.commit()
         return role_schema.jsonify(role)
+
+    @cross_origin()
+    def options(self):
+        return jsonify()

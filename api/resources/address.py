@@ -27,6 +27,10 @@ class AddressesApi(Resource):
         db.session.commit()
         return address_schema.jsonify({'data': new_product})
 
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
 
 class AddressApi(Resource):
     @cross_origin()
@@ -50,3 +54,7 @@ class AddressApi(Resource):
         db.session.delete(address)
         db.session.commit()
         return address_schema.jsonify(address)
+
+    @cross_origin()
+    def options(self):
+        return jsonify()

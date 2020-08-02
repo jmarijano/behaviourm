@@ -28,6 +28,10 @@ class CitiesApi(Resource):
         db.session.commit()
         return city_schema.jsonify({'data': new_product})
 
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
 
 class CityApi(Resource):
     @cross_origin()
@@ -45,10 +49,14 @@ class CityApi(Resource):
         city.updated_on = db.func.now()
         db.session.commit()
         return city_schema.jsonify({'data': city})
-    
+
     @cross_origin()
     def delete(self, id):
         city = City.query.get(id)
         db.session.delete(city)
         db.session.commit()
         return city_schema.jsonify(city)
+
+    @cross_origin()
+    def options(self):
+        return jsonify()
