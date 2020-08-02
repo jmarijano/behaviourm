@@ -22,12 +22,23 @@ export default class AddressList extends Component {
         });
     };
 
+    deleteAddress = (id) => {
+        AxiosInstance.delete("/addresses/" + id).then(
+          (response) => {
+            this.getAddressData();
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      };
 
     render() {
         return (
             <React.Fragment>
                 <AddressTable
-                    addressList={this.state.addressList}>
+                    addressList={this.state.addressList}
+                    deleteAddress={this.deleteAddress}>
                 </AddressTable>
             </React.Fragment>
         );
