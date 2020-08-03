@@ -14,6 +14,8 @@ class CountriesApi(Resource):
     def get(self):
         all_countries = Country.query.all()
         result = countries_schema.dump(all_countries)
+        for country in result:
+            print(country)
         return jsonify(
             data=result,
         )

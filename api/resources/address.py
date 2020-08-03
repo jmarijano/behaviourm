@@ -5,6 +5,7 @@ from flask_cors import CORS, cross_origin
 from database.schemas import AddressSchema
 from flask_restful import Resource
 import json
+from marshmallow import ValidationError
 
 address_schema = AddressSchema()
 addresses_schema = AddressSchema(many=True)
@@ -20,8 +21,13 @@ class AddressesApi(Resource):
 
     @cross_origin()
     def post(self):
+        try:
+            address_schema.load(request)
+        except ValidationError as err:
+            return jsonify(err.messages), 404
         street_name = request.json['streetName']
         city_id = request.json['cityId']
+        print(street_name, city_id)
         new_product = Address(street_name, city_id)
         db.session.add(new_product)
         db.session.commit()
@@ -35,15 +41,24 @@ class AddressesApi(Resource):
 class AddressApi(Resource):
     @cross_origin()
     def get(self, id):
+        try:
+            address_schema.load(request)
+        except ValidationError as err:
+            return jsonify(err.messages), 404
         address = Address.query.get(id)
         return address_schema.jsonify(address)
 
     @cross_origin()
     def put(self, id):
+        try:
+            address_schema.load(request)
+        except ValidationError as err:
+            return jsonify(err.messages), 404
         address = Address.query.get(id)
         street_name = request.json['streetName']
         city_id = request.json['cityId']
         address.street_name = street_name
+        address.city_id = city_id
         address.updated_on = db.func.now()
         db.session.commit()
         return address_schema.jsonify({'data': address})

@@ -6,6 +6,7 @@ from database.schemas import CitySchema
 from flask_restful import Resource
 import json
 import sys
+from marshmallow import ValidationError
 
 city_schema = CitySchema()
 cities_schema = CitySchema(many=True)
@@ -21,6 +22,11 @@ class CitiesApi(Resource):
 
     @cross_origin()
     def post(self):
+        try:
+            city_schema.load(request.json)
+        except ValidationError as err:
+            print (err.messages)
+            return jsonify(err.messages), 404
         name = request.json['name']
         country_id = request.json['countryId']
         new_product = City(name, country_id)
@@ -41,9 +47,13 @@ class CityApi(Resource):
 
     @cross_origin()
     def put(self, id):
+        try:
+            city_schema.load(request)
+        except ValidationError as err:
+            return jsonify(err.messages), 404
         city = City.query.get(id)
         name = request.json['name']
-        country_id = request.json['country_id']
+        country_id = request.json['countryId']
         city.name = name
         city.country_id = country_id
         city.updated_on = db.func.now()

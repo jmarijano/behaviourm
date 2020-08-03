@@ -32,7 +32,7 @@ class City(db.Model):
     created_on = db.Column(db.DateTime, server_default=db.func.now())
     updated_on = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
-
+    addresses = db.relationship('Address',backref='address',lazy=True)
     def __init__(self, name, coutry_id):
         self.name = name
         self.country_id = coutry_id
