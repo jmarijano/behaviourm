@@ -29,9 +29,7 @@ export default class CountryInput extends Component {
   onChangeInput = (event) => {
     event.preventDefault();
     let name = event.target.name;
-    console.log(name);
     let value = event.target.value;
-    console.log(value);
     this.setState({
       [name]: value,
     });

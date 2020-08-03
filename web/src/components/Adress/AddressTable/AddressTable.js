@@ -7,8 +7,17 @@ const addressTable = (props) => {
     <tr key={address.id}>
       <td>{i + 1}</td>
       <td>{address.streetName}</td>
+      <td>{address.cityId}</td>
       <td>
-        <Button className="table-button-promijeni">Promijeni</Button>
+        <Button
+          className="table-button-promijeni"
+          onClick={(event) => {
+            event.preventDefault();
+            props.updateAddress(address);
+          }}
+        >
+          Promijeni
+        </Button>
       </td>
       <td>
         <Button
@@ -30,6 +39,7 @@ const addressTable = (props) => {
           <tr>
             <th>Redni broj</th>
             <th>Ulica</th>
+            <th>Grad</th>
             <th>Promijeni</th>
             <th>Poništi</th>
           </tr>

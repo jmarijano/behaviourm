@@ -27,7 +27,7 @@ const addressInputForm = (props) => {
           className="input-field"
           name="cityId"
           type="text"
-          defaultValue={props.address.city}
+          defaultValue={props.address.cityId}
           onChange={(event) => props.onChangeInput(event)}
         ></input>
       </label>

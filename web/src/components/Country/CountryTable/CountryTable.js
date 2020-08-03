@@ -8,7 +8,15 @@ const countryTable = (props) => {
       <td>{i + 1}</td>
       <td>{country.name}</td>
       <td>
-        <Button className="table-button-promijeni">Promijeni</Button>
+        <Button
+          className="table-button-promijeni"
+          onClick={(event) => {
+            event.preventDefault();
+            props.updateCountry(country);
+          }}
+        >
+          Promijeni
+        </Button>
       </td>
       <td>
         <Button
