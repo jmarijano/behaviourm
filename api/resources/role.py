@@ -20,9 +20,9 @@ class RolesApi(Resource):
     @cross_origin()
     def post(self):
         try:
-            role_schema.load(request)
+            role_schema.load(request.json)
         except ValidationError as err:
-            return jsonify(err.messages), 404
+            return jsonify(err.messages), 500
         name = request.json['name']
         new_product = Role(name)
         db.session.add(new_product)
@@ -43,9 +43,9 @@ class RoleApi(Resource):
     @cross_origin()
     def put(self, id):
         try:
-            role_schema.load(request)
+            role_schema.load(request.json)
         except ValidationError as err:
-            return jsonify(err.messages), 404
+            return jsonify(err.messages), 500
         role = Role.query.get(id)
         name = request.json['name']
         role.name = name
@@ -55,10 +55,6 @@ class RoleApi(Resource):
 
     @cross_origin()
     def delete(self, id):
-        try:
-            role_schema.load(request)
-        except ValidationError as err:
-            return jsonify(err.messages), 404
         role = Role.query.get(id)
         db.session.delete(role)
         db.session.commit()

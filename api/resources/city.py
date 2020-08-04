@@ -26,7 +26,7 @@ class CitiesApi(Resource):
             city_schema.load(request.json)
         except ValidationError as err:
             print (err.messages)
-            return jsonify(err.messages), 404
+            return jsonify(err.messages), 500
         name = request.json['name']
         country_id = request.json['countryId']
         new_product = City(name, country_id)
@@ -48,9 +48,9 @@ class CityApi(Resource):
     @cross_origin()
     def put(self, id):
         try:
-            city_schema.load(request)
+            city_schema.load(request.json)
         except ValidationError as err:
-            return jsonify(err.messages), 404
+            return jsonify(err.messages), 500
         city = City.query.get(id)
         name = request.json['name']
         country_id = request.json['countryId']

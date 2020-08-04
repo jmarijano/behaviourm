@@ -52,4 +52,10 @@ class UserSchema(ma.SQLAlchemySchema):
     email = fields.Email(validate=must_not_be_blank)
     created_on = fields.DateTime(data_key='createdOn')
     updated_on = fields.DateTime(data_key='updatedOn')
-    
+
+
+class DepartmentSchema(ma.SQLAlchemySchema):
+    id = fields.Integer()
+    name = fields.String()
+    created_on = fields.DateTime(data_key='createdOn')
+    updated_on = fields.DateTime(data_key='updatedOn')

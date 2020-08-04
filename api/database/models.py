@@ -32,7 +32,8 @@ class City(db.Model):
     created_on = db.Column(db.DateTime, server_default=db.func.now())
     updated_on = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
-    addresses = db.relationship('Address',backref='address',lazy=True)
+    addresses = db.relationship('Address', backref='address', lazy=True)
+
     def __init__(self, name, coutry_id):
         self.name = name
         self.country_id = coutry_id
@@ -71,3 +72,14 @@ class User(db.Model):
         self.password = password
         self.role_id = role_id
         self.address_id = address_id
+
+
+class Department(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(45), nullable=False)
+    created_on = db.Column(db.DateTime, server_default=db.func.now())
+    updated_on = db.Column(
+        db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
+
+    def __init__(self, name):
+        self.name = name

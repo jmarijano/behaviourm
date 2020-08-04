@@ -22,9 +22,9 @@ class AddressesApi(Resource):
     @cross_origin()
     def post(self):
         try:
-            address_schema.load(request)
+            address_schema.load(request.json)
         except ValidationError as err:
-            return jsonify(err.messages), 404
+            return jsonify(err.messages), 500
         street_name = request.json['streetName']
         city_id = request.json['cityId']
         print(street_name, city_id)
@@ -41,19 +41,15 @@ class AddressesApi(Resource):
 class AddressApi(Resource):
     @cross_origin()
     def get(self, id):
-        try:
-            address_schema.load(request)
-        except ValidationError as err:
-            return jsonify(err.messages), 404
         address = Address.query.get(id)
         return address_schema.jsonify(address)
 
     @cross_origin()
     def put(self, id):
         try:
-            address_schema.load(request)
+            address_schema.load(request.json)
         except ValidationError as err:
-            return jsonify(err.messages), 404
+            return jsonify(err.messages), 500
         address = Address.query.get(id)
         street_name = request.json['streetName']
         city_id = request.json['cityId']
