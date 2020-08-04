@@ -50,6 +50,12 @@ class UserSchema(ma.SQLAlchemySchema):
     name = fields.String(validate=must_not_be_blank)
     surname = fields.String(validate=must_not_be_blank)
     email = fields.Email(validate=must_not_be_blank)
+    password = fields.String(validate=must_not_be_blank)
+    role_id = fields.Integer(data_key='roleId', validate=must_not_be_blank)
+    department_id = fields.Integer(
+        data_key='departmentId', validate=must_not_be_blank)
+    address_id = fields.Integer(
+        data_key='addressId', validate=must_not_be_blank)
     created_on = fields.DateTime(data_key='createdOn')
     updated_on = fields.DateTime(data_key='updatedOn')
 

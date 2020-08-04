@@ -6,6 +6,7 @@ from database.schemas import UserSchema
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required
 from werkzeug.security import generate_password_hash, check_password_hash
+from marshmallow import ValidationError
 
 
 user_schema = UserSchema()
@@ -22,14 +23,19 @@ class UsersApi(Resource):
 
     @cross_origin()
     def post(self):
+        try:
+            user_schema.load(request.json)
+        except ValidationError as err:
+            return jsonify(err.messages), 500
         name = request.json['name']
         surname = request.json['surname']
         email = request.json['email']
         password = request.json['password']
-        role_id = request.json['role_id']
-        address_id = request.json['address_id']
+        role_id = request.json['roleId']
+        address_id = request.json['addressId']
+        department_id = request.json['departmentId']
         new_product = User(name, surname, email, generate_password_hash(
-            password, method='sha256'), role_id, address_id)
+            password, method='sha256'), role_id, address_id, department_id)
         db.session.add(new_product)
         db.session.commit()
         return user_schema.jsonify({'data': new_product})
@@ -47,19 +53,25 @@ class UserApi(Resource):
 
     @cross_origin()
     def put(self, id):
+        try:
+            user_schema.load(request.json)
+        except ValidationError as err:
+            return jsonify(err.messages), 500
         user = User.query.get(id)
         name = request.json['name']
         surname = request.json['surname']
         email = request.json['email']
         password = request.json['password']
-        role_id = request.json['role_id']
-        address_id = request.json['address_id']
+        role_id = request.json['roleId']
+        address_id = request.json['addressId']
+        department_id = request.json['departmentId']
         user.name = name
         user.surname = surname
         user.email = email
         user.password = generate_password_hash(password, method='sha256')
         user.role_id = role_id
         user.address_id = address_id
+        user.department_id = department_id
         user.updated_on = db.func.now()
         db.session.commit()
         return user_schema.jsonify({'data': user})

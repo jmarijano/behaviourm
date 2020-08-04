@@ -46,32 +46,11 @@ class Address(db.Model):
     created_on = db.Column(db.DateTime, server_default=db.func.now())
     updated_on = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
+    users = db.relationship("User", backref="user", lazy=True)
 
     def __init__(self, street_name, city_id):
         self.street_name = street_name
         self.city_id = city_id
-
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(45), nullable=False)
-    surname = db.Column(db.String(200), nullable=False)
-    email = db.Column(db.String(200), nullable=False)
-    password = db.Column(db.String(45), nullable=False)
-    role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
-    address_id = db.Column(db.Integer, db.ForeignKey(
-        'address.id'), nullable=False)
-    created_on = db.Column(db.DateTime, server_default=db.func.now())
-    updated_on = db.Column(
-        db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
-
-    def __init__(self, name, surname, email, password, role_id, address_id):
-        self.name = name
-        self.surname = surname
-        self.email = email
-        self.password = password
-        self.role_id = role_id
-        self.address_id = address_id
 
 
 class Department(db.Model):
@@ -83,3 +62,28 @@ class Department(db.Model):
 
     def __init__(self, name):
         self.name = name
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(45), nullable=False)
+    surname = db.Column(db.String(200), nullable=False)
+    email = db.Column(db.String(200), nullable=False)
+    password = db.Column(db.String(45), nullable=False)
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
+    department_id = db.Column(db.Integer, db.ForeignKey(
+        'department.id'), nullable=False)
+    address_id = db.Column(db.Integer, db.ForeignKey(
+        'address.id'), nullable=False)
+    created_on = db.Column(db.DateTime, server_default=db.func.now())
+    updated_on = db.Column(
+        db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
+
+    def __init__(self, name, surname, email, password, role_id, address_id, department_id):
+        self.name = name
+        self.surname = surname
+        self.email = email
+        self.password = password
+        self.role_id = role_id
+        self.address_id = address_id
+        self.department_id = department_id
