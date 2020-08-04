@@ -6,10 +6,12 @@ import RoleList from "./containers/Role/RoleList/RoleList";
 import CountryList from "./containers/Country/CountryList/CountryList";
 import CityList from "./containers/City/CityList/CityList";
 import AddressList from "./containers/Address/AddressList/AddressList";
+import DepartmentList from "./containers/Department/DepartmentList/DepartmentList"
 import RoleInput from "./containers/Role/RoleInput/RoleInput";
 import CountryInput from "./containers/Country/CountryInput/CountryInput";
 import AddressInput from "./containers/Address/AddressInput/AddressInput";
 import CityInput from "./containers/City/CityInput/CityInput";
+import DepartmentInput from "./containers/Department/DepartmentInput/DepartmentInput"
 
 function App() {
   return (
@@ -20,11 +22,13 @@ function App() {
           <Route path="/cityList" component={CityList}></Route>
           <Route path="/addressList" component={AddressList}></Route>
           <Route path="/roleList" component={RoleList}></Route>
+          <Route path="/departmentList" component={DepartmentList}></Route>
 
           <Route path="/roleInput" component={RoleInput}></Route>
           <Route path="/cityInput" component={CityInput}></Route>
           <Route path="/addressInput" component={AddressInput}></Route>
           <Route path="/countryInput" component={CountryInput}></Route>
+          <Route path="/departmentInput" component={DepartmentInput}></Route>
         </Switch>
       </Layout>
     </BrowserRouter>

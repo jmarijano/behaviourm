@@ -24,12 +24,14 @@ const navigation = () => {
                                     <NavDropdown.Item href="/countryList">Države</NavDropdown.Item>
                                     <NavDropdown.Item href="/cityList">Gradovi</NavDropdown.Item>
                                     <NavDropdown.Item href='/addressList'>Adrese</NavDropdown.Item>
+                                    <NavDropdown.Item href='/departmentList'>Odjeli</NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown title="Unos" id="unos-nav-dropdown">
                                     <NavDropdown.Item href="/roleInput">Role</NavDropdown.Item>
                                     <NavDropdown.Item href="/countryInput">Države</NavDropdown.Item>
                                     <NavDropdown.Item href="/cityInput">Gradovi</NavDropdown.Item>
                                     <NavDropdown.Item href='/addressInput'>Adrese</NavDropdown.Item>
+                                    <NavDropdown.Item href='/departmentInput'>Odjeli</NavDropdown.Item>
                                 </NavDropdown>
                             </Navbar.Collapse>
                         </Navbar>
