@@ -19,6 +19,7 @@ print(basedir)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
     os.path.join(basedir, "assets/database/", 'db.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = True
 app.config['JWT_SECRET_KEY'] = 'changeit'
 app.config['CORS_HEADERS'] = 'Content-Type'
 jwt = JWTManager(app)

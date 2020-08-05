@@ -7,17 +7,17 @@ from flask_restful import Resource
 from flask_jwt_extended import jwt_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from marshmallow import ValidationError
+from sqlalchemy import func
 
 
-user_schema = UserSchema()
+user_schema = UserSchema(exclude=['password'])
 users_schema = UserSchema(many=True)
 
 
 class UsersApi(Resource):
     @cross_origin()
     def get(self):
-        current_user = get_jwt_identity()
-        all_users = User.query.all()
+        all_users = db.session.query(func.to_char(User.created_on,'%Y-%m-%d %H:%M')).all()
         result = users_schema.dump(all_users)
         return jsonify({'data': result})
 
@@ -30,11 +30,12 @@ class UsersApi(Resource):
         name = request.json['name']
         surname = request.json['surname']
         email = request.json['email']
+        username = request.json['username']
         password = request.json['password']
         role_id = request.json['roleId']
         address_id = request.json['addressId']
         department_id = request.json['departmentId']
-        new_product = User(name, surname, email, generate_password_hash(
+        new_product = User(name, surname, email, username, generate_password_hash(
             password, method='sha256'), role_id, address_id, department_id)
         db.session.add(new_product)
         db.session.commit()
@@ -62,12 +63,16 @@ class UserApi(Resource):
         surname = request.json['surname']
         email = request.json['email']
         password = request.json['password']
+        username = request.json['username']
+        username = request.json['username']
         role_id = request.json['roleId']
         address_id = request.json['addressId']
         department_id = request.json['departmentId']
         user.name = name
         user.surname = surname
         user.email = email
+        user.username = username
+        user.username = username
         user.password = generate_password_hash(password, method='sha256')
         user.role_id = role_id
         user.address_id = address_id

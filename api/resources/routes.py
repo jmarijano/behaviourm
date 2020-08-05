@@ -4,6 +4,7 @@ from .country import CountriesApi, CountryApi
 from .address import AddressApi,AddressesApi
 from .user import UserApi,UsersApi
 from .department import DepartmentApi, DepartmentsApi
+from .login import LoginApi
 
 
 def initialize_routes(api):
@@ -24,3 +25,5 @@ def initialize_routes(api):
 
     api.add_resource(DepartmentsApi,'/departments')
     api.add_resource(DepartmentApi,'/departments/<id>')
+
+    api.add_resource(LoginApi, '/login')

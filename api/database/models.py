@@ -18,7 +18,7 @@ class Country(db.Model):
     created_on = db.Column(db.DateTime, server_default=db.func.now())
     updated_on = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
-    cities = db.relationship("City", backref='country', lazy=True)
+    cities = db.relationship("City", backref='country', lazy='dynamic')
 
     def __init__(self, name):
         self.name = name
@@ -69,6 +69,7 @@ class User(db.Model):
     name = db.Column(db.String(45), nullable=False)
     surname = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(200), nullable=False)
+    username = db.Column(db.String(40), nullable=False, unique=True)
     password = db.Column(db.String(45), nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
     department_id = db.Column(db.Integer, db.ForeignKey(
@@ -79,10 +80,11 @@ class User(db.Model):
     updated_on = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
-    def __init__(self, name, surname, email, password, role_id, address_id, department_id):
+    def __init__(self, name, surname, email, username, password, role_id, address_id, department_id):
         self.name = name
         self.surname = surname
         self.email = email
+        self.username = username
         self.password = password
         self.role_id = role_id
         self.address_id = address_id
