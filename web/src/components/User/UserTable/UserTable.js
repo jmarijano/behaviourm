@@ -1,20 +1,20 @@
 import React from "react";
 import { Table, Button } from "react-bootstrap";
-import "./RoleTable.css";
+import "./UserTable.css";
 
-const roleTable = (props) => {
-  const roleList = props.roleList.map((role, i) => (
-    <tr key={role.id}>
+const userTable = (props) => {
+  const userList = props.userList.map((user, i) => (
+    <tr key={user.id}>
       <td>{i + 1}</td>
-      <td>{role.name}</td>
-      <td>{role.createdOn}</td>
-      <td>{role.updatedOn}</td>
+      <td>{user.name}</td>
+      <td>{user.createdOn}</td>
+      <td>{user.updatedOn}</td>
       <td>
         <Button
           className="table-button-promijeni"
           onClick={(event) => {
             event.preventDefault();
-            props.updateRole(role);
+            props.updateUser(user);
           }}
         >
           Promijeni
@@ -25,7 +25,7 @@ const roleTable = (props) => {
           className="table-button-ponisti"
           onClick={(event) => {
             event.preventDefault();
-            props.deleteRole(role.id)
+            props.deleteUser(user.id)
           }}
         >
           Obriši
@@ -39,17 +39,17 @@ const roleTable = (props) => {
         <thead>
           <tr>
             <th>Redni broj</th>
-            <th>Naziv role</th>
+            <th>Naziv osobe</th>
             <th>Kreirano</th>
             <th>Ažurirano</th>
             <th>Promijeni</th>
             <th>Poništi</th>
           </tr>
         </thead>
-        <tbody>{roleList}</tbody>
+        <tbody>{userList}</tbody>
       </Table>
     </React.Fragment>
   );
 };
 
-export default roleTable;
+export default userTable;
