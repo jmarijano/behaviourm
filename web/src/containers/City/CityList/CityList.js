@@ -48,12 +48,17 @@ export default class CityList extends Component {
   }
 
   getCityData = () => {
-    AxiosInstance.get("/cities").then((response) => {
-      console.log(response.data);
-      this.setState({
-        cityList: response.data.data,
-      });
-    });
+    AxiosInstance.get("/cities").then(
+      (response) => {
+        console.log(response.data);
+        this.setState({
+          cityList: response.data.data,
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   deleteCity = (id) => {

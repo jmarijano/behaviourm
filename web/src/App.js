@@ -14,6 +14,7 @@ import AddressInput from "./containers/Address/AddressInput/AddressInput";
 import CityInput from "./containers/City/CityInput/CityInput";
 import DepartmentInput from "./containers/Department/DepartmentInput/DepartmentInput";
 import UserInput from "./containers/User/UserInput/UserInput";
+import LoginInput from "./containers/Login/LoginInput";
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
           <Route path="/countryInput" component={CountryInput}></Route>
           <Route path="/departmentInput" component={DepartmentInput}></Route>
           <Route path="/userInput" component={UserInput}></Route>
+
+          <Route path="/login" component={LoginInput}></Route>
         </Switch>
       </Layout>
     </BrowserRouter>

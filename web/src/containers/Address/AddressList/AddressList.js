@@ -39,12 +39,17 @@ export default class AddressList extends Component {
   };
 
   getAddressData = () => {
-    AxiosInstance.get("/addresses").then((response) => {
-      console.log(response.data);
-      this.setState({
-        addressList: response.data.data,
-      });
-    });
+    AxiosInstance.get("/addresses").then(
+      (response) => {
+        console.log(response.data);
+        this.setState({
+          addressList: response.data.data,
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   deleteAddress = (id) => {

@@ -19,7 +19,7 @@ export default class UserList extends Component {
     event.preventDefault();
     const { id, name } = this.state;
     const role = { name };
-    /*AxiosInstance.put("/roles/" + id, role, {
+    AxiosInstance.put("/roles/" + id, role, {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
@@ -33,20 +33,24 @@ export default class UserList extends Component {
       (error) => {
         console.log(error);
       }
-    );*/
+    );
   };
 
   getUserData = () => {
-    AxiosInstance.get("/users").then((response) => {
-      console.log(response.data);
-      this.setState({
-        userList: response.data.data,
-      });
-    });
+    AxiosInstance.get("/users").then(
+      (response) => {
+        console.log(response.data);
+        this.setState({
+          userList: response.data.data,
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   deleteUser = (id) => {
-    /*
     AxiosInstance.delete("/roles/" + id).then(
       (response) => {
         this.getUserData();
@@ -54,7 +58,7 @@ export default class UserList extends Component {
       (error) => {
         console.log(error);
       }
-    );*/
+    );
   };
 
   updateUser = (user) => {

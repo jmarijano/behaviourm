@@ -37,12 +37,16 @@ export default class RoleList extends Component {
   };
 
   getRoleData = () => {
-    AxiosInstance.get("/roles").then((response) => {
-      console.log(response.data);
-      this.setState({
-        roleList: response.data.data,
-      });
-    });
+    AxiosInstance.get("/roles").then(
+      (response) => {
+        this.setState({
+          roleList: response.data.data,
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   deleteRole = (id) => {

@@ -32,12 +32,17 @@ export default class DepartmentList extends Component {
   };
 
   getDepartmentData = () => {
-    AxiosInstance.get("/departments").then((response) => {
-      console.log(response.data);
-      this.setState({
-        departmentList: response.data.data,
-      });
-    });
+    AxiosInstance.get("/departments").then(
+      (response) => {
+        console.log(response.data);
+        this.setState({
+          departmentList: response.data.data,
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   deleteDepartment = (id) => {

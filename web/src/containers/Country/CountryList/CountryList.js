@@ -31,12 +31,17 @@ export default class CountryList extends Component {
   };
 
   getCountryData = () => {
-    AxiosInstance.get("/countries").then((response) => {
-      console.log(response.data);
-      this.setState({
-        countryList: response.data.data,
-      });
-    });
+    AxiosInstance.get("/countries").then(
+      (response) => {
+        console.log(response.data);
+        this.setState({
+          countryList: response.data.data,
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   deleteCountry = (id) => {
@@ -74,7 +79,7 @@ export default class CountryList extends Component {
           <h3>{this.state.label}</h3>
           <CountryInputForm
             handleCountrySubmit={this.handleCountrySubmit}
-            country={{name}}
+            country={{ name }}
             onChangeInput={this.onChangeInput}
           ></CountryInputForm>
         </React.Fragment>
