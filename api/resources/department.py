@@ -6,12 +6,14 @@ from database.schemas import DepartmentSchema
 from flask_restful import Resource
 import json
 from marshmallow import ValidationError
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 department_schema = DepartmentSchema()
 departments_schema = DepartmentSchema(many=True)
 
 
 class DepartmentsApi(Resource):
+    @jwt_required
     @cross_origin()
     def get(self):
         all_departments = Department.query.all()
@@ -19,6 +21,7 @@ class DepartmentsApi(Resource):
         result = departments_schema.dump(all_departments)
         return jsonify({'data': result})
 
+    @jwt_required
     @cross_origin()
     def post(self):
         try:
@@ -31,17 +34,20 @@ class DepartmentsApi(Resource):
         db.session.commit()
         return department_schema.jsonify({'data': new_product})
 
+    @jwt_required
     @cross_origin()
     def options(self):
         return jsonify()
 
 
 class DepartmentApi(Resource):
+    @jwt_required
     @cross_origin()
     def get(self, id):
         department = Department.query.get(id)
         return department_schema.jsonify(department)
 
+    @jwt_required
     @cross_origin()
     def put(self, id):
         try:
@@ -55,6 +61,7 @@ class DepartmentApi(Resource):
         db.session.commit()
         return department_schema.jsonify({'data': department})
 
+    @jwt_required
     @cross_origin()
     def delete(self, id):
         department = Department.query.get(id)
@@ -62,6 +69,7 @@ class DepartmentApi(Resource):
         db.session.commit()
         return department_schema.jsonify(department)
 
+    @jwt_required
     @cross_origin()
     def options(self):
         return jsonify()

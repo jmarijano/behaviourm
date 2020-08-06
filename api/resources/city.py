@@ -7,12 +7,14 @@ from flask_restful import Resource
 import json
 import sys
 from marshmallow import ValidationError
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 city_schema = CitySchema()
 cities_schema = CitySchema(many=True)
 
 
 class CitiesApi(Resource):
+    @jwt_required
     @cross_origin()
     def get(self):
         all_cities = City.query.all()
@@ -20,12 +22,13 @@ class CitiesApi(Resource):
         result = cities_schema.dump(all_cities)
         return jsonify({'data': result})
 
+    @jwt_required
     @cross_origin()
     def post(self):
         try:
             city_schema.load(request.json)
         except ValidationError as err:
-            print (err.messages)
+            print(err.messages)
             return jsonify(err.messages), 500
         name = request.json['name']
         country_id = request.json['countryId']
@@ -34,17 +37,20 @@ class CitiesApi(Resource):
         db.session.commit()
         return city_schema.jsonify({'data': new_product})
 
+    @jwt_required
     @cross_origin()
     def options(self):
         return jsonify()
 
 
 class CityApi(Resource):
+    @jwt_required
     @cross_origin()
     def get(self, id):
         city = City.query.get(id)
         return city_schema.jsonify(city)
 
+    @jwt_required
     @cross_origin()
     def put(self, id):
         try:
@@ -60,6 +66,7 @@ class CityApi(Resource):
         db.session.commit()
         return city_schema.jsonify({'data': city})
 
+    @jwt_required
     @cross_origin()
     def delete(self, id):
         city = City.query.get(id)
@@ -67,6 +74,7 @@ class CityApi(Resource):
         db.session.commit()
         return city_schema.jsonify(city)
 
+    @jwt_required
     @cross_origin()
     def options(self):
         return jsonify()

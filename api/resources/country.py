@@ -6,12 +6,14 @@ from database.schemas import CountrySchema
 from flask_restful import Resource
 from sqlalchemy import func
 from marshmallow import ValidationError
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 country_schema = CountrySchema()
 countries_schema = CountrySchema(many=True)
 
 
 class CountriesApi(Resource):
+    @jwt_required
     @cross_origin()
     def get(self):
         all_countries = Country.query.all()
@@ -22,6 +24,7 @@ class CountriesApi(Resource):
             data=result,
         )
 
+    @jwt_required
     @cross_origin()
     def post(self):
         try:
@@ -34,19 +37,21 @@ class CountriesApi(Resource):
         db.session.commit()
         return country_schema.jsonify({'data': new_product})
 
+    @jwt_required
     @cross_origin()
     def options(self):
         return jsonify()
 
 
 class CountryApi(Resource):
-
+    @jwt_required
     @cross_origin()
     def get(self, id):
         country = Country.query.get(id)
         print(country.cities[0].name)
         return country_schema.jsonify(country)
 
+    @jwt_required
     @cross_origin()
     def put(self, id):
         try:
@@ -60,6 +65,7 @@ class CountryApi(Resource):
         db.session.commit()
         return country_schema.jsonify({'data': country})
 
+    @jwt_required
     @cross_origin()
     def delete(self, id):
         country = Country.query.get(id)
@@ -67,6 +73,7 @@ class CountryApi(Resource):
         db.session.commit()
         return country_schema.jsonify(country)
 
+    @jwt_required
     @cross_origin()
     def options(self):
         return jsonify()

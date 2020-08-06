@@ -7,6 +7,10 @@ from flask_restful import Resource
 from flask_jwt_extended import jwt_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from marshmallow import ValidationError
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
@@ -26,9 +30,11 @@ class LoginApi(Resource):
         if not user:
             return jsonify("User not found"), 404
         if check_password_hash(user.password, password):
-            user.password = ''
-            user = user_schema.dump(user)
-            print(user)
-            return user_schema.jsonify(user)
+            access_token = create_access_token(identity=username)
+            return jsonify(access_token=access_token)
         else:
             return jsonify("Wrong password"), 500
+
+    @cross_origin()
+    def options(self):
+        return jsonify()

@@ -6,12 +6,14 @@ from database.schemas import AddressSchema
 from flask_restful import Resource
 import json
 from marshmallow import ValidationError
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 address_schema = AddressSchema()
 addresses_schema = AddressSchema(many=True)
 
 
 class AddressesApi(Resource):
+    @jwt_required
     @cross_origin()
     def get(self):
         all_addresses = Address.query.all()
@@ -19,6 +21,7 @@ class AddressesApi(Resource):
         result = addresses_schema.dump(all_addresses)
         return jsonify({'data': result})
 
+    @jwt_required
     @cross_origin()
     def post(self):
         try:
@@ -33,17 +36,20 @@ class AddressesApi(Resource):
         db.session.commit()
         return address_schema.jsonify({'data': new_product})
 
+    @jwt_required
     @cross_origin()
     def options(self):
         return jsonify()
 
 
 class AddressApi(Resource):
+    @jwt_required
     @cross_origin()
     def get(self, id):
         address = Address.query.get(id)
         return address_schema.jsonify(address)
 
+    @jwt_required
     @cross_origin()
     def put(self, id):
         try:
@@ -59,6 +65,7 @@ class AddressApi(Resource):
         db.session.commit()
         return address_schema.jsonify({'data': address})
 
+    @jwt_required
     @cross_origin()
     def delete(self, id):
         address = Address.query.get(id)
@@ -66,6 +73,7 @@ class AddressApi(Resource):
         db.session.commit()
         return address_schema.jsonify(address)
 
+    @jwt_required
     @cross_origin()
     def options(self):
         return jsonify()

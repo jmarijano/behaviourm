@@ -8,6 +8,8 @@ from flask_jwt_extended import jwt_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from marshmallow import ValidationError
 from sqlalchemy import func
+from flask_jwt_extended import get_jwt_identity
+
 
 
 user_schema = UserSchema(exclude=['password'])
@@ -15,12 +17,15 @@ users_schema = UserSchema(many=True)
 
 
 class UsersApi(Resource):
+    @jwt_required
     @cross_origin()
     def get(self):
-        all_users = db.session.query(func.to_char(User.created_on,'%Y-%m-%d %H:%M')).all()
+        current_user=get_jwt_identity()
+        all_users = User.query.all()
         result = users_schema.dump(all_users)
         return jsonify({'data': result})
 
+    @jwt_required
     @cross_origin()
     def post(self):
         try:
@@ -41,17 +46,20 @@ class UsersApi(Resource):
         db.session.commit()
         return user_schema.jsonify({'data': new_product})
 
+    @jwt_required
     @cross_origin()
     def options(self):
         return jsonify()
 
 
 class UserApi(Resource):
+    @jwt_required
     @cross_origin()
     def get(self, id):
         user = User.query.get(id)
         return user_schema.jsonify(user)
 
+    @jwt_required
     @cross_origin()
     def put(self, id):
         try:
@@ -81,6 +89,7 @@ class UserApi(Resource):
         db.session.commit()
         return user_schema.jsonify({'data': user})
 
+    @jwt_required
     @cross_origin()
     def delete(self, id):
         user = User.query.get(id)
@@ -88,6 +97,7 @@ class UserApi(Resource):
         db.session.commit()
         return user_schema.jsonify(user)
 
+    @jwt_required
     @cross_origin()
     def options(self):
         return jsonify()
