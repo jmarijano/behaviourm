@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import DepartmentInputForm from "../../../components/Department/DepartmentInputForm/DepartmentInputForm";
 import AxiosInstance from "../../../api/utils/AxiosInstance";
 import { Redirect } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default class DepartmentInput extends Component {
   state = {
@@ -14,7 +15,11 @@ export default class DepartmentInput extends Component {
     event.preventDefault();
     const { name } = this.state;
     const department = { name };
-    AxiosInstance.post("/departments", department).then(
+    AxiosInstance.post("/departments", department, {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         console.log(response.data);
 
@@ -36,9 +41,9 @@ export default class DepartmentInput extends Component {
   };
 
   render() {
-    const {redirect} = this.state;
-    if(redirect){
-      return <Redirect to='/departmentList'></Redirect>
+    const { redirect } = this.state;
+    if (redirect) {
+      return <Redirect to="/departmentList"></Redirect>;
     }
     return (
       <React.Fragment>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import AxiosInstance from "../../../api/utils/AxiosInstance";
 import DepartmentTable from "../../../components/Department/DepartmentTable/DepartmentTable";
 import DepartmentInputForm from "../../../components/Department/DepartmentInputForm/DepartmentInputForm";
+import Cookies from "js-cookie";
 
 export default class DepartmentList extends Component {
   state = {
@@ -19,7 +20,11 @@ export default class DepartmentList extends Component {
     event.preventDefault();
     const { id, name } = this.state;
     const department = { name };
-    AxiosInstance.put("/departments/" + id, department).then(
+    AxiosInstance.put("/departments/" + id, department, {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         console.log(response.data);
         this.setState({ update: false });
@@ -32,7 +37,11 @@ export default class DepartmentList extends Component {
   };
 
   getDepartmentData = () => {
-    AxiosInstance.get("/departments").then(
+    AxiosInstance.get("/departments", {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         console.log(response.data);
         this.setState({
@@ -46,7 +55,11 @@ export default class DepartmentList extends Component {
   };
 
   deleteDepartment = (id) => {
-    AxiosInstance.delete("/departments/" + id).then(
+    AxiosInstance.delete("/departments/" + id, {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         this.getDepartmentData();
       },

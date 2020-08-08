@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import AxiosInstance from "../../../api/utils/AxiosInstance";
 import CityTable from "../../../components/City/CityTable/CityTable";
 import CityInputForm from "../../../components/City/CityInputForm/CityInputForm";
+import Cookies from "js-cookie";
+
 export default class CityList extends Component {
   state = {
     cityList: [],
@@ -26,7 +28,11 @@ export default class CityList extends Component {
     try {
       countryId = parseInt(countryId);
       const city = { name, countryId };
-      AxiosInstance.put("/cities/" + id, city).then(
+      AxiosInstance.put("/cities/" + id, city, {
+        headers: {
+          Authorization: "Bearer " + Cookies.get("username"),
+        },
+      }).then(
         (response) => {
           console.log(response.data);
           this.setState({
@@ -48,7 +54,12 @@ export default class CityList extends Component {
   }
 
   getCityData = () => {
-    AxiosInstance.get("/cities").then(
+    console.log(Cookies.get("usern"))
+    AxiosInstance.get("/cities", {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         console.log(response.data);
         this.setState({
@@ -62,7 +73,11 @@ export default class CityList extends Component {
   };
 
   deleteCity = (id) => {
-    AxiosInstance.delete("/cities/" + id).then(
+    AxiosInstance.delete("/cities/" + id, {
+      headers: {
+        Authorization: "Bearer" + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         this.getCityData();
       },

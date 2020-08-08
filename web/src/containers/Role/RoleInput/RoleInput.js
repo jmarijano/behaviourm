@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import RoleInputForm from "../../../components/Role//RoleInputForm/RoleInputForm";
 import AxiosInstance from "../../../api/utils/AxiosInstance";
 import { Redirect } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default class RoleInput extends Component {
   state = {
@@ -16,8 +17,7 @@ export default class RoleInput extends Component {
     const role = { name };
     AxiosInstance.post("/roles", role, {
       headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
+        Authorization: "Bearer " + Cookies.get("username"),
       },
     }).then(
       (response) => {

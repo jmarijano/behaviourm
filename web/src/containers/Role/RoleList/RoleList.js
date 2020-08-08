@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import AxiosInstance from "../../../api/utils/AxiosInstance";
 import RoleTable from "../../../components/Role/RoleTable/RoleTable";
 import RoleInputForm from "../../../components/Role/RoleInputForm/RoleInputForm";
+import Cookies from "js-cookie";
 
 export default class RoleList extends Component {
   state = {
@@ -21,8 +22,7 @@ export default class RoleList extends Component {
     const role = { name };
     AxiosInstance.put("/roles/" + id, role, {
       headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
+        Authorization: "Bearer " + Cookies.get("username"),
       },
     }).then(
       (response) => {
@@ -37,7 +37,11 @@ export default class RoleList extends Component {
   };
 
   getRoleData = () => {
-    AxiosInstance.get("/roles").then(
+    AxiosInstance.get("/roles", {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         this.setState({
           roleList: response.data.data,
@@ -50,7 +54,11 @@ export default class RoleList extends Component {
   };
 
   deleteRole = (id) => {
-    AxiosInstance.delete("/roles/" + id).then(
+    AxiosInstance.delete("/roles/" + id, {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         this.getRoleData();
       },

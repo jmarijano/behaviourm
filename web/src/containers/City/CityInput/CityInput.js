@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CityInputForm from "../../../components/City/CityInputForm/CityInputForm";
 import AxiosInstance from "../../../api/utils/AxiosInstance";
 import { Redirect } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default class AddressInput extends Component {
   state = {
@@ -17,7 +18,11 @@ export default class AddressInput extends Component {
     try {
       countryId = parseInt(countryId);
       const city = { name, countryId };
-      AxiosInstance.post("/cities", city).then(
+      AxiosInstance.post("/cities", city, {
+        headers: {
+          Authorization: "Bearer " + Cookies.get("username"),
+        },
+      }).then(
         (response) => {
           console.log(response.data);
           this.setState({

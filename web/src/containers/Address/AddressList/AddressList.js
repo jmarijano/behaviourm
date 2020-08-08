@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import AxiosInstance from "../../../api/utils/AxiosInstance";
 import AddressTable from "../../../components/Adress/AddressTable/AddressTable";
 import AddressInputForm from "../../../components/Adress/AddressInputForm/AddressInputForm";
+import Cookies from "js-cookie";
 
 export default class AddressList extends Component {
   state = {
@@ -23,7 +24,11 @@ export default class AddressList extends Component {
       cityId = parseInt(cityId);
       const address = { id, streetName, cityId };
       console.log(streetName + " " + cityId);
-      AxiosInstance.put("/addresses/" + address.id, address).then(
+      AxiosInstance.put("/addresses/" + address.id, address, {
+        headers: {
+          Authorization: "Bearer " + Cookies.get("username"),
+        },
+      }).then(
         (response) => {
           this.setState({ update: false });
           this.getAddressData();
@@ -39,7 +44,11 @@ export default class AddressList extends Component {
   };
 
   getAddressData = () => {
-    AxiosInstance.get("/addresses").then(
+    AxiosInstance.get("/addresses", {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         console.log(response.data);
         this.setState({
@@ -53,7 +62,11 @@ export default class AddressList extends Component {
   };
 
   deleteAddress = (id) => {
-    AxiosInstance.delete("/addresses/" + id).then(
+    AxiosInstance.delete("/addresses/" + id, {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         this.getAddressData();
       },

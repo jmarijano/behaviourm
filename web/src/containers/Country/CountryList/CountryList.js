@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import AxiosInstance from "../../../api/utils/AxiosInstance";
 import CountryTable from "../../../components/Country/CountryTable/CountryTable";
 import CountryInputForm from "../../../components/Country/CountryInputForm/CountryInputForm";
+import Cookies from "js-cookie";
+
 export default class CountryList extends Component {
   state = {
     countryList: [],
@@ -18,7 +20,11 @@ export default class CountryList extends Component {
     event.preventDefault();
     const { id, name } = this.state;
     const country = { name };
-    AxiosInstance.put("/countries/" + id, country).then(
+    AxiosInstance.put("/countries/" + id, country, {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         console.log(response.data);
         this.setState({ update: false });
@@ -31,7 +37,11 @@ export default class CountryList extends Component {
   };
 
   getCountryData = () => {
-    AxiosInstance.get("/countries").then(
+    AxiosInstance.get("/countries", {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         console.log(response.data);
         this.setState({
@@ -45,7 +55,11 @@ export default class CountryList extends Component {
   };
 
   deleteCountry = (id) => {
-    AxiosInstance.delete("/countries/" + id).then(
+    AxiosInstance.delete("/countries/" + id, {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         this.getCountryData();
       },

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CountryInputForm from "../../../components/Country/CountryInputForm/CountryInputForm";
 import AxiosInstance from "../../../api/utils/AxiosInstance";
 import { Redirect } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default class CountryInput extends Component {
   state = {
@@ -14,7 +15,11 @@ export default class CountryInput extends Component {
     event.preventDefault();
     const { name } = this.state;
     const country = { name };
-    AxiosInstance.post("/countries", country).then(
+    AxiosInstance.post("/countries", country, {
+      headers: {
+        Authorization: "Bearer " + Cookies.get("username"),
+      },
+    }).then(
       (response) => {
         console.log(response.data);
 
@@ -36,9 +41,9 @@ export default class CountryInput extends Component {
   };
 
   render() {
-    const {redirect} = this.state;
-    if(redirect){
-      return <Redirect to='/countryList'></Redirect>
+    const { redirect } = this.state;
+    if (redirect) {
+      return <Redirect to="/countryList"></Redirect>;
     }
     return (
       <React.Fragment>

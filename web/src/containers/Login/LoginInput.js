@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import LoginInputForm from "../../components/Login/LoginInputForm";
 import AxiosInstance from "../../api/utils/AxiosInstance";
 import { Redirect } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default class LoginInput extends Component {
-
   state = {
     username: "",
     password: "",
     redirect: false,
+    cookie: Cookies.get("username"),
   };
 
   handleLoginSubmit = (event) => {
@@ -18,6 +19,7 @@ export default class LoginInput extends Component {
     AxiosInstance.post("/login", user).then(
       (response) => {
         console.log(response.data);
+        Cookies.set("username", response.data.accessToken);
         this.setState({
           redirect: true,
         });
