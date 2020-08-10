@@ -1,11 +1,12 @@
 from flask import Blueprint, request, jsonify, Response
-from database.models import Role
+from database.models import Role, Sqli, User
 from database.db import db
 from flask_cors import CORS, cross_origin
 from database.schemas import RoleSchema
 from flask_restful import Resource
 from marshmallow import ValidationError
 from flask_jwt_extended import get_jwt_identity, jwt_required
+from ml_models.sqli_model import predict
 
 role_schema = RoleSchema()
 roles_schema = RoleSchema(many=True)
@@ -28,7 +29,12 @@ class RolesApi(Resource):
             return jsonify(err.messages), 500
         name = request.json['name']
         new_product = Role(name)
+        username = get_jwt_identity()
+        user_id = User.query.filter(User.username == username).first().id
+        value = predict(name)
+        new_sqli = Sqli(value, user_id, False)
         db.session.add(new_product)
+        db.session.add(new_sqli)
         db.session.commit()
         return role_schema.jsonify({'data': new_product})
 
@@ -56,6 +62,11 @@ class RoleApi(Resource):
         name = request.json['name']
         role.name = name
         role.updated_on = db.func.now()
+        username = get_jwt_identity()
+        user_id = User.query.filter(User.username == username).first().id
+        value = predict(name)
+        new_sqli = Sqli(value, user_id, False)
+        db.session.add(new_sqli)
         db.session.commit()
         return role_schema.jsonify({'data': role})
 

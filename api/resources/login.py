@@ -31,7 +31,7 @@ class LoginApi(Resource):
             return jsonify("User not found"), 404
         if check_password_hash(user.password, password):
             access_token = create_access_token(identity=username)
-            return jsonify(access_token=access_token)
+            return jsonify(accessToken=access_token)
         else:
             return jsonify("Wrong password"), 500
 

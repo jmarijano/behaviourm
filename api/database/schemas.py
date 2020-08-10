@@ -68,3 +68,11 @@ class DepartmentSchema(ma.SQLAlchemySchema):
     updated_on = fields.DateTime(data_key='updatedOn')
 
 
+class SqliSchema(ma.SQLAlchemySchema):
+    id = fields.Integer()
+    user_id = fields.Integer(data_key='userId', validate=must_not_be_blank)
+    value = fields.Float(data_key='value', validate=must_not_be_blank)
+    is_sqli = fields.Boolean(data_key='isSqli', validate=must_not_be_blank)   
+    created_on = fields.DateTime(data_key='createdOn')
+    updated_on = fields.DateTime(data_key='updatedOn')
+    

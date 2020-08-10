@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, Response
-from database.models import City
+from database.models import City, Sqli, User
 from database.db import db
 from flask_cors import CORS, cross_origin
 from database.schemas import CitySchema
@@ -8,6 +8,7 @@ import json
 import sys
 from marshmallow import ValidationError
 from flask_jwt_extended import get_jwt_identity, jwt_required
+from ml_models.sqli_model import predict
 
 city_schema = CitySchema()
 cities_schema = CitySchema(many=True)
@@ -32,8 +33,16 @@ class CitiesApi(Resource):
             return jsonify(err.messages), 500
         name = request.json['name']
         country_id = request.json['countryId']
+        username = get_jwt_identity()
+        user_id = User.query.filter(User.username == username).first().id
+        value = predict(name)
         new_product = City(name, country_id)
+        new_sqli = Sqli(value, user_id, False)
+        db.session.add(new_sqli)
         db.session.add(new_product)
+        value = predict(str(country_id))
+        new_sqli = Sqli(value, user_id, False)
+        db.session.add(new_sqli)
         db.session.commit()
         return city_schema.jsonify({'data': new_product})
 
@@ -63,6 +72,13 @@ class CityApi(Resource):
         city.name = name
         city.country_id = country_id
         city.updated_on = db.func.now()
+        username = get_jwt_identity()
+        user_id = User.query.filter(User.username == username).first().id
+        value = predict(name)
+        new_sqli = Sqli(value, user_id, False)
+        db.session.add(new_sqli)
+        value = predict(str(country_id))
+        new_sqli = Sqli(value, user_id, False)
         db.session.commit()
         return city_schema.jsonify({'data': city})
 

@@ -89,3 +89,18 @@ class User(db.Model):
         self.role_id = role_id
         self.address_id = address_id
         self.department_id = department_id
+
+
+class Sqli(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.Float, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    is_sqli = db.Column(db.Boolean, nullable=False)
+    created_on = db.Column(db.DateTime, server_default=db.func.now())
+    updated_on = db.Column(
+        db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
+
+    def __init__(self, value, user_id, is_sqli):
+        self.value = value
+        self.user_id = user_id
+        self.is_sqli = is_sqli

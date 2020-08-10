@@ -26,14 +26,13 @@ import pickle
 
 
 
-def predict():
+def predict(data):
 
     
-    mymodel = tf.keras.models.load_model('my_model_cnn.h5')
-    myvectorizer = pickle.load(open("vectorizer_cnn", 'rb'))
+    mymodel = tf.keras.models.load_model('assets/cnn/my_model_cnn.h5')
+    myvectorizer = pickle.load(open("assets/cnn/vectorizer_cnn", 'rb'))
 
-    input_val="i select this sentence but this should not be injection it is like injection but from my point of view it should not be even if i include union in it like before"
-    input_val=clean_data(input_val)
+    input_val=data
     input_val=[input_val]
 
 
@@ -43,7 +42,7 @@ def predict():
     input_val.shape=(1,64,64,1)
 
     result=mymodel.predict(input_val)
-    print(result)
+    return result
 
 def clean_data(input_val):
     
