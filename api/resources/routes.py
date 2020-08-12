@@ -5,7 +5,7 @@ from .address import AddressApi,AddressesApi
 from .user import UserApi,UsersApi
 from .department import DepartmentApi, DepartmentsApi
 from .login import LoginApi
-from .uba import SqliApi
+from .sqli import SqliApi, SqlisApi
 
 
 def initialize_routes(api):
@@ -29,4 +29,5 @@ def initialize_routes(api):
 
     api.add_resource(LoginApi, '/login')
 
-    api.add_resource(SqliApi,'/uba/sqli')
+    api.add_resource(SqlisApi, '/sqlis')
+    api.add_resource(SqliApi,'/sqlis/<id>')

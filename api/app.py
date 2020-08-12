@@ -9,6 +9,7 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 from flask_cors import CORS, cross_origin
+from ml_models.xss_model import predict_xss
 
 
 app = Flask(__name__)

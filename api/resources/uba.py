@@ -8,7 +8,7 @@ import json
 from marshmallow import ValidationError
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from ml_models.sqli_model import predict
-from ml_models.password_strength_model import func
+from ml_models.password_strength_model import predict_password_strength
 
 address_schema = AddressSchema()
 addresses_schema = AddressSchema(many=True)
@@ -17,5 +17,5 @@ addresses_schema = AddressSchema(many=True)
 class SqliApi(Resource):
     @cross_origin()
     def post(self):
-        func()
+        predict_password_strength("12312312312312312asdasdq2312464sdfvcvnbbhzj!2qer$#%#$%#$%")
         return jsonify(hello="World")

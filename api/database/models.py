@@ -104,3 +104,18 @@ class Sqli(db.Model):
         self.value = value
         self.user_id = user_id
         self.is_sqli = is_sqli
+
+
+class Xss(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.Float, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    is_xss = db.Column(db.Boolean, nullable=False)
+    created_on = db.Column(db.DateTime, server_default=db.func.now())
+    updated_on = db.Column(
+        db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
+
+    def __init__(self, value, user_id, is_xss):
+        self.value = value
+        self.user_id = user_id
+        self.is_xss = is_xss

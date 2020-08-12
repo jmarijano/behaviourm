@@ -14,7 +14,7 @@ def getTokens(inputString):  # custom tokenizer. ours tokens are characters rath
     return tokens
 
 
-def func():
+def predict_password_strength(password):
     """
     data = pd.read_csv("datasets/password_strength.csv",
                        ',', error_bad_lines=False)
@@ -48,10 +48,10 @@ def func():
         pickle.dump(vectorizer, file)
 
     """
-    with open("password_strength.pkl", 'rb') as file:
+    with open("assets/cnn/password_strength.pkl", 'rb') as file:
         pickle_model = pickle.load(file)
-    vectorizer = pickle.load(open("vectorizer_pass_str",'rb'))
-    X_predict = ['123', 'faizanahmad123', 'faizanahmad##', 'ajd1348#28t**', 'ffffffffff', 'kuiqwasdi',
-                 'uiquiuiiuiuiuiuiuiuiuiuiui', 'mynameisfaizan', 'mynameis123faizan#', 'faizan', '123456', 'abcdef']
+    vectorizer = pickle.load(open("assets/cnn/vectorizer_pass_str",'rb'))
+    X_predict = password
+    X_predict = [X_predict]
     X_predict = vectorizer.transform(X_predict)
     print(pickle_model.predict(X_predict))
