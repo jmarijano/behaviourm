@@ -8,6 +8,7 @@ import CityList from "./containers/City/CityList/CityList";
 import AddressList from "./containers/Address/AddressList/AddressList";
 import DepartmentList from "./containers/Department/DepartmentList/DepartmentList";
 import RoleInput from "./containers/Role/RoleInput/RoleInput";
+import SqliList from "./containers/Sqli/SqliList/SqliList";
 import UserList from "./containers/User/UserList/UserList";
 import CountryInput from "./containers/Country/CountryInput/CountryInput";
 import AddressInput from "./containers/Address/AddressInput/AddressInput";
@@ -27,6 +28,7 @@ function App() {
           <Route path="/roleList" component={RoleList}></Route>
           <Route path="/departmentList" component={DepartmentList}></Route>
           <Route path="/userList" component={UserList}></Route>
+          <Route path="/sqliList" component={SqliList}></Route>
 
           <Route path="/roleInput" component={RoleInput}></Route>
           <Route path="/cityInput" component={CityInput}></Route>

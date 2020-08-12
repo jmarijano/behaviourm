@@ -27,6 +27,7 @@ const navigation = () => {
                   <NavDropdown.Item href="/userList">
                     Korisnici
                   </NavDropdown.Item>
+                  <NavDropdown.Item href="/sqliList">Sqli</NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown title="Unos" id="unos-nav-dropdown">
                   <NavDropdown.Item href="/roleInput">Role</NavDropdown.Item>

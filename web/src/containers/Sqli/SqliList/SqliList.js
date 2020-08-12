@@ -1,26 +1,26 @@
 import React, { Component } from "react";
 import AxiosInstance from "../../../api/utils/AxiosInstance";
-import UserTable from "../../../components/User/UserTable/UserTable";
+import SqliTable from "../../../components/Sqli/SqliTable/SqliTable";
 import UserInputForm from "../../../components/User/UserInputForm/UserInputForm";
 import Cookies from "js-cookie";
 
-export default class UserList extends Component {
+export default class SqliList extends Component {
   state = {
-    userList: [],
+    sqliList: [],
     name: "",
     update: false,
     id: "",
   };
 
   componentDidMount() {
-    this.getUserData();
+    this.getSqliData();
   }
 
-  handleUserSubmit = (event) => {
+  handleSqliSubmit = (event) => {
     event.preventDefault();
     const { id, name } = this.state;
     const role = { name };
-    AxiosInstance.put("/roles/" + id, role, {
+    AxiosInstance.put("/sqlis/" + id, role, {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
@@ -38,8 +38,8 @@ export default class UserList extends Component {
     );
   };
 
-  getUserData = () => {
-    AxiosInstance.get("/users", {
+  getSqliData = () => {
+    AxiosInstance.get("/sqlis", {
       headers: {
         Authorization: "Bearer " + Cookies.get("username"),
       },
@@ -47,7 +47,7 @@ export default class UserList extends Component {
       (response) => {
         console.log(response.data);
         this.setState({
-          userList: response.data.data,
+          sqliList: response.data.data,
         });
       },
       (error) => {
@@ -56,14 +56,14 @@ export default class UserList extends Component {
     );
   };
 
-  deleteUser = (id) => {
-    AxiosInstance.delete("/roles/" + id, {
+  deleteSqli = (id) => {
+    AxiosInstance.delete("/sqlis/" + id, {
       headers: {
         Authorization: "Bearer " + Cookies.get("username"),
       },
     }).then(
       (response) => {
-        this.getUserData();
+        this.getSqliData();
       },
       (error) => {
         console.log(error);
@@ -71,7 +71,7 @@ export default class UserList extends Component {
     );
   };
 
-  updateUser = (user) => {
+  updateSqli = (user) => {
     this.setState({
       update: true,
       id: user.id,
@@ -95,7 +95,7 @@ export default class UserList extends Component {
         <React.Fragment>
           <h3>{this.state.label}</h3>
           <UserInputForm
-            handleUserSubmit={this.handleUserSubmit}
+            handleUserSubmit={this.handleSqliSubmit}
             user={{ name }}
             onChangeInput={this.onChangeInput}
           ></UserInputForm>
@@ -104,11 +104,11 @@ export default class UserList extends Component {
     }
     return (
       <React.Fragment>
-        <UserTable
-          userList={this.state.userList}
-          deleteUser={this.deleteUser}
-          updateRole={this.updateUser}
-        ></UserTable>
+        <SqliTable
+          sqliList={this.state.sqliList}
+          deleteSqli={this.deleteSqli}
+          updateSqli={this.updateSqli}
+        ></SqliTable>
       </React.Fragment>
     );
   }
