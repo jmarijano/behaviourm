@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, Response
-from database.models import Address
+from database.models import Address, User
 from database.db import db
 from flask_cors import CORS, cross_origin
 from database.schemas import AddressSchema
@@ -14,8 +14,11 @@ address_schema = AddressSchema()
 addresses_schema = AddressSchema(many=True)
 
 
-class SqliApi(Resource):
+class UbaApi(Resource):
     @cross_origin()
-    def post(self):
-        predict_password_strength("12312312312312312asdasdq2312464sdfvcvnbbhzj!2qer$#%#$%#$%")
+    def get(self, id):
+        user = User.query.filter(User.id == id).filter.first()
+        print(user.name)
+        predict_password_strength(
+            "12312312312312312asdasdq2312464sdfvcvnbbhzj!2qer$#%#$%#$%")
         return jsonify(hello="World")

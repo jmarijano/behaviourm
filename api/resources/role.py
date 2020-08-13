@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, Response
-from database.models import Role, Sqli, User
+from database.models import Role, Sqli, User, Xss
 from database.db import db
 from flask_cors import CORS, cross_origin
 from database.schemas import RoleSchema
@@ -7,6 +7,7 @@ from flask_restful import Resource
 from marshmallow import ValidationError
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from ml_models.sqli_model import predict
+from ml_models.xss_model import predict_xss
 
 role_schema = RoleSchema()
 roles_schema = RoleSchema(many=True)
@@ -32,8 +33,11 @@ class RolesApi(Resource):
         username = get_jwt_identity()
         user_id = User.query.filter(User.username == username).first().id
         value = predict(name)
-        new_sqli = Sqli(value, user_id, False)
+        xss_value = predict_xss(name)
+        new_sqli = Sqli(value, user_id, False, name)
+        new_xss = Xss(xss_value, user_id, False, name)
         db.session.add(new_product)
+        db.session.add(new_xss)
         db.session.add(new_sqli)
         db.session.commit()
         return role_schema.jsonify({'data': new_product})
@@ -65,7 +69,9 @@ class RoleApi(Resource):
         username = get_jwt_identity()
         user_id = User.query.filter(User.username == username).first().id
         value = predict(name)
-        new_sqli = Sqli(value, user_id, False)
+        xss_value = predict_xss(name)
+        new_sqli = Sqli(value, user_id, False, name)
+        new_xss = Xss(xss_value, user_id, False, name)
         db.session.add(new_sqli)
         db.session.commit()
         return role_schema.jsonify({'data': role})

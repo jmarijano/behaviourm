@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, Response
-from database.models import Department, Sqli, User
+from database.models import Department, Sqli, User, Xss
 from database.db import db
 from flask_cors import CORS, cross_origin
 from database.schemas import DepartmentSchema
@@ -8,6 +8,7 @@ import json
 from marshmallow import ValidationError
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from ml_models.sqli_model import predict
+from ml_models.xss_model import predict_xss
 
 department_schema = DepartmentSchema()
 departments_schema = DepartmentSchema(many=True)
@@ -33,9 +34,12 @@ class DepartmentsApi(Resource):
         username = get_jwt_identity()
         user_id = User.query.filter(User.username == username).first().id
         value = predict(name)
+        xss_value = predict_xss(name)
         new_product = Department(name)
         db.session.add(new_product)
-        new_sqli = Sqli(value, user_id, False)
+        new_sqli = Sqli(value, user_id, False, name)
+        new_xss = Xss(xss_value, user_id, False, name)
+        db.session.add(new_xss)
         db.session.add(new_sqli)
         db.session.commit()
         return department_schema.jsonify({'data': new_product})
@@ -67,7 +71,10 @@ class DepartmentApi(Resource):
         username = get_jwt_identity()
         user_id = User.query.filter(User.username == username).first().id
         value = predict(name)
-        new_sqli = Sqli(value, user_id, False)
+        xss_value = predict_xss(name)
+        new_sqli = Sqli(value, user_id, False, name)
+        new_xss = Xss(xss_value, user_id, False, name)
+        db.session.add(new_xss)
         db.session.add(new_sqli)
         db.session.commit()
         return department_schema.jsonify({'data': department})

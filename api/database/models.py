@@ -93,6 +93,7 @@ class User(db.Model):
 
 class Sqli(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(200), nullable=False)
     value = db.Column(db.Float, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     is_sqli = db.Column(db.Boolean, nullable=False)
@@ -100,22 +101,25 @@ class Sqli(db.Model):
     updated_on = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
-    def __init__(self, value, user_id, is_sqli):
+    def __init__(self, value, user_id, is_sqli, text):
         self.value = value
         self.user_id = user_id
         self.is_sqli = is_sqli
+        self.text = text
 
 
 class Xss(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.Float, nullable=False)
+    text = db.Column(db.String(2000), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     is_xss = db.Column(db.Boolean, nullable=False)
     created_on = db.Column(db.DateTime, server_default=db.func.now())
     updated_on = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
-    def __init__(self, value, user_id, is_xss):
+    def __init__(self, value, user_id, is_xss, text):
         self.value = value
         self.user_id = user_id
         self.is_xss = is_xss
+        self.text = text

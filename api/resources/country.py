@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, Response
-from database.models import Country, Sqli, User
+from database.models import Country, Sqli, User, Xss
 from database.db import db
 from flask_cors import CORS, cross_origin
 from database.schemas import CountrySchema
@@ -8,6 +8,7 @@ from sqlalchemy import func
 from marshmallow import ValidationError
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from ml_models.sqli_model import predict
+from ml_models.xss_model import predict_xss
 
 country_schema = CountrySchema()
 countries_schema = CountrySchema(many=True)
@@ -35,9 +36,12 @@ class CountriesApi(Resource):
         username = get_jwt_identity()
         user_id = User.query.filter(User.username == username).first().id
         value = predict(name)
+        xss_value = predict_xss(name)
         db.session.add(new_product)
-        new_sqli = Sqli(value, user_id, False)
+        new_sqli = Sqli(value, user_id, False, name)
+        new_xss = Xss(xss_value, user_id, False, name)
         db.session.add(new_sqli)
+        db.session.add(new_xss)
         db.session.commit()
         return country_schema.jsonify({'data': new_product})
 
@@ -69,8 +73,11 @@ class CountryApi(Resource):
         username = get_jwt_identity()
         user_id = User.query.filter(User.username == username).first().id
         value = predict(name)
-        new_sqli = Sqli(value, user_id, False)
+        xss_value = predict_xss(name)
+        new_sqli = Sqli(value, user_id, False, name)
+        new_xss = Xss(xss_value, user_id, False, name)
         db.session.add(new_sqli)
+        db.session.add(new_xss)
         db.session.commit()
         return country_schema.jsonify({'data': country})
 

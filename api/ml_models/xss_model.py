@@ -157,4 +157,4 @@ def predict_xss(data):
         arr[i] = image
     print("Input data shape : ", arr.shape)
     arr = arr.reshape(arr.shape[0], 100, 100, 1)
-    print(mymodel.predict(arr))
+    return mymodel.predict(arr)
