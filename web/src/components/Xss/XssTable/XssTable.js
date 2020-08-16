@@ -1,22 +1,22 @@
 import React from "react";
 import { Table, Button } from "react-bootstrap";
-import "./SqliTable.css";
+import "./XssTable.css";
 
-const sqliTable = (props) => {
-  const sqliList = props.sqliList.map((sqli, i) => (
-    <tr key={sqli.id}>
+const xssTable = (props) => {
+  const xssList = props.xssList.map((xss, i) => (
+    <tr key={xss.id}>
       <td>{i + 1}</td>
-      <td>{sqli.userId}</td>
-      <td>{sqli.value}</td>
-      <td>{sqli.text}</td>
-      <td>{sqli.createdOn}</td>
-      <td>{sqli.updatedOn}</td>
+      <td>{xss.userId}</td>
+      <td>{xss.value}</td>
+      <td>{xss.text}</td>
+      <td>{xss.createdOn}</td>
+      <td>{xss.updatedOn}</td>
       <td>
         <Button
           className="table-button-promijeni"
           onClick={(event) => {
             event.preventDefault();
-            props.updateSqli(sqli);
+            props.updateXss(xss);
           }}
         >
           Promijeni
@@ -27,7 +27,7 @@ const sqliTable = (props) => {
           className="table-button-ponisti"
           onClick={(event) => {
             event.preventDefault();
-            props.deleteSqli(sqli.id);
+            props.deleteXss(xss.id);
           }}
         >
           Obriši
@@ -50,10 +50,10 @@ const sqliTable = (props) => {
             <th>Poništi</th>
           </tr>
         </thead>
-        <tbody>{sqliList}</tbody>
+        <tbody>{xssList}</tbody>
       </Table>
     </React.Fragment>
   );
 };
 
-export default sqliTable;
+export default xssTable;

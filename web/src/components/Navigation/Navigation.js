@@ -1,8 +1,9 @@
 import React from "react";
-import { Navbar, NavDropdown } from "react-bootstrap";
+import { Navbar, NavDropdown, Nav } from "react-bootstrap";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import Cookies from "js-cookie";
 const navigation = () => {
+  const username = Cookies.get("username");
   return (
     <div>
       <div className="row">
@@ -28,6 +29,7 @@ const navigation = () => {
                     Korisnici
                   </NavDropdown.Item>
                   <NavDropdown.Item href="/sqliList">Sqli</NavDropdown.Item>
+                  <NavDropdown.Item href="/xssList">Xss</NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown title="Unos" id="unos-nav-dropdown">
                   <NavDropdown.Item href="/roleInput">Role</NavDropdown.Item>
@@ -45,6 +47,15 @@ const navigation = () => {
                     Korisnici
                   </NavDropdown.Item>
                 </NavDropdown>
+                <NavDropdown
+                  title="Anomalije"
+                  id="anomalije-nav-dropdown"
+                ></NavDropdown>
+                {username ? (
+                  <Nav.Link href="/logout">Odjava</Nav.Link>
+                ) : (
+                  <div></div>
+                )}
               </Navbar.Collapse>
             </Navbar>
             <br />
@@ -58,6 +69,8 @@ const navigation = () => {
               <Route exact path="/cityInput"></Route>
               <Route exact path="/addressInput"></Route>
               <Route exact path="/login"></Route>
+              <Route exact path="/xssList"></Route>
+              <Route exact path="/logout"></Route>
             </Switch>
           </Router>
         </div>
