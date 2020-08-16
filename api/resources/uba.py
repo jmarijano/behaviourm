@@ -14,7 +14,7 @@ address_schema = AddressSchema()
 addresses_schema = AddressSchema(many=True)
 
 
-class UbaApi(Resource):
+class SqliAnomaly(Resource):
     @cross_origin()
     def get(self, id):
         user = User.query.filter(User.id == id).filter.first()
@@ -22,3 +22,16 @@ class UbaApi(Resource):
         predict_password_strength(
             "12312312312312312asdasdq2312464sdfvcvnbbhzj!2qer$#%#$%#$%")
         return jsonify(hello="World")
+
+
+class SqliAnomalyDepartment(Resource):
+    @cross_origin()
+    def post(self, id):
+        print("kae")
+
+
+class SqliAnomalyUser(Resource):
+    @cross_origin()
+    def get(self, id):
+        username = get_jwt_identity()
+        user_id = User.query.filter(User.username == username).first().id

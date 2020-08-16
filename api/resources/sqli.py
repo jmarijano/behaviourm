@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, Response
-from database.models import Sqli, User
+from database.models import Sqli, User, Department
 from database.db import db
 from flask_cors import CORS, cross_origin
 from database.schemas import SqliSchema
@@ -8,6 +8,8 @@ import json
 from marshmallow import ValidationError
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from ml_models.sqli_model import predict
+from sqlalchemy.sql import func
+from sqlalchemy import text
 
 sqli_schema = SqliSchema()
 sqlis_schema = SqliSchema(many=True)
@@ -19,9 +21,11 @@ class SqlisApi(Resource):
     def get(self):
         all_sqlis = Sqli.query.all()
         print("Broj zapisa: " + str(Sqli.query.count()))
-        print(all_sqlis)
-        result = sqlis_schema.dump(all_sqlis)
-        return jsonify({'data': result})
+        #kae = Sqli.query.with_entities(
+         #   func.avg(Sqli.value).label('average')).filter(Sqli.user_id == 1).first()
+        sql = text('SELECT * FROM SQLI')
+        result = db.engine.execute(sql)
+        return jsonify({'data': [dict(row) for row in result]})
 
     @jwt_required
     @cross_origin()

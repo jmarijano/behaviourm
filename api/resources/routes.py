@@ -7,7 +7,8 @@ from .department import DepartmentApi, DepartmentsApi
 from .login import LoginApi
 from .sqli import SqliApi, SqlisApi
 from .xss import XssApi, XssesApi
-from .uba import UbaApi
+from .uba import SqliAnomaly
+from .config_resource import SqliConfig, XssConfig
 
 
 def initialize_routes(api):
@@ -37,4 +38,7 @@ def initialize_routes(api):
     api.add_resource(XssesApi, '/xsses')
     api.add_resource(XssApi, '/xsses/<id>')
 
-    api.add_resource(UbaApi, '/uba/<id>')
+    api.add_resource(SqliAnomaly, '/uba/<id>')
+
+    api.add_resource(SqliConfig, '/config/sqli')
+    api.add_resource(XssConfig, '/config/xss')
