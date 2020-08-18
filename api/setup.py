@@ -24,106 +24,52 @@ from keras.models import load_model
 import pickle
 
 
-
-
 def kae():
+    df = pd.read_csv('datasets/sqli.csv', encoding='utf-16')
+    from sklearn.feature_extraction.text import CountVectorizer
+    vectorizer = CountVectorizer(
+        min_df=2, max_df=0.7, max_features=4096, stop_words=stopwords.words('english'))
+    posts = vectorizer.fit_transform(
+        df['Sentence'].values.astype('U')).toarray()
+    print(posts.shape)
+    posts.shape = (4200, 64, 64, 1)
+    print(posts.shape)
+    X = posts
+    y = df['Label']
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42)
+    trainX = X_train.copy()
+    trainX.shape = (X_train.shape[0], trainX.shape[1]*trainX.shape[2])
+    testX = X_test.copy()
+    testX.shape = (testX.shape[0], testX.shape[1]*testX.shape[2])
+    model = tf.keras.models.Sequential([
 
-    
-    mymodel = tf.keras.models.load_model('assets/my_model_cnn.h5')
-    myvectorizer = pickle.load(open("assets/vectorizer_cnn", 'rb'))
+        tf.keras.layers.Conv2D(
+            64, (3, 3), activation=tf.nn.relu, input_shape=(64, 64, 1)),
+        tf.keras.layers.MaxPooling2D(2, 2),
 
-    input_val="i select this sentence but this should not be injection it is like injection but from my point of view it should not be even if i include union in it like before"
-    input_val=clean_data(input_val)
-    input_val=[input_val]
+        tf.keras.layers.Conv2D(128, (3, 3), activation=tf.nn.relu),
+        tf.keras.layers.MaxPooling2D(2, 2),
 
+        tf.keras.layers.Conv2D(256, (3, 3), activation='relu'),
+        tf.keras.layers.MaxPooling2D(2, 2),
 
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(256, activation='relu'),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(64, activation=tf.nn.relu),
+        tf.keras.layers.Dense(1, activation='sigmoid')
+    ])
+    model.compile(loss='binary_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
 
-    input_val=myvectorizer.transform(input_val).toarray()
-    
-    input_val.shape=(1,64,64,1)
-
-    result=mymodel.predict(input_val)
-    print(result)
-
-def clean_data(input_val):
-    
-    input_val=input_val.replace('\n', '')
-    input_val=input_val.replace('%20', ' ')
-    input_val=input_val.replace('=', ' = ')
-    input_val=input_val.replace('((', ' (( ')
-    input_val=input_val.replace('))', ' )) ')
-    input_val=input_val.replace('(', ' ( ')
-    input_val=input_val.replace(')', ' ) ')
-    input_val=input_val.replace('1 ', 'numeric')
-    input_val=input_val.replace(' 1', 'numeric')
-    input_val=input_val.replace("'1 ", "'numeric ")
-    input_val=input_val.replace(" 1'", " numeric'")
-    input_val=input_val.replace('1,', 'numeric,')
-    input_val=input_val.replace(" 2 ", " numeric ")
-    input_val=input_val.replace(' 3 ', ' numeric ')
-    input_val=input_val.replace(' 3--', ' numeric--')
-    input_val=input_val.replace(" 4 ", ' numeric ')
-    input_val=input_val.replace(" 5 ", ' numeric ')
-    input_val=input_val.replace(' 6 ', ' numeric ')
-    input_val=input_val.replace(" 7 ", ' numeric ')
-    input_val=input_val.replace(" 8 ", ' numeric ')
-    input_val=input_val.replace('1234', ' numeric ')
-    input_val=input_val.replace("22", ' numeric ')
-    input_val=input_val.replace(" 8 ", ' numeric ')
-    input_val=input_val.replace(" 200 ", ' numeric ')
-    input_val=input_val.replace("23 ", ' numeric ')
-    input_val=input_val.replace('"1', '"numeric')
-    input_val=input_val.replace('1"', '"numeric')
-    input_val=input_val.replace("7659", 'numeric')
-    input_val=input_val.replace(" 37 ", ' numeric ')
-    input_val=input_val.replace(" 45 ", ' numeric ')
-
-    return input_val
-
-def confusion_matrix(truth,predicted):
-    
-    
-    true_positive = 0
-    true_negative = 0
-    false_positive = 0
-    false_negative = 0
-    
-    for true,pred in zip(truth,predicted):
-        
-        if true == 1:
-            if pred == true:
-                true_positive += 1
-            elif pred != true:
-                false_negative += 1
-
-        elif true == 0:
-            if pred == true:
-                true_negative += 1
-            elif pred != true:
-                false_positive += 1
-            
-    accuracy=accuracy_function(true_positive, true_negative, false_positive, false_negative)
-    precision=precision_function(true_positive, false_positive)
-    recall=recall_function(true_positive, false_negative)
-    
-    return (accuracy,
-            precision,
-           recall)
-
-def accuracy_function(tp,tn,fp,fn):
-    
-    accuracy = (tp+tn) / (tp+tn+fp+fn)
-    
-    return accuracy
-
-def precision_function(tp,fp):
-    
-    precision = tp / (tp+fp)
-    
-    return precision
-
-def recall_function(tp,fn):
-        
-    recall=tp / (tp+fn)
-    
-    return recall
+    model.summary()
+    classifier_nn = model.fit(X_train, y_train,
+                              epochs=10,
+                              verbose=True,
+                              validation_data=(X_test, y_test),
+                              batch_size=128)
+    model.save('assets/cnn/my_model_cnn.h5')
+    with open('assets/cnn/vectorizer_cnn', 'wb') as fin:
+        pickle.dump(vectorizer, fin)

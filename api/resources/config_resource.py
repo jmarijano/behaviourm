@@ -8,6 +8,7 @@ from config.config import zapisi
 
 
 class SqliConfig(Resource):
+    @jwt_required
     @cross_origin()
     def post(self):
         value = request.get_json().get('value')
@@ -22,8 +23,14 @@ class SqliConfig(Resource):
         except:
             return jsonify(error="Enter a number"), 500
 
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
 
 class XssConfig(Resource):
+    @jwt_required
     @cross_origin()
     def post(self):
         value = request.get_json().get('value')
@@ -33,7 +40,12 @@ class XssConfig(Resource):
             xss = float(value)
             if(xss < 0 or xss > 1):
                 return jsonify(error="Enter a number between 0 and 1!"), 500
-            zapisi('uba', 'xss',str(xss))
+            zapisi('uba', 'xss', str(xss))
             return jsonify()
         except:
             return jsonify(error="Enter a number!"), 500
+
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()

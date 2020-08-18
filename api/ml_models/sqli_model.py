@@ -20,7 +20,7 @@ from keras import layers
 from keras.preprocessing.text import Tokenizer
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.metrics import accuracy_score
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 import pickle
 
 
@@ -32,7 +32,7 @@ def predict(data):
     mymodel = tf.keras.models.load_model('assets/cnn/my_model_cnn.h5')
     myvectorizer = pickle.load(open("assets/cnn/vectorizer_cnn", 'rb'))
 
-    input_val=data
+    input_val=clean_data(data)
     input_val=[input_val]
 
 

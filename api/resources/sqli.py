@@ -20,12 +20,8 @@ class SqlisApi(Resource):
     @cross_origin()
     def get(self):
         all_sqlis = Sqli.query.all()
-        print("Broj zapisa: " + str(Sqli.query.count()))
-        #kae = Sqli.query.with_entities(
-         #   func.avg(Sqli.value).label('average')).filter(Sqli.user_id == 1).first()
-        sql = text('SELECT * FROM SQLI')
-        result = db.engine.execute(sql)
-        return jsonify({'data': [dict(row) for row in result]})
+        result = sqlis_schema.dump(all_sqlis)
+        return jsonify({'data': result})
 
     @jwt_required
     @cross_origin()

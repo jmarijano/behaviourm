@@ -17,7 +17,6 @@ users_schema = UserSchema(many=True)
 
 
 class UsersApi(Resource):
-    @jwt_required
     @cross_origin()
     def get(self):
         current_user=get_jwt_identity()
@@ -25,13 +24,8 @@ class UsersApi(Resource):
         result = users_schema.dump(all_users)
         return jsonify({'data': result})
 
-    @jwt_required
     @cross_origin()
     def post(self):
-        try:
-            user_schema.load(request.json)
-        except ValidationError as err:
-            return jsonify(err.messages), 500
         name = request.json['name']
         surname = request.json['surname']
         email = request.json['email']
@@ -46,7 +40,6 @@ class UsersApi(Resource):
         db.session.commit()
         return user_schema.jsonify({'data': new_product})
 
-    @jwt_required
     @cross_origin()
     def options(self):
         return jsonify()

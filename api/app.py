@@ -11,6 +11,8 @@ from flask_jwt_extended import (
 from flask_cors import CORS, cross_origin
 from ml_models.xss_model import predict_xss
 from config import config
+from setup import kae
+from ml_models.xss_model import func
 
 
 app = Flask(__name__)
@@ -29,7 +31,6 @@ jwt = JWTManager(app)
 initialize_db(app)
 initialize_ma(app)
 initialize_routes(api)
-print(config.dohvati_value("uba", "xss"))
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)
