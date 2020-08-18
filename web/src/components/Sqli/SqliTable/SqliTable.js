@@ -13,7 +13,7 @@ const sqliTable = (props) => {
       <td>{sqli.updatedOn}</td>
       <td>
         <Button
-          className="table-button-promijeni"
+          variant="warning"
           onClick={(event) => {
             event.preventDefault();
             props.updateSqli(sqli);
@@ -24,7 +24,7 @@ const sqliTable = (props) => {
       </td>
       <td>
         <Button
-          className="table-button-ponisti"
+          variant="danger"
           onClick={(event) => {
             event.preventDefault();
             props.deleteSqli(sqli.id);

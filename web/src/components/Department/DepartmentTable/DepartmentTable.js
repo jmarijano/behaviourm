@@ -3,14 +3,13 @@ import { Table, Button } from "react-bootstrap";
 import "./DepartmentTable.css";
 
 const departmentTable = (props) => {
-  console.log("Kae: " + props.departmentList);
   const departmentList = props.departmentList.map((department, i) => (
     <tr key={department.id}>
       <td>{i + 1}</td>
       <td>{department.name}</td>
       <td>
         <Button
-          className="table-button-promijeni"
+          variant="warning"
           onClick={(event) => {
             event.preventDefault();
             props.updateDepartment(department);
@@ -21,7 +20,7 @@ const departmentTable = (props) => {
       </td>
       <td>
         <Button
-          className="table-button-ponisti"
+          variant="danger"
           onClick={(event) => {
             event.preventDefault();
             props.deleteDepartment(department.id);

@@ -1,27 +1,27 @@
 import React, { Component } from "react";
-import CountryInputForm from "../../../components/Country/CountryInputForm/CountryInputForm";
+import SqliConfigForm from "../../../components/Sqli/SqliConfigForm/SqliConfigForm";
 import AxiosInstance from "../../../api/utils/AxiosInstance";
 import { Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
 
-export default class CountryInput extends Component {
+export default class SqliConfig extends Component {
   state = {
-    label: "Unos države",
-    name: "",
+    label: "Konfiguracija Sqli",
+    value: "",
     redirect: false,
   };
 
-  handleCountrySubmit = (event) => {
+  handleSqliSubmit = (event) => {
     event.preventDefault();
-    const { name } = this.state;
-    const country = { name };
-    AxiosInstance.post("/countries", country, {
+    const { value } = this.state;
+    const sqli = { value };
+    AxiosInstance.post("/config/sqli", sqli, {
       headers: {
         Authorization: "Bearer " + Cookies.get("username"),
       },
     }).then(
       (response) => {
-
+        console.log(response);
         this.setState({ redirect: true });
       },
       (error) => {
@@ -42,16 +42,16 @@ export default class CountryInput extends Component {
   render() {
     const { redirect } = this.state;
     if (redirect) {
-      return <Redirect to="/countryList"></Redirect>;
+      return <Redirect to="/roleList"></Redirect>;
     }
     return (
       <React.Fragment>
         <h3>{this.state.label}</h3>
-        <CountryInputForm
-          handleCountrySubmit={this.handleCountrySubmit}
-          country={{}}
+        <SqliConfigForm
+          handleSqliSubmit={this.handleSqliSubmit}
+          sqli={{}}
           onChangeInput={this.onChangeInput}
-        ></CountryInputForm>
+        ></SqliConfigForm>
       </React.Fragment>
     );
   }

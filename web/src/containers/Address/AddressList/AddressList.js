@@ -3,6 +3,7 @@ import AxiosInstance from "../../../api/utils/AxiosInstance";
 import AddressTable from "../../../components/Adress/AddressTable/AddressTable";
 import AddressInputForm from "../../../components/Adress/AddressInputForm/AddressInputForm";
 import Cookies from "js-cookie";
+import Modal from "../../../components/UI/Modal/Modal";
 
 export default class AddressList extends Component {
   state = {
@@ -23,7 +24,6 @@ export default class AddressList extends Component {
     try {
       cityId = parseInt(cityId);
       const address = { id, streetName, cityId };
-      console.log(streetName + " " + cityId);
       AxiosInstance.put("/addresses/" + address.id, address, {
         headers: {
           Authorization: "Bearer " + Cookies.get("username"),
@@ -37,7 +37,6 @@ export default class AddressList extends Component {
           console.log(error);
         }
       );
-      console.log(address);
     } catch (error) {
       console.log(error);
     }
@@ -50,7 +49,6 @@ export default class AddressList extends Component {
       },
     }).then(
       (response) => {
-        console.log(response.data);
         this.setState({
           addressList: response.data.data,
         });

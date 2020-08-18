@@ -11,7 +11,7 @@ const userTable = (props) => {
       <td>{user.updatedOn}</td>
       <td>
         <Button
-          className="table-button-promijeni"
+          variant="warning"
           onClick={(event) => {
             event.preventDefault();
             props.updateUser(user);
@@ -22,7 +22,7 @@ const userTable = (props) => {
       </td>
       <td>
         <Button
-          className="table-button-ponisti"
+          variant="danger"
           onClick={(event) => {
             event.preventDefault();
             props.deleteUser(user.id)

@@ -34,7 +34,6 @@ export default class CityList extends Component {
         },
       }).then(
         (response) => {
-          console.log(response.data);
           this.setState({
             update: false,
           });
@@ -54,7 +53,6 @@ export default class CityList extends Component {
   }
 
   getCityData = () => {
-    console.log(Cookies.get("usern"))
     AxiosInstance.get("/cities", {
       headers: {
         Authorization: "Bearer " + Cookies.get("username"),

@@ -9,7 +9,7 @@ const cityTable = (props) => {
       <td>{city.name}</td>
       <td>
         <Button
-          className="table-button-promijeni"
+          variant="warning"
           onClick={(event) => {
             event.preventDefault();
             props.updateCity(city);
@@ -20,7 +20,7 @@ const cityTable = (props) => {
       </td>
       <td>
         <Button
-          className="table-button-ponisti"
+          variant="danger"
           onClick={(event) => {
             event.preventDefault();
             props.deleteCity(city.id);

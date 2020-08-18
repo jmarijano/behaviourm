@@ -18,7 +18,6 @@ export default class AddressInput extends Component {
     try {
       cityId = parseInt(cityId);
       const address = { streetName, cityId };
-      console.log(address.streetName + " " + address.cityId);
       AxiosInstance.post("/addresses", address, {
         headers: {
           Authorization: "Bearer " + Cookies.get("username"),

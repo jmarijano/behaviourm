@@ -13,7 +13,7 @@ const xssTable = (props) => {
       <td>{xss.updatedOn}</td>
       <td>
         <Button
-          className="table-button-promijeni"
+          variant="warning"
           onClick={(event) => {
             event.preventDefault();
             props.updateXss(xss);
@@ -24,7 +24,7 @@ const xssTable = (props) => {
       </td>
       <td>
         <Button
-          className="table-button-ponisti"
+          variant="danger"
           onClick={(event) => {
             event.preventDefault();
             props.deleteXss(xss.id);

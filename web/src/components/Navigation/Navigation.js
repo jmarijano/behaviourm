@@ -51,6 +51,21 @@ const navigation = () => {
                   title="Anomalije"
                   id="anomalije-nav-dropdown"
                 ></NavDropdown>
+                <NavDropdown
+                  title="Konfiguracija"
+                  id="konfiguracija-nav-dropdown"
+                >
+                  <NavDropdown.Item href="/config/sqli"> Sqli</NavDropdown.Item>
+                  <NavDropdown.Item href="/config/xss">Xss</NavDropdown.Item>
+                </NavDropdown>
+                <NavDropdown
+                  title="Evaluacija"
+                  id="evaluacija-nav-dropdown"
+                >
+                  <NavDropdown.Item>Korisnika</NavDropdown.Item>
+                  <NavDropdown.Item>Korisnika po odjelima</NavDropdown.Item>
+                  <NavDropdown.Item>Korisnika po rolama</NavDropdown.Item>
+                </NavDropdown>
                 {username ? (
                   <Nav.Link href="/logout">Odjava</Nav.Link>
                 ) : (

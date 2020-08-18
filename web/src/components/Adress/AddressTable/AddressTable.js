@@ -10,7 +10,7 @@ const addressTable = (props) => {
       <td>{address.cityId}</td>
       <td>
         <Button
-          className="table-button-promijeni"
+          variant="warning"
           onClick={(event) => {
             event.preventDefault();
             props.updateAddress(address);
@@ -21,7 +21,7 @@ const addressTable = (props) => {
       </td>
       <td>
         <Button
-          className="table-button-ponisti"
+          variant="danger"
           onClick={(event) => {
             event.preventDefault();
             props.deleteAddress(address.id);

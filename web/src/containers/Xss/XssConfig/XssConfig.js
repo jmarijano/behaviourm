@@ -1,27 +1,27 @@
 import React, { Component } from "react";
-import CountryInputForm from "../../../components/Country/CountryInputForm/CountryInputForm";
+import XssConfigForm from "../../../components/Xss/XssConfigForm/XssConfigForm";
 import AxiosInstance from "../../../api/utils/AxiosInstance";
 import { Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
 
-export default class CountryInput extends Component {
+export default class SqliConfig extends Component {
   state = {
-    label: "Unos države",
-    name: "",
+    label: "Konfiguracija Xss",
+    value: "",
     redirect: false,
   };
 
-  handleCountrySubmit = (event) => {
+  handleXssSubmit = (event) => {
     event.preventDefault();
-    const { name } = this.state;
-    const country = { name };
-    AxiosInstance.post("/countries", country, {
+    const { value } = this.state;
+    const xss = { value };
+    AxiosInstance.post("/config/xss", xss, {
       headers: {
         Authorization: "Bearer " + Cookies.get("username"),
       },
     }).then(
       (response) => {
-
+        console.log(response);
         this.setState({ redirect: true });
       },
       (error) => {
@@ -42,16 +42,16 @@ export default class CountryInput extends Component {
   render() {
     const { redirect } = this.state;
     if (redirect) {
-      return <Redirect to="/countryList"></Redirect>;
+      return <Redirect to="/roleList"></Redirect>;
     }
     return (
       <React.Fragment>
         <h3>{this.state.label}</h3>
-        <CountryInputForm
-          handleCountrySubmit={this.handleCountrySubmit}
-          country={{}}
+        <XssConfigForm
+          handleXssSubmit={this.handleXssSubmit}
+          xss={{}}
           onChangeInput={this.onChangeInput}
-        ></CountryInputForm>
+        ></XssConfigForm>
       </React.Fragment>
     );
   }

@@ -17,32 +17,82 @@ import CityInput from "./containers/City/CityInput/CityInput";
 import DepartmentInput from "./containers/Department/DepartmentInput/DepartmentInput";
 import UserInput from "./containers/User/UserInput/UserInput";
 import LoginInput from "./containers/Login/LoginInput";
-import ProtectedRoute from "./api/utils/ProtectedRoute"
-import Logout from "./api/utils/Logout"
+import ProtectedRoute from "./api/utils/ProtectedRoute";
+import Logout from "./api/utils/Logout";
+import SqliConfig from "./containers/Sqli/SqliConfig/SqliConfig";
+import XssConfig from "./containers/Xss/XssConfig/XssConfig";
 
 function App() {
   return (
     <BrowserRouter>
       <Layout>
         <Switch>
-          <ProtectedRoute path="/countryList" component={CountryList}></ProtectedRoute>
-          <ProtectedRoute path="/cityList" component={CityList}></ProtectedRoute>
-          <ProtectedRoute path="/addressList" component={AddressList}></ProtectedRoute>
-          <ProtectedRoute path="/roleList" component={RoleList}></ProtectedRoute>
-          <ProtectedRoute path="/departmentList" component={DepartmentList}></ProtectedRoute>
-          <ProtectedRoute path="/userList" component={UserList}></ProtectedRoute>
-          <ProtectedRoute path="/sqliList" component={SqliList}></ProtectedRoute>
+          <ProtectedRoute
+            path="/countryList"
+            component={CountryList}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/cityList"
+            component={CityList}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/addressList"
+            component={AddressList}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/roleList"
+            component={RoleList}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/departmentList"
+            component={DepartmentList}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/userList"
+            component={UserList}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/sqliList"
+            component={SqliList}
+          ></ProtectedRoute>
           <ProtectedRoute path="/xssList" component={XssList}></ProtectedRoute>
 
-          <ProtectedRoute path="/roleInput" component={RoleInput}></ProtectedRoute>
-          <ProtectedRoute path="/cityInput" component={CityInput}></ProtectedRoute>
-          <ProtectedRoute path="/addressInput" component={AddressInput}></ProtectedRoute>
-          <ProtectedRoute path="/countryInput" component={CountryInput}></ProtectedRoute>
-          <ProtectedRoute path="/departmentInput" component={DepartmentInput}></ProtectedRoute>
-          <ProtectedRoute path="/userInput" component={UserInput}></ProtectedRoute>
+          <ProtectedRoute
+            path="/roleInput"
+            component={RoleInput}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/cityInput"
+            component={CityInput}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/addressInput"
+            component={AddressInput}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/countryInput"
+            component={CountryInput}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/departmentInput"
+            component={DepartmentInput}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/userInput"
+            component={UserInput}
+          ></ProtectedRoute>
+
+          <ProtectedRoute
+            path="/config/sqli"
+            component={SqliConfig}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/config/xss"
+            component={XssConfig}
+          ></ProtectedRoute>
 
           <Route path="/login" component={LoginInput}></Route>
-          <Route path='/logout' component={Logout}></Route>
+          <Route path="/logout" component={Logout}></Route>
         </Switch>
       </Layout>
     </BrowserRouter>

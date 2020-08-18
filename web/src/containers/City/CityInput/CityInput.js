@@ -24,7 +24,6 @@ export default class AddressInput extends Component {
         },
       }).then(
         (response) => {
-          console.log(response.data);
           this.setState({
             redirect: true,
           });

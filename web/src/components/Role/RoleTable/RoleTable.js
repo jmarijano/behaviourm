@@ -11,7 +11,7 @@ const roleTable = (props) => {
       <td>{role.updatedOn}</td>
       <td>
         <Button
-          className="table-button-promijeni"
+          variant="warning"
           onClick={(event) => {
             event.preventDefault();
             props.updateRole(role);
@@ -22,7 +22,7 @@ const roleTable = (props) => {
       </td>
       <td>
         <Button
-          className="table-button-ponisti"
+          variant="danger"
           onClick={(event) => {
             event.preventDefault();
             props.deleteRole(role.id)
