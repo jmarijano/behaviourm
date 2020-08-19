@@ -51,6 +51,12 @@ const navigation = () => {
                   title="Anomalije"
                   id="anomalije-nav-dropdown"
                 ></NavDropdown>
+                <NavDropdown title="Usporedba" id="usporedba-nav-dropdown">
+                  <NavDropdown.Item href='/sqliComparison/department'> Sqli - odjeli</NavDropdown.Item>
+                  <NavDropdown.Item href='/sqliComparison/role'> Sqli - role</NavDropdown.Item>
+                  <NavDropdown.Item href='/xssComparison/department'> Xss - odjeli</NavDropdown.Item>
+                  <NavDropdown.Item href='/xssComparison/role'> Xss - role</NavDropdown.Item>
+                </NavDropdown>
                 <NavDropdown
                   title="Konfiguracija"
                   id="konfiguracija-nav-dropdown"
@@ -58,10 +64,7 @@ const navigation = () => {
                   <NavDropdown.Item href="/config/sqli"> Sqli</NavDropdown.Item>
                   <NavDropdown.Item href="/config/xss">Xss</NavDropdown.Item>
                 </NavDropdown>
-                <NavDropdown
-                  title="Evaluacija"
-                  id="evaluacija-nav-dropdown"
-                >
+                <NavDropdown title="Evaluacija" id="evaluacija-nav-dropdown">
                   <NavDropdown.Item>Korisnika</NavDropdown.Item>
                   <NavDropdown.Item>Korisnika po odjelima</NavDropdown.Item>
                   <NavDropdown.Item>Korisnika po rolama</NavDropdown.Item>
@@ -86,6 +89,10 @@ const navigation = () => {
               <Route exact path="/login"></Route>
               <Route exact path="/xssList"></Route>
               <Route exact path="/logout"></Route>
+              <Route exact path='/sqliComparison/department'> </Route>
+              <Route exact path='/sqliComparison/role'></Route>
+              <Route exact path='/xssComparison/department'></Route>
+              <Route exact path='/xssComparison/role'></Route>
             </Switch>
           </Router>
         </div>

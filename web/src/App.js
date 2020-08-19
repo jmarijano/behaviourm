@@ -21,6 +21,11 @@ import ProtectedRoute from "./api/utils/ProtectedRoute";
 import Logout from "./api/utils/Logout";
 import SqliConfig from "./containers/Sqli/SqliConfig/SqliConfig";
 import XssConfig from "./containers/Xss/XssConfig/XssConfig";
+import SqliComparisonDepartment from "./containers/Comparison/Sqli/SqliComparisonDepartment";
+import SqliComparisonRole from "./containers/Comparison/Sqli/SqliComparisonRole";
+
+import XssComparisonDepartment from "./containers/Comparison/Xss/XssComparisonDepartment";
+import XssComparisonRole from "./containers/Comparison/Xss/XssComparisonRole";
 
 function App() {
   return (
@@ -93,6 +98,23 @@ function App() {
 
           <Route path="/login" component={LoginInput}></Route>
           <Route path="/logout" component={Logout}></Route>
+
+          <ProtectedRoute
+            path="/sqliComparison/department"
+            component={SqliComparisonDepartment}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/sqliComparison/role"
+            component={SqliComparisonRole}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/xssComparison/department"
+            component={XssComparisonDepartment}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/xssComparison/role"
+            component={XssComparisonRole}
+          ></ProtectedRoute>
         </Switch>
       </Layout>
     </BrowserRouter>

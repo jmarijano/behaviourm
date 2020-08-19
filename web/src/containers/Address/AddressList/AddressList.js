@@ -4,6 +4,7 @@ import AddressTable from "../../../components/Adress/AddressTable/AddressTable";
 import AddressInputForm from "../../../components/Adress/AddressInputForm/AddressInputForm";
 import Cookies from "js-cookie";
 import Modal from "../../../components/UI/Modal/Modal";
+import Combobox from "../../../components/UI/Combobox";
 
 export default class AddressList extends Component {
   state = {
@@ -12,6 +13,11 @@ export default class AddressList extends Component {
     update: false,
     cityId: "",
     streetName: "",
+    options: [
+      { value: "chocolate", label: "Chocolate" },
+      { value: "strawberry", label: "Strawberry" },
+      { value: "vanilla", label: "Vanilla" },
+    ],
   };
 
   componentDidMount() {
