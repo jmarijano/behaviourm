@@ -11,6 +11,7 @@ from ml_models.sqli_model import predict
 from ml_models.password_strength_model import predict_password_strength
 from sqlalchemy.sql import func
 from sqlalchemy import text
+from werkzeug.security import check_password_hash
 
 
 class SqliAnomalyDepartment(Resource):
@@ -36,14 +37,14 @@ class SqliAnomalyUser(Resource):
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
-        sql_last=text(
+        sql_last = text(
             'SELECT * '
             'FROM SQLI s '
             'WHERE s.user_id = :tUserId '
             'ORDER BY s.id DESC '
             'LIMIT 1'
         )
-        result_last=db.engine.execute(sql_last,tUserId=user.id)
+        result_last = db.engine.execute(sql_last, tUserId=user.id)
         sql = text(
             'SELECT AVG(value) AS value '
             'FROM SQLI s '
@@ -70,6 +71,7 @@ class SqliAnomalyRole(Resource):
             sql, tRoleId=user.role_id, tUserId=user.id)
         return jsonify({'data': [dict(row) for row in result]})
 
+
 class XssAnomalyDepartment(Resource):
     @cross_origin()
     def post(self):
@@ -86,6 +88,7 @@ class XssAnomalyDepartment(Resource):
             sql, tDId=user.department_id, tUserId=user.id)
         return jsonify({'data': [dict(row) for row in result]})
 
+
 class XssAnomalyUser(Resource):
     @cross_origin()
     def post(self):
@@ -98,6 +101,7 @@ class XssAnomalyUser(Resource):
             'WHERE u.id = :tUserId')
         result = db.engine.execute(sql, tUserId=user.id)
         return jsonify({'data': [dict(row) for row in result]})
+
 
 class XssAnomalyRole(Resource):
     @cross_origin()
@@ -114,4 +118,20 @@ class XssAnomalyRole(Resource):
         )
         result = db.engine.execute(
             sql, tRoleId=user.role_id, tUserId=user.id)
+        return jsonify({'data': [dict(row) for row in result]})
+
+
+class PasswordStrengthDepartment(Resource):
+    @cross_origin()
+    def post(self):
+        user_id = request.get_json().get('userId')
+        user = User.query.filter(User.id == user_id).first()
+        sql = text(
+            'SELECT PASSWORD '
+            'FROM USER U '
+            'INNER JOIN DEPARTMENT D ON (d.id = u.department_id) '
+            'WHERE u.id != :tUserId'
+        )
+        result = db.engine.execute(
+            sql, tUserId=user.id)
         return jsonify({'data': [dict(row) for row in result]})

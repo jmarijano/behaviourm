@@ -29,7 +29,7 @@ class LoginApi(Resource):
         user = User.query.filter(User.username == username).first()
         if not user:
             return jsonify("User not found"), 404
-        if check_password_hash(user.password, password):
+        if check_password_hash(user.hashed_password, password):
             access_token = create_access_token(identity=username)
             return jsonify(accessToken=access_token)
         else:

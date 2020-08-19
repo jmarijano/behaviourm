@@ -11,7 +11,6 @@ from sqlalchemy import func
 from flask_jwt_extended import get_jwt_identity
 
 
-
 user_schema = UserSchema(exclude=['password'])
 users_schema = UserSchema(many=True)
 
@@ -19,7 +18,7 @@ users_schema = UserSchema(many=True)
 class UsersApi(Resource):
     @cross_origin()
     def get(self):
-        current_user=get_jwt_identity()
+        current_user = get_jwt_identity()
         all_users = User.query.all()
         result = users_schema.dump(all_users)
         return jsonify({'data': result})
@@ -34,8 +33,8 @@ class UsersApi(Resource):
         role_id = request.json['roleId']
         address_id = request.json['addressId']
         department_id = request.json['departmentId']
-        new_product = User(name, surname, email, username, generate_password_hash(
-            password, method='sha256'), role_id, address_id, department_id)
+        new_product = User(name, surname, email, username, password, role_id, address_id, department_id, generate_password_hash(
+            password, method='sha256'))
         db.session.add(new_product)
         db.session.commit()
         return user_schema.jsonify({'data': new_product})
@@ -74,7 +73,9 @@ class UserApi(Resource):
         user.email = email
         user.username = username
         user.username = username
-        user.password = generate_password_hash(password, method='sha256')
+        user.password = password
+        user.hashed_password = generate_password_hash(
+            password, method='sha256')
         user.role_id = role_id
         user.address_id = address_id
         user.department_id = department_id

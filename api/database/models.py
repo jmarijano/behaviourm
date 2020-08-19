@@ -71,6 +71,7 @@ class User(db.Model):
     email = db.Column(db.String(200), nullable=False)
     username = db.Column(db.String(40), nullable=False, unique=True)
     password = db.Column(db.String(45), nullable=False)
+    hashed_password = db.Column(db.String(200), nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
     department_id = db.Column(db.Integer, db.ForeignKey(
         'department.id'), nullable=False)
@@ -80,7 +81,7 @@ class User(db.Model):
     updated_on = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
-    def __init__(self, name, surname, email, username, password, role_id, address_id, department_id):
+    def __init__(self, name, surname, email, username, password, role_id, address_id, department_id, hashed_password):
         self.name = name
         self.surname = surname
         self.email = email
@@ -89,6 +90,7 @@ class User(db.Model):
         self.role_id = role_id
         self.address_id = address_id
         self.department_id = department_id
+        self.hashed_password = hashed_password
 
 
 class Sqli(db.Model):
