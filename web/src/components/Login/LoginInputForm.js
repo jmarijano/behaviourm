@@ -26,7 +26,7 @@ const loginInputForm = (props) => {
         <input
           className="input-field"
           name="password"
-          type="text"
+          type="password"
           defaultValue={props.user.password}
           onChange={(event) => props.onChangeInput(event)}
         ></input>

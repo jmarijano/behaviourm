@@ -3,6 +3,7 @@ import AxiosInstance from "../../../api/utils/AxiosInstance";
 import CityTable from "../../../components/City/CityTable/CityTable";
 import CityInputForm from "../../../components/City/CityInputForm/CityInputForm";
 import Cookies from "js-cookie";
+import Spinner from "../../../components/UI/Spinner";
 
 export default class CityList extends Component {
   state = {
@@ -11,6 +12,7 @@ export default class CityList extends Component {
     name: "",
     countryId: "",
     update: false,
+    loading: true,
   };
 
   onChangeInput = (event) => {
@@ -62,6 +64,7 @@ export default class CityList extends Component {
         console.log(response.data);
         this.setState({
           cityList: response.data.data,
+          loading: false,
         });
       },
       (error) => {
@@ -110,6 +113,7 @@ export default class CityList extends Component {
     }
     return (
       <React.Fragment>
+        <Spinner loading={this.state.loading}></Spinner>
         <CityTable
           cityList={this.state.cityList}
           deleteCity={this.deleteCity}

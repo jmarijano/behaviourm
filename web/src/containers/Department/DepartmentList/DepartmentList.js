@@ -3,6 +3,7 @@ import AxiosInstance from "../../../api/utils/AxiosInstance";
 import DepartmentTable from "../../../components/Department/DepartmentTable/DepartmentTable";
 import DepartmentInputForm from "../../../components/Department/DepartmentInputForm/DepartmentInputForm";
 import Cookies from "js-cookie";
+import Spinner from "../../../components/UI/Spinner";
 
 export default class DepartmentList extends Component {
   state = {
@@ -10,6 +11,7 @@ export default class DepartmentList extends Component {
     id: "",
     update: false,
     name: "",
+    loading: true,
   };
 
   componentDidMount() {
@@ -46,6 +48,7 @@ export default class DepartmentList extends Component {
         console.log(response.data);
         this.setState({
           departmentList: response.data.data,
+          loading: false,
         });
       },
       (error) => {
@@ -101,6 +104,7 @@ export default class DepartmentList extends Component {
     }
     return (
       <React.Fragment>
+        <Spinner loading={this.state.loading}></Spinner>
         <DepartmentTable
           departmentList={this.state.departmentList}
           deleteDepartment={this.deleteDepartment}

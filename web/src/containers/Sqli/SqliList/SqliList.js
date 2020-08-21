@@ -3,6 +3,7 @@ import AxiosInstance from "../../../api/utils/AxiosInstance";
 import SqliTable from "../../../components/Sqli/SqliTable/SqliTable";
 import UserInputForm from "../../../components/User/UserInputForm/UserInputForm";
 import Cookies from "js-cookie";
+import Spinner from "../../../components/UI/Spinner";
 
 export default class SqliList extends Component {
   state = {
@@ -10,6 +11,7 @@ export default class SqliList extends Component {
     name: "",
     update: false,
     id: "",
+    loading: true,
   };
 
   componentDidMount() {
@@ -48,6 +50,7 @@ export default class SqliList extends Component {
         console.log(response.data);
         this.setState({
           sqliList: response.data.data,
+          loading: false,
         });
       },
       (error) => {
@@ -104,6 +107,7 @@ export default class SqliList extends Component {
     }
     return (
       <React.Fragment>
+        <Spinner loading={this.state.loading}></Spinner>
         <SqliTable
           sqliList={this.state.sqliList}
           deleteSqli={this.deleteSqli}

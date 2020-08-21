@@ -3,6 +3,7 @@ import AxiosInstance from "../../../api/utils/AxiosInstance";
 import RoleTable from "../../../components/Role/RoleTable/RoleTable";
 import RoleInputForm from "../../../components/Role/RoleInputForm/RoleInputForm";
 import Cookies from "js-cookie";
+import Spinner from "../../../components/UI/Spinner";
 
 export default class RoleList extends Component {
   state = {
@@ -10,6 +11,7 @@ export default class RoleList extends Component {
     name: "",
     update: false,
     id: "",
+    loading: true,
   };
 
   componentDidMount() {
@@ -45,6 +47,7 @@ export default class RoleList extends Component {
       (response) => {
         this.setState({
           roleList: response.data.data,
+          loading: false,
         });
       },
       (error) => {
@@ -101,6 +104,7 @@ export default class RoleList extends Component {
     }
     return (
       <React.Fragment>
+        <Spinner loading={this.state.loading}></Spinner>
         <RoleTable
           roleList={this.state.roleList}
           deleteRole={this.deleteRole}

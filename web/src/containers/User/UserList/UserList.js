@@ -3,6 +3,7 @@ import AxiosInstance from "../../../api/utils/AxiosInstance";
 import UserTable from "../../../components/User/UserTable/UserTable";
 import UserInputForm from "../../../components/User/UserInputForm/UserInputForm";
 import Cookies from "js-cookie";
+import Spinner from "../../../components/UI/Spinner";
 
 export default class UserList extends Component {
   state = {
@@ -10,6 +11,7 @@ export default class UserList extends Component {
     name: "",
     update: false,
     id: "",
+    loading: true,
   };
 
   componentDidMount() {
@@ -48,6 +50,7 @@ export default class UserList extends Component {
         console.log(response.data);
         this.setState({
           userList: response.data.data,
+          loading: false,
         });
       },
       (error) => {
@@ -104,6 +107,7 @@ export default class UserList extends Component {
     }
     return (
       <React.Fragment>
+        <Spinner loading={this.state.loading}></Spinner>
         <UserTable
           userList={this.state.userList}
           deleteUser={this.deleteUser}

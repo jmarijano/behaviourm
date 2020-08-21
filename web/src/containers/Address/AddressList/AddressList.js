@@ -3,8 +3,7 @@ import AxiosInstance from "../../../api/utils/AxiosInstance";
 import AddressTable from "../../../components/Adress/AddressTable/AddressTable";
 import AddressInputForm from "../../../components/Adress/AddressInputForm/AddressInputForm";
 import Cookies from "js-cookie";
-import Modal from "../../../components/UI/Modal/Modal";
-import Combobox from "../../../components/UI/Combobox";
+import Spinner from "../../../components/UI/Spinner";
 
 export default class AddressList extends Component {
   state = {
@@ -13,11 +12,8 @@ export default class AddressList extends Component {
     update: false,
     cityId: "",
     streetName: "",
-    options: [
-      { value: "chocolate", label: "Chocolate" },
-      { value: "strawberry", label: "Strawberry" },
-      { value: "vanilla", label: "Vanilla" },
-    ],
+    options: [],
+    loading: true,
   };
 
   componentDidMount() {
@@ -36,7 +32,7 @@ export default class AddressList extends Component {
         },
       }).then(
         (response) => {
-          this.setState({ update: false });
+          this.setState({ update: false, loading: false });
           this.getAddressData();
         },
         (error) => {
@@ -57,6 +53,7 @@ export default class AddressList extends Component {
       (response) => {
         this.setState({
           addressList: response.data.data,
+          loading: false,
         });
       },
       (error) => {
@@ -97,12 +94,12 @@ export default class AddressList extends Component {
       [name]: value,
     });
   };
-
   render() {
     const { update, cityId, streetName } = this.state;
     if (!update) {
       return (
         <React.Fragment>
+          <Spinner loading={this.state.loading}></Spinner>
           <AddressTable
             addressList={this.state.addressList}
             deleteAddress={this.deleteAddress}

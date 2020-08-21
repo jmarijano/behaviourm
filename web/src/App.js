@@ -27,10 +27,13 @@ import SqliComparisonRole from "./containers/Comparison/Sqli/SqliComparisonRole"
 import XssComparisonDepartment from "./containers/Comparison/Xss/XssComparisonDepartment";
 import XssComparisonRole from "./containers/Comparison/Xss/XssComparisonRole";
 
+import Cookies from "js-cookie";
+
 function App() {
+  const username = Cookies.get("username");
   return (
     <BrowserRouter>
-      <Layout>
+      <Layout cookie={username}>
         <Switch>
           <ProtectedRoute
             path="/countryList"

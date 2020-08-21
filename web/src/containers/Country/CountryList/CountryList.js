@@ -3,6 +3,7 @@ import AxiosInstance from "../../../api/utils/AxiosInstance";
 import CountryTable from "../../../components/Country/CountryTable/CountryTable";
 import CountryInputForm from "../../../components/Country/CountryInputForm/CountryInputForm";
 import Cookies from "js-cookie";
+import Spinner from "../../../components/UI/Spinner";
 
 export default class CountryList extends Component {
   state = {
@@ -10,6 +11,7 @@ export default class CountryList extends Component {
     id: "",
     update: false,
     name: "",
+    loading: true,
   };
 
   componentDidMount() {
@@ -46,6 +48,7 @@ export default class CountryList extends Component {
         console.log(response.data);
         this.setState({
           countryList: response.data.data,
+          loading: false,
         });
       },
       (error) => {
@@ -101,6 +104,7 @@ export default class CountryList extends Component {
     }
     return (
       <React.Fragment>
+        <Spinner loading={this.state.loading}></Spinner>
         <CountryTable
           countryList={this.state.countryList}
           deleteCountry={this.deleteCountry}
