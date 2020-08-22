@@ -95,16 +95,23 @@ export default class AddressList extends Component {
     });
   };
   render() {
-    const { update, cityId, streetName } = this.state;
+    const { update, cityId, streetName, addressList } = this.state;
+    let table;
+    if (addressList.length > 0) {
+      table = (
+        <AddressTable
+          addressList={this.state.addressList}
+          deleteAddress={this.deleteAddress}
+          updateAddress={this.updateAddress}
+        ></AddressTable>
+      );
+    }
+
     if (!update) {
       return (
         <React.Fragment>
           <Spinner loading={this.state.loading}></Spinner>
-          <AddressTable
-            addressList={this.state.addressList}
-            deleteAddress={this.deleteAddress}
-            updateAddress={this.updateAddress}
-          ></AddressTable>
+          {table}
         </React.Fragment>
       );
     }
