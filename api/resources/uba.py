@@ -14,14 +14,13 @@ from sqlalchemy import text
 from werkzeug.security import check_password_hash
 
 
-class SqliAnomalyDepartment(Resource):
+class SqliAnomalyDepartmentUser(Resource):
     @cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
-        print(user.department_id)
         sql = text(
-            'SELECT AVG(value) AS value '
+            'SELECT AVG(value) AS value, d.name AS name '
             'FROM SQLI s '
             'INNER JOIN user u ON (u.id = s.user_id) '
             'INNER JOIN department d ON (d.id = u.department_id) '
@@ -30,6 +29,11 @@ class SqliAnomalyDepartment(Resource):
         result = db.engine.execute(
             sql, tDId=user.department_id, tUserId=user.id)
         return jsonify({'data': [dict(row) for row in result]})
+
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
 
 
 class SqliAnomalyUser(Resource):
@@ -51,16 +55,21 @@ class SqliAnomalyUser(Resource):
             'INNER JOIN user u ON (u.id = s.user_id) '
             'WHERE u.id = :tUserId')
         result = db.engine.execute(sql, tUserId=user.id)
-        return jsonify({'data': [dict(row) for row in result]})
+        return jsonify({'data': [dict(row) for row in result_last]})
 
-
-class SqliAnomalyRole(Resource):
+    @jwt_required
     @cross_origin()
+    def options(self):
+        return jsonify()
+
+
+class SqliAnomalyRoleUser(Resource):
+    @ cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
         sql = text(
-            'SELECT AVG(value) AS value '
+            'SELECT AVG(value) AS value, r.name as name '
             'FROM SQLI s '
             'INNER JOIN user u ON (u.id = s.user_id) '
             'INNER JOIN role r ON (r.id = u.role_id) '
@@ -71,14 +80,163 @@ class SqliAnomalyRole(Resource):
             sql, tRoleId=user.role_id, tUserId=user.id)
         return jsonify({'data': [dict(row) for row in result]})
 
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
 
-class XssAnomalyDepartment(Resource):
+
+class SqliUserAverage(Resource):
     @cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
+        sql_current_user = text(
+            'SELECT AVG(value) AS value, u.name || " " || u.surname as name '
+            'FROM SQLI s '
+            'INNER JOIN user u ON (u.id = s.user_id) '
+            'WHERE u.id = :tUserId'
+        )
+        result_current_user = db.engine.execute(
+            sql_current_user, tUserId=user.id
+        )
+        return jsonify({'data': [dict(row) for row in result_current_user]})
+
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
+
+class SqliDepartmentAverage(Resource):
+    @cross_origin()
+    def get(self):
         sql = text(
-            'SELECT AVG(value) AS value '
+            'SELECT '
+            'd.name as name, '
+            'AVG(s.value) as value '
+            'FROM '
+            'SQLI s '
+            'INNER JOIN user u ON(u.id=s.user_id) '
+            'INNER JOIN department d ON(d.id=u.department_id) '
+            'GROUP BY '
+            'd.id'
+        )
+        result = db.engine.execute(
+            sql
+        )
+        return jsonify({'data': [dict(row) for row in result]})
+
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
+
+class SqliRoleAverage(Resource):
+    @cross_origin()
+    def get(self):
+        sql = text(
+            'SELECT '
+            'r.name as name, '
+            'AVG(s.value) as value '
+            'FROM '
+            'SQLI s '
+            'INNER JOIN user u ON(u.id=s.user_id) '
+            'INNER JOIN role r ON(r.id=u.role_id) '
+            'GROUP BY '
+            'r.id'
+        )
+        result = db.engine.execute(
+            sql
+        )
+        return jsonify({'data': [dict(row) for row in result]})
+
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
+
+class XssRoleAverage(Resource):
+    @cross_origin()
+    def get(self):
+        sql = text(
+            'SELECT '
+            'r.name as name, '
+            'AVG(x.value) as value '
+            'FROM '
+            'Xss x '
+            'INNER JOIN user u ON(u.id=x.user_id) '
+            'INNER JOIN role r ON(r.id=u.role_id) '
+            'GROUP BY '
+            'r.id'
+        )
+        result = db.engine.execute(
+            sql
+        )
+        return jsonify({'data': [dict(row) for row in result]})
+
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
+
+class XssDepartmentAverage(Resource):
+    @cross_origin()
+    def get(self):
+        sql = text(
+            'SELECT '
+            'd.name as name, '
+            'AVG(x.value) as value '
+            'FROM '
+            'Xss x '
+            'INNER JOIN user u ON(u.id=x.user_id) '
+            'INNER JOIN department d ON(d.id=u.department_id) '
+            'GROUP BY '
+            'd.id'
+        )
+        result = db.engine.execute(
+            sql
+        )
+        return jsonify({'data': [dict(row) for row in result]})
+
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
+
+class XssUserAverage(Resource):
+    @cross_origin()
+    def post(self):
+        user_id = request.get_json().get('userId')
+        user = User.query.filter(User.id == user_id).first()
+        sql_current_user = text(
+            'SELECT AVG(value) AS value, u.name || " " || u.surname as name '
+            'FROM XSS x '
+            'INNER JOIN user u ON (u.id = x.user_id) '
+            'WHERE u.id = :tUserId'
+        )
+        result_current_user = db.engine.execute(
+            sql_current_user, tUserId=user.id
+        )
+        return jsonify({'data': [dict(row) for row in result_current_user]})
+
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
+
+class XssAnomalyDepartmentUser(Resource):
+    @ cross_origin()
+    def post(self):
+        user_id = request.get_json().get('userId')
+        user = User.query.filter(User.id == user_id).first()
+        sql = text(
+            'SELECT AVG(value) AS value, d.name as name '
             'FROM XSS x '
             'INNER JOIN user u ON (u.id = x.user_id) '
             'INNER JOIN department d ON (d.id = u.department_id) '
@@ -88,9 +246,14 @@ class XssAnomalyDepartment(Resource):
             sql, tDId=user.department_id, tUserId=user.id)
         return jsonify({'data': [dict(row) for row in result]})
 
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
 
 class XssAnomalyUser(Resource):
-    @cross_origin()
+    @ cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
@@ -102,14 +265,19 @@ class XssAnomalyUser(Resource):
         result = db.engine.execute(sql, tUserId=user.id)
         return jsonify({'data': [dict(row) for row in result]})
 
-
-class XssAnomalyRole(Resource):
+    @jwt_required
     @cross_origin()
+    def options(self):
+        return jsonify()
+
+
+class XssAnomalyRoleUser(Resource):
+    @ cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
         sql = text(
-            'SELECT AVG(value) AS value '
+            'SELECT AVG(value) AS value, r.name as name '
             'FROM Xss x '
             'INNER JOIN user u ON (u.id = x.user_id) '
             'INNER JOIN role r ON (r.id = u.role_id) '
@@ -120,9 +288,14 @@ class XssAnomalyRole(Resource):
             sql, tRoleId=user.role_id, tUserId=user.id)
         return jsonify({'data': [dict(row) for row in result]})
 
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
 
 class PasswordStrengthDepartment(Resource):
-    @cross_origin()
+    @ cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
@@ -135,3 +308,8 @@ class PasswordStrengthDepartment(Resource):
         result = db.engine.execute(
             sql, tUserId=user.id)
         return jsonify({'data': [dict(row) for row in result]})
+
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()

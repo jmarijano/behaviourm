@@ -7,8 +7,11 @@ from .department import DepartmentApi, DepartmentsApi
 from .login import LoginApi
 from .sqli import SqliApi, SqlisApi
 from .xss import XssApi, XssesApi
-from .uba import (SqliAnomalyDepartment, SqliAnomalyUser, SqliAnomalyRole,
-                  XssAnomalyDepartment, XssAnomalyUser, XssAnomalyRole, PasswordStrengthDepartment)
+from .uba import (SqliAnomalyDepartmentUser, SqliAnomalyUser, SqliAnomalyRoleUser,
+                  XssAnomalyDepartmentUser, XssAnomalyUser,
+                  XssAnomalyRoleUser, PasswordStrengthDepartment,
+                  SqliUserAverage, XssUserAverage, XssDepartmentAverage,
+                  SqliDepartmentAverage, XssRoleAverage, SqliRoleAverage)
 from .config_resource import SqliConfig, XssConfig
 
 
@@ -39,12 +42,20 @@ def initialize_routes(api):
     api.add_resource(XssesApi, '/xsses')
     api.add_resource(XssApi, '/xsses/<id>')
 
-    api.add_resource(SqliAnomalyDepartment, '/uba/sqli/department')
+    api.add_resource(SqliAnomalyDepartmentUser, '/uba/sqli/department/user')
     api.add_resource(SqliAnomalyUser, '/uba/sqli/user')
-    api.add_resource(SqliAnomalyRole, '/uba/sqli/role')
-    api.add_resource(XssAnomalyDepartment, '/uba/xss/department')
+    api.add_resource(SqliAnomalyRoleUser, '/uba/sqli/role/user')
+    api.add_resource(SqliUserAverage, '/uba/sqli/user/average')
+    api.add_resource(SqliDepartmentAverage, '/uba/sqli/department')
+    api.add_resource(SqliRoleAverage, '/uba/sqli/role')
+
+    api.add_resource(XssAnomalyDepartmentUser, '/uba/xss/department/user')
     api.add_resource(XssAnomalyUser, '/uba/xss/user')
-    api.add_resource(XssAnomalyRole, '/uba/xss/role')
+    api.add_resource(XssAnomalyRoleUser, '/uba/xss/role/user')
+    api.add_resource(XssUserAverage, '/uba/xss/user/average')
+    api.add_resource(XssRoleAverage, '/uba/xss/role')
+    api.add_resource(XssDepartmentAverage, '/uba/xss/department')
+
     api.add_resource(PasswordStrengthDepartment,
                      '/uba/passwordStrenght/department')
 
