@@ -7,7 +7,7 @@ from flask_restful import Resource
 import json
 from marshmallow import ValidationError
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from ml_models.sqli_model import predict
+from ml_models.sqli_model import predict_sqli
 from ml_models.xss_model import predict_xss
 
 department_schema = DepartmentSchema()
@@ -33,7 +33,7 @@ class DepartmentsApi(Resource):
         name = request.json['name']
         username = get_jwt_identity()
         user_id = User.query.filter(User.username == username).first().id
-        value = predict(name)
+        value = predict_sqli(name)
         xss_value = predict_xss(name)
         new_product = Department(name)
         db.session.add(new_product)
@@ -70,7 +70,7 @@ class DepartmentApi(Resource):
         department.updated_on = db.func.now()
         username = get_jwt_identity()
         user_id = User.query.filter(User.username == username).first().id
-        value = predict(name)
+        value = predict_sqli(name)
         xss_value = predict_xss(name)
         new_sqli = Sqli(value, user_id, False, name)
         new_xss = Xss(xss_value, user_id, False, name)

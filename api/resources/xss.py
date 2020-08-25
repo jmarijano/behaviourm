@@ -7,7 +7,7 @@ from flask_restful import Resource
 import json
 from marshmallow import ValidationError
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from ml_models.sqli_model import predict
+from ml_models.sqli_model import predict_sqli
 
 xss_schema = SqliSchema()
 xsses_schema = SqliSchema(many=True)

@@ -8,7 +8,7 @@ import json
 import sys
 from marshmallow import ValidationError
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from ml_models.sqli_model import predict
+from ml_models.sqli_model import predict_sqli
 from ml_models.xss_model import predict_xss
 
 city_schema = CitySchema()
@@ -36,7 +36,7 @@ class CitiesApi(Resource):
         country_id = request.json['countryId']
         username = get_jwt_identity()
         user_id = User.query.filter(User.username == username).first().id
-        value = predict(name)
+        value = predict_sqli(name)
         xss_value = predict_xss(name)
         new_xss = Xss(xss_value, user_id, False, name)
         new_product = City(name, country_id)
@@ -44,7 +44,7 @@ class CitiesApi(Resource):
         db.session.add(new_xss)
         db.session.add(new_sqli)
         db.session.add(new_product)
-        value = predict(str(country_id))
+        value = predict_sqli(str(country_id))
         new_sqli = Sqli(value, user_id, False, str(country_id))
         db.session.add(new_sqli)
         db.session.commit()
@@ -78,13 +78,13 @@ class CityApi(Resource):
         city.updated_on = db.func.now()
         username = get_jwt_identity()
         user_id = User.query.filter(User.username == username).first().id
-        value = predict(name)
+        value = predict_sqli(name)
         xss_value = predict_xss(name)
         new_sqli = Sqli(value, user_id, False, name)
         new_xss = Xss(xss_value, user_id, False, name)
         db.session.add(new_sqli)
         db.session.add(new_xss)
-        value = predict(str(country_id))
+        value = predict_sqli(str(country_id))
         new_sqli = Sqli(value, user_id, False, str(country_id))
         db.session.commit()
         return city_schema.jsonify({'data': city})

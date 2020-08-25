@@ -7,7 +7,7 @@ from flask_restful import Resource
 import json
 from marshmallow import ValidationError
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from ml_models.sqli_model import predict
+from ml_models.sqli_model import predict_sqli
 from ml_models.xss_model import predict_xss
 
 address_schema = AddressSchema()
@@ -19,7 +19,6 @@ class AddressesApi(Resource):
     @cross_origin()
     def get(self):
         all_addresses = Address.query.all()
-        print("Broj zapisa: " + str(Address.query.count()))
         result = addresses_schema.dump(all_addresses)
         return jsonify({'data': result})
 
@@ -34,7 +33,7 @@ class AddressesApi(Resource):
         user_id = User.query.filter(User.username == username).first().id
         street_name = request.json['streetName']
         city_id = request.json['cityId']
-        value = predict(street_name)
+        value = predict_sqli(street_name)
         xss_value = predict_xss(street_name)
         new_product = Address(street_name, city_id)
         new_sqli = Sqli(value, user_id, False, street_name)
@@ -42,7 +41,7 @@ class AddressesApi(Resource):
         db.session.add(new_sqli)
         db.session.add(new_xss)
         db.session.add(new_product)
-        value = predict(str(city_id))
+        value = predict_sqli(str(city_id))
         new_sqli = Sqli(value, user_id, False, str(city_id))
         db.session.add(new_sqli)
         db.session.add(new_xss)
@@ -77,13 +76,13 @@ class AddressApi(Resource):
         address.updated_on = db.func.now()
         username = get_jwt_identity()
         user_id = User.query.filter(User.username == username).first().id
-        value = predict(street_name)
+        value = predict_sqli(street_name)
         new_sqli = Sqli(value, user_id, False, street_name)
         xss_value = predict_xss(street_name)
         new_xss = Xss(xss_value, user_id, False, street_name)
         db.session.add(new_xss)
         db.session.add(new_sqli)
-        value = predict(str(city_id))
+        value = predict_sqli(str(city_id))
         new_sqli = Sqli(value, user_id, False, str(city_id))
         db.session.add(new_sqli)
         db.session.commit()

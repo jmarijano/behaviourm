@@ -9,17 +9,13 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 from flask_cors import CORS, cross_origin
-from ml_models.xss_model import predict_xss
 from config import config
-from setup import kae
-from ml_models.xss_model import func
 
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 api = Api(app)
 basedir = os.path.abspath(os.path.dirname(__file__))
-print(basedir)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
     os.path.join(basedir, "assets/database/", 'db.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -31,6 +27,5 @@ jwt = JWTManager(app)
 initialize_db(app)
 initialize_ma(app)
 initialize_routes(api)
-
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)

@@ -19,21 +19,18 @@ users_schema = UserSchema(many=True)
 class LoginApi(Resource):
     @cross_origin()
     def post(self):
-        try:
-            user_schema.load(request.json)
-        except ValidationError as err:
-            return jsonify(err.messages), 500
-            pass
-        username = request.json['username']
-        password = request.json['password']
+        username = request.get_json().get('username')
+        password = request.get_json().get('password')
+        if not username or not password:
+            return jsonify(error="Wrong request"),500
         user = User.query.filter(User.username == username).first()
         if not user:
-            return jsonify("User not found"), 404
+            return jsonify(error="User not found"), 404
         if check_password_hash(user.hashed_password, password):
             access_token = create_access_token(identity=username)
             return jsonify(accessToken=access_token)
         else:
-            return jsonify("Wrong password"), 500
+            return jsonify(error="Wrong password"), 500
 
     @cross_origin()
     def options(self):

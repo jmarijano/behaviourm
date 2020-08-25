@@ -22,11 +22,12 @@ from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.metrics import accuracy_score
 from keras.models import load_model
 import pickle
+from sklearn.feature_extraction.text import CountVectorizer
 
 
-def kae():
+def generate_sqli_model():
     df = pd.read_csv('datasets/sqli.csv', encoding='utf-16')
-    from sklearn.feature_extraction.text import CountVectorizer
+    
     vectorizer = CountVectorizer(
         min_df=2, max_df=0.7, max_features=4096, stop_words=stopwords.words('english'))
     posts = vectorizer.fit_transform(
@@ -43,17 +44,13 @@ def kae():
     testX = X_test.copy()
     testX.shape = (testX.shape[0], testX.shape[1]*testX.shape[2])
     model = tf.keras.models.Sequential([
-
         tf.keras.layers.Conv2D(
             64, (3, 3), activation=tf.nn.relu, input_shape=(64, 64, 1)),
         tf.keras.layers.MaxPooling2D(2, 2),
-
         tf.keras.layers.Conv2D(128, (3, 3), activation=tf.nn.relu),
         tf.keras.layers.MaxPooling2D(2, 2),
-
         tf.keras.layers.Conv2D(256, (3, 3), activation='relu'),
         tf.keras.layers.MaxPooling2D(2, 2),
-
         tf.keras.layers.Flatten(),
         tf.keras.layers.Dense(256, activation='relu'),
         tf.keras.layers.Dense(128, activation='relu'),
@@ -63,7 +60,6 @@ def kae():
     model.compile(loss='binary_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])
-
     model.summary()
     classifier_nn = model.fit(X_train, y_train,
                               epochs=10,
