@@ -47,15 +47,14 @@ const navigation = () => {
                     Korisnici
                   </NavDropdown.Item>
                 </NavDropdown>
-                <NavDropdown
-                  title="Anomalije"
-                  id="anomalije-nav-dropdown"
-                ></NavDropdown>
                 <NavDropdown title="Usporedba" id="usporedba-nav-dropdown">
                   <NavDropdown.Item href='/sqliComparison/department'> Sqli - odjeli</NavDropdown.Item>
                   <NavDropdown.Item href='/sqliComparison/role'> Sqli - role</NavDropdown.Item>
                   <NavDropdown.Item href='/xssComparison/department'> Xss - odjeli</NavDropdown.Item>
                   <NavDropdown.Item href='/xssComparison/role'> Xss - role</NavDropdown.Item>
+                  <NavDropdown.Item href='/passwordStrength/department'>Lozinka - odjeli</NavDropdown.Item>
+                  <NavDropdown.Item href='/passwordStrength/role'>Lozinka - role</NavDropdown.Item>
+                  <NavDropdown.Item href='/comparison/user'>Korisnika i njegovih prošlih akcija</NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown
                   title="Konfiguracija"
@@ -64,11 +63,8 @@ const navigation = () => {
                   <NavDropdown.Item href="/config/sqli"> Sqli</NavDropdown.Item>
                   <NavDropdown.Item href="/config/xss">Xss</NavDropdown.Item>
                 </NavDropdown>
-                <NavDropdown title="Evaluacija" id="evaluacija-nav-dropdown">
-                  <NavDropdown.Item>Korisnika</NavDropdown.Item>
-                  <NavDropdown.Item>Korisnika po odjelima</NavDropdown.Item>
-                  <NavDropdown.Item>Korisnika po rolama</NavDropdown.Item>
-                </NavDropdown>
+                
+                  <Nav.Link href='evaluation'>Evaluacija</Nav.Link>
                 {username ? (
                   <Nav.Link href="/logout">Odjava</Nav.Link>
                 ) : (

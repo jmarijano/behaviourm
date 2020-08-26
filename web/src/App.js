@@ -26,6 +26,7 @@ import SqliComparisonRole from "./containers/Comparison/Sqli/SqliComparisonRole"
 
 import XssComparisonDepartment from "./containers/Comparison/Xss/XssComparisonDepartment";
 import XssComparisonRole from "./containers/Comparison/Xss/XssComparisonRole";
+import UserComparison from "./containers/Comparison/User/UserComparison"
 
 import Cookies from "js-cookie";
 
@@ -118,6 +119,7 @@ function App() {
             path="/xssComparison/role"
             component={XssComparisonRole}
           ></ProtectedRoute>
+          <ProtectedRoute path='/comparison/user' component={UserComparison}></ProtectedRoute>
         </Switch>
       </Layout>
     </BrowserRouter>
