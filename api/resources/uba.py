@@ -41,21 +41,30 @@ class SqliAnomalyUser(Resource):
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
-        sql_last = text(
-            'SELECT * '
-            'FROM SQLI s '
-            'WHERE s.user_id = :tUserId '
-            'ORDER BY s.id DESC '
-            'LIMIT 1'
-        )
-        result_last = db.engine.execute(sql_last, tUserId=user.id)
-        sql = text(
-            'SELECT AVG(value) AS value '
-            'FROM SQLI s '
+        sql_without_last_row = text(
+            'SELECT AVG(S.VALUE) AS value, '
+            '"Prijašnje vrijednosti" as name '
+            'FROM SQLI S '
+            'INNER JOIN user u ON (u.id = S.user_id) '
+            'WHERE u.id = :tUserId '
+            'AND S.id < (SELECT MAX(id) FROM SQLI where user_id = u.id)'
+            )
+        result = db.engine.execute(sql_without_last_row, tUserId=user.id)
+        output =[]
+        for row in result:
+            output.append(dict(row))
+        sql_last_row = text(
+            'SELECT AVG(s.value) AS value, '
+            '"Zadnja vrijednost" as name '
+            'FROM sqli s '
             'INNER JOIN user u ON (u.id = s.user_id) '
-            'WHERE u.id = :tUserId')
-        result = db.engine.execute(sql, tUserId=user.id)
-        return jsonify({'data': [dict(row) for row in result_last]})
+            'WHERE u.id = :tUserId '
+            'AND s.id = (SELECT MAX(id) FROM sqli WHERE user_id = u.id)'
+        )
+        result_last_row = db.engine.execute(sql_last_row, tUserId=user.id)
+        for row in result_last_row:
+            output.append(dict(row))
+        return jsonify({'data': output})
 
     @jwt_required
     @cross_origin()
@@ -257,13 +266,30 @@ class XssAnomalyUser(Resource):
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
-        sql = text(
-            'SELECT AVG(value) AS value '
+        sql_without_last_row = text(
+            'SELECT AVG(x.value) AS value, '
+            '"Prijašnje vrijednosti" as name '
             'FROM XSS x '
             'INNER JOIN user u ON (u.id = x.user_id) '
-            'WHERE u.id = :tUserId')
-        result = db.engine.execute(sql, tUserId=user.id)
-        return jsonify({'data': [dict(row) for row in result]})
+            'WHERE u.id = :tUserId '
+            'AND x.id < (SELECT MAX(id) FROM XSS where user_id = u.id)'
+            )
+        result = db.engine.execute(sql_without_last_row, tUserId=user.id)
+        output =[]
+        for row in result:
+            output.append(dict(row))
+        sql_last_row = text(
+            'SELECT AVG(x.value) AS value, '
+            '"Zadnja vrijednost" as name '
+            'FROM XSS x '
+            'INNER JOIN user u ON (u.id = x.user_id) '
+            'WHERE u.id = :tUserId '
+            'AND x.id = (SELECT MAX(id) FROM XSS WHERE user_id = u.id)'
+        )
+        result_last_row = db.engine.execute(sql_last_row, tUserId=user.id)
+        for row in result_last_row:
+            output.append(dict(row))
+        return jsonify({'data': output})
 
     @jwt_required
     @cross_origin()
