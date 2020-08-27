@@ -62,9 +62,10 @@ const navigation = () => {
                 >
                   <NavDropdown.Item href="/config/sqli"> Sqli</NavDropdown.Item>
                   <NavDropdown.Item href="/config/xss">Xss</NavDropdown.Item>
+                  <NavDropdown.Item href='/config/password'>Lozinka</NavDropdown.Item>
                 </NavDropdown>
                 
-                  <Nav.Link href='evaluation'>Evaluacija</Nav.Link>
+                  <Nav.Link href='/evaluation'>Evaluacija</Nav.Link>
                 {username ? (
                   <Nav.Link href="/logout">Odjava</Nav.Link>
                 ) : (

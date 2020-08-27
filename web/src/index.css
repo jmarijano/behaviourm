@@ -14,3 +14,12 @@ code {
 h3 {
   text-align: center;
 }
+
+.evaluation-div {
+  text-align: center;
+  width: 700px;
+  margin: 10px auto;
+  border: 1px solid #dee2e6;
+  padding: 30px;
+  box-shadow: 0px 1px 5px 0px #dee2e6d6;
+}
