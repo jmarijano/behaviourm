@@ -21,14 +21,14 @@ import ProtectedRoute from "./api/utils/ProtectedRoute";
 import Logout from "./api/utils/Logout";
 import SqliConfig from "./containers/Sqli/SqliConfig/SqliConfig";
 import XssConfig from "./containers/Xss/XssConfig/XssConfig";
-import PasswordConfig from "./containers/Password/PasswordConfig/PasswordConfig"
+import PasswordConfig from "./containers/Password/PasswordConfig/PasswordConfig";
 import SqliComparisonDepartment from "./containers/Comparison/Sqli/SqliComparisonDepartment";
 import SqliComparisonRole from "./containers/Comparison/Sqli/SqliComparisonRole";
-
+import PasswordComparisonDepartment from "./containers/Comparison/Password/PasswordComparisonDepartment";
 import XssComparisonDepartment from "./containers/Comparison/Xss/XssComparisonDepartment";
 import XssComparisonRole from "./containers/Comparison/Xss/XssComparisonRole";
-import UserComparison from "./containers/Comparison/User/UserComparison"
-import Evaluation from "./containers/Evaluation/Evaluation"
+import UserComparison from "./containers/Comparison/User/UserComparison";
+import Evaluation from "./containers/Evaluation/Evaluation";
 
 import Cookies from "js-cookie";
 
@@ -102,7 +102,10 @@ function App() {
             component={XssConfig}
           ></ProtectedRoute>
 
-          <ProtectedRoute path='/config/password' component={PasswordConfig}></ProtectedRoute>
+          <ProtectedRoute
+            path="/config/password"
+            component={PasswordConfig}
+          ></ProtectedRoute>
 
           <Route path="/login" component={LoginInput}></Route>
           <Route path="/logout" component={Logout}></Route>
@@ -123,8 +126,19 @@ function App() {
             path="/xssComparison/role"
             component={XssComparisonRole}
           ></ProtectedRoute>
-          <ProtectedRoute path='/comparison/user' component={UserComparison}></ProtectedRoute>
-          <ProtectedRoute path='/evaluation' component={Evaluation}></ProtectedRoute>
+          <ProtectedRoute
+            path="/comparison/user"
+            component={UserComparison}
+          ></ProtectedRoute>
+
+          <ProtectedRoute
+            path="/passwordStrength/department"
+            component={PasswordComparisonDepartment}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/evaluation"
+            component={Evaluation}
+          ></ProtectedRoute>
         </Switch>
       </Layout>
     </BrowserRouter>

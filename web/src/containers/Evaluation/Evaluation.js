@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import AxiosInstance from "../../api/utils/AxiosInstance";
-import { Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
-import Combobox from "../../components/UI/Combobox";
-import Graph from "../../components/UI/Graph";
 
 export default class Evaluation extends Component {
   state = {

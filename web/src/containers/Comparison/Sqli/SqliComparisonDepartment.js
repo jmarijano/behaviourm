@@ -135,6 +135,7 @@ export default class SqliComparisonDepartment extends Component {
         <Combobox
           onChangeInput={this.onChangeInput}
           options={this.state.options}
+          name="userId"
         ></Combobox>
         <br></br>
         {graph}
