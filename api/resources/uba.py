@@ -12,6 +12,7 @@ from ml_models.password_strength_model import predict_password_strength
 from sqlalchemy.sql import func
 from sqlalchemy import text
 from werkzeug.security import check_password_hash
+from config.config import dohvati_value
 
 
 class SqliAnomalyDepartmentUser(Resource):
@@ -48,9 +49,9 @@ class SqliAnomalyUser(Resource):
             'INNER JOIN user u ON (u.id = S.user_id) '
             'WHERE u.id = :tUserId '
             'AND S.id < (SELECT MAX(id) FROM SQLI where user_id = u.id)'
-            )
+        )
         result = db.engine.execute(sql_without_last_row, tUserId=user.id)
-        output =[]
+        output = []
         for row in result:
             output.append(dict(row))
         sql_last_row = text(
@@ -273,9 +274,9 @@ class XssAnomalyUser(Resource):
             'INNER JOIN user u ON (u.id = x.user_id) '
             'WHERE u.id = :tUserId '
             'AND x.id < (SELECT MAX(id) FROM XSS where user_id = u.id)'
-            )
+        )
         result = db.engine.execute(sql_without_last_row, tUserId=user.id)
-        output =[]
+        output = []
         for row in result:
             output.append(dict(row))
         sql_last_row = text(
@@ -323,17 +324,112 @@ class XssAnomalyRoleUser(Resource):
 class PasswordStrengthDepartment(Resource):
     @ cross_origin()
     def post(self):
+        department_id = request.get_json().get('departmentId')
+        sql = text(
+            'SELECT u.password AS value, u.name || " " || u.surname as name '
+            'FROM USER u '
+            'INNER JOIN DEPARTMENT d ON (d.id = u.department_id) '
+            'WHERE d.id = :tDepartmentId'
+        )
+        result_current_user = db.engine.execute(
+            sql, tDepartmentId=department_id
+        )
+        output = []
+        for row in result_current_user:
+            temp = dict(row)
+            value = predict_password_strength(temp['value'])[0]
+            temp['value'] = str(value)
+            output.append(temp)
+        return jsonify({'data': output})
+
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
+
+class PasswordStrengthRole(Resource):
+    @ cross_origin()
+    def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
         sql = text(
             'SELECT PASSWORD '
             'FROM USER U '
-            'INNER JOIN DEPARTMENT D ON (d.id = u.department_id) '
+            'INNER JOIN Role r ON (r.id = u.department_id) '
             'WHERE u.id != :tUserId'
         )
         result = db.engine.execute(
             sql, tUserId=user.id)
         return jsonify({'data': [dict(row) for row in result]})
+
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
+
+class Evaluation(Resource):
+    @cross_origin()
+    def get(self):
+
+        config_sqli = float(dohvati_value('risk_assestment', 'sqli'))
+        config_xss = float(dohvati_value('risk_assestment', 'xss'))
+        config_password = float(dohvati_value('risk_assestment', 'password'))
+
+        sql_sqli = text(
+            'SELECT SUM(s.value) as sqli, '
+            'u.name || " " || u.surname as name '
+            'FROM SQLI s '
+            'INNER JOIN user u ON (u.id = s.user_id) '
+            'GROUP BY u.id '
+            'ORDER BY u.id'
+        )
+        output = []
+        xss = []
+        passwords = []
+        result_sqli = db.engine.execute(
+            sql_sqli)
+        sql_xss = text(
+            'SELECT SUM(x.value) as xss '
+            'FROM Xss x '
+            'INNER JOIN user u ON (u.id = x.user_id) '
+            'GROUP BY u.id '
+            'ORDER BY u.id'
+        )
+        result_xss = db.engine.execute(
+            sql_xss)
+
+        sql_password = text(
+            'SELECT u.password as password '
+            'FROM user u '
+            'ORDER BY u.id'
+        )
+        result_password = db.engine.execute(
+            sql_password)
+
+        for row in result_password:
+            dictionary = dict(row)
+            value = predict_password_strength(dictionary['password'])[0]
+            passwords.append(str(value))
+        i = 0
+        for row in result_sqli:
+            temp = dict(row)
+            temp['sqli'] = str(float(temp['sqli'])*config_sqli)
+            output.append(temp)
+        for row in result_xss:
+            xss.append(dict(row)['xss'])
+        for row in output:
+            row['xss'] = str(float(xss[i])*config_xss)
+            password_strength = float(passwords[i])
+            if password_strength == 0:
+                row['password'] = str(password_strength)
+            else:
+                row['password'] = str(config_password/password_strength)
+            print(row)
+            i += 1
+
+        return jsonify({'data': output})
 
     @jwt_required
     @cross_origin()

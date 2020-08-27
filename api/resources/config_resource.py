@@ -16,9 +16,9 @@ class SqliConfig(Resource):
             return jsonify(error="Wrong request"), 500
         try:
             sqli = float(value)
-            if (sqli < 0 or sqli > 1):
-                return jsonify(error="Enter a number between 0 and 1!"), 500
-            zapisi('uba', 'sqli', str(sqli))
+            if (sqli < 0):
+                return jsonify(error="Enter a number larger than 0!"), 500
+            zapisi('risk_assestment', 'sqli', str(sqli))
             return jsonify(), 200
         except:
             return jsonify(error="Enter a number"), 500
@@ -38,9 +38,31 @@ class XssConfig(Resource):
             return jsonify(error="Wrong request"), 500
         try:
             xss = float(value)
-            if(xss < 0 or xss > 1):
-                return jsonify(error="Enter a number between 0 and 1!"), 500
-            zapisi('uba', 'xss', str(xss))
+            if(xss < 0):
+                return jsonify(error="Enter a number larger than 0!"), 500
+            zapisi('risk_assestment', 'xss', str(xss))
+            return jsonify()
+        except:
+            return jsonify(error="Enter a number!"), 500
+
+    @jwt_required
+    @cross_origin()
+    def options(self):
+        return jsonify()
+
+
+class PasswordConfig(Resource):
+    @jwt_required
+    @cross_origin()
+    def post(self):
+        value = request.get_json().get('value')
+        if value is None:
+            return jsonify(error="Wrong request"), 500
+        try:
+            xss = float(value)
+            if(xss < 0):
+                return jsonify(error="Enter a number larger than 0!"), 500
+            zapisi('risk_assestment', 'password', str(xss))
             return jsonify()
         except:
             return jsonify(error="Enter a number!"), 500

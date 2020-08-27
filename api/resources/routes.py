@@ -11,8 +11,9 @@ from .uba import (SqliAnomalyDepartmentUser, SqliAnomalyUser, SqliAnomalyRoleUse
                   XssAnomalyDepartmentUser, XssAnomalyUser,
                   XssAnomalyRoleUser, PasswordStrengthDepartment,
                   SqliUserAverage, XssUserAverage, XssDepartmentAverage,
-                  SqliDepartmentAverage, XssRoleAverage, SqliRoleAverage)
-from .config_resource import SqliConfig, XssConfig
+                  SqliDepartmentAverage, XssRoleAverage, SqliRoleAverage, Evaluation,
+                  PasswordStrengthRole)
+from .config_resource import SqliConfig, XssConfig, PasswordConfig
 
 
 def initialize_routes(api):
@@ -58,6 +59,10 @@ def initialize_routes(api):
 
     api.add_resource(PasswordStrengthDepartment,
                      '/uba/passwordStrenght/department')
+    api.add_resource(PasswordStrengthRole,
+                     '/uba/passwordStrenght/role')
+    api.add_resource(Evaluation, '/uba/evaluation')
 
     api.add_resource(SqliConfig, '/config/sqli')
     api.add_resource(XssConfig, '/config/xss')
+    api.add_resource(PasswordConfig, '/config/password')
