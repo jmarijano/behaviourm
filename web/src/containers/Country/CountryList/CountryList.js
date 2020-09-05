@@ -89,7 +89,17 @@ export default class CountryList extends Component {
   };
 
   render() {
-    const { update, name } = this.state;
+    const { update, name, countryList } = this.state;
+    let table;
+    if (countryList.length > 0) {
+      table = (
+        <CountryTable
+          countryList={this.state.countryList}
+          deleteCountry={this.deleteCountry}
+          updateCountry={this.updateCountry}
+        ></CountryTable>
+      );
+    }
     if (update) {
       return (
         <React.Fragment>
@@ -105,11 +115,7 @@ export default class CountryList extends Component {
     return (
       <React.Fragment>
         <Spinner loading={this.state.loading}></Spinner>
-        <CountryTable
-          countryList={this.state.countryList}
-          deleteCountry={this.deleteCountry}
-          updateCountry={this.updateCountry}
-        ></CountryTable>
+        {table}
       </React.Fragment>
     );
   }

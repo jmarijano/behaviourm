@@ -3,6 +3,7 @@ import LoginInputForm from "../../components/Login/LoginInputForm";
 import AxiosInstance from "../../api/utils/AxiosInstance";
 import { Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
+import ModalComponent from "../../components/UI/Modal/Modal";
 
 export default class LoginInput extends Component {
   state = {
@@ -10,6 +11,8 @@ export default class LoginInput extends Component {
     password: "",
     redirect: false,
     cookie: Cookies.get("username"),
+    error: "",
+    show: false,
   };
 
   handleLoginSubmit = (event) => {
@@ -25,7 +28,14 @@ export default class LoginInput extends Component {
         });
       },
       (error) => {
-        console.log(error);
+        console.log(this.state.error);
+        this.setState(
+          {
+            show: true,
+            error: error.response.data.error,
+          },
+          () => {}
+        );
       }
     );
   };
@@ -39,8 +49,20 @@ export default class LoginInput extends Component {
     });
   };
 
+  handleShow = () => {
+    this.setState({
+      show: true,
+    });
+  };
+  handleClose = () => {
+    this.setState({
+      show: false,
+    });
+  };
+
   render() {
     const { redirect } = this.state;
+    console.log(this.state);
     if (redirect) {
       return <Redirect to="/addressList"></Redirect>;
     }
@@ -52,6 +74,10 @@ export default class LoginInput extends Component {
           handleLoginSubmit={this.handleLoginSubmit}
           user={{}}
         ></LoginInputForm>
+        <ModalComponent
+          {...this.state}
+          handleClose={this.handleClose}
+        ></ModalComponent>
       </React.Fragment>
     );
   }

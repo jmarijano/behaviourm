@@ -89,7 +89,17 @@ export default class RoleList extends Component {
   };
 
   render() {
-    const { update, name } = this.state;
+    const { update, name, roleList } = this.state;
+    let table;
+    if (roleList.length > 0) {
+      table = (
+        <RoleTable
+          roleList={this.state.roleList}
+          deleteRole={this.deleteRole}
+          updateRole={this.updateRole}
+        ></RoleTable>
+      );
+    }
     if (update) {
       return (
         <React.Fragment>
@@ -105,11 +115,7 @@ export default class RoleList extends Component {
     return (
       <React.Fragment>
         <Spinner loading={this.state.loading}></Spinner>
-        <RoleTable
-          roleList={this.state.roleList}
-          deleteRole={this.deleteRole}
-          updateRole={this.updateRole}
-        ></RoleTable>
+        {table}
       </React.Fragment>
     );
   }

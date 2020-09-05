@@ -89,7 +89,17 @@ export default class DepartmentList extends Component {
   };
 
   render() {
-    const { update, name } = this.state;
+    const { update, name, departmentList } = this.state;
+    let table;
+    if (departmentList.length > 0) {
+      table = (
+        <DepartmentTable
+          departmentList={this.state.departmentList}
+          deleteDepartment={this.deleteDepartment}
+          updateDepartment={this.updateDepartment}
+        ></DepartmentTable>
+      );
+    }
     if (update) {
       return (
         <React.Fragment>
@@ -105,11 +115,7 @@ export default class DepartmentList extends Component {
     return (
       <React.Fragment>
         <Spinner loading={this.state.loading}></Spinner>
-        <DepartmentTable
-          departmentList={this.state.departmentList}
-          deleteDepartment={this.deleteDepartment}
-          updateDepartment={this.updateDepartment}
-        ></DepartmentTable>
+        {table}
       </React.Fragment>
     );
   }

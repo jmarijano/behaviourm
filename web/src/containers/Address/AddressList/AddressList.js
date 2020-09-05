@@ -4,6 +4,7 @@ import AddressTable from "../../../components/Adress/AddressTable/AddressTable";
 import AddressInputForm from "../../../components/Adress/AddressInputForm/AddressInputForm";
 import Cookies from "js-cookie";
 import Spinner from "../../../components/UI/Spinner";
+import ModalComponent from "../../../components/UI/Modal/Modal";
 
 export default class AddressList extends Component {
   state = {
@@ -14,6 +15,7 @@ export default class AddressList extends Component {
     streetName: "",
     options: [],
     loading: true,
+    content: "",
   };
 
   componentDidMount() {
@@ -57,9 +59,25 @@ export default class AddressList extends Component {
         });
       },
       (error) => {
-        console.log(error);
+        console.log(error.message);
+        this.setState(
+          {
+            content: error.message,
+          },
+          () => {
+            console.log("Content: " + this.state.content);
+          }
+        );
       }
     );
+  };
+
+  loginModalRef = ({ handleShow }) => {
+    this.showModal = handleShow;
+  };
+
+  onLoginClick = () => {
+    this.showModal();
   };
 
   deleteAddress = (id) => {
@@ -95,7 +113,7 @@ export default class AddressList extends Component {
     });
   };
   render() {
-    const { update, cityId, streetName, addressList } = this.state;
+    const { update, cityId, streetName, addressList, content } = this.state;
     let table;
     if (addressList.length > 0) {
       table = (
@@ -112,6 +130,11 @@ export default class AddressList extends Component {
         <React.Fragment>
           <Spinner loading={this.state.loading}></Spinner>
           {table}
+
+          <ModalComponent
+            ref={this.loginModalRef}
+            content={this.state.content}
+          ></ModalComponent>
         </React.Fragment>
       );
     }

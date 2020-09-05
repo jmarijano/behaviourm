@@ -2,8 +2,13 @@ import React from "react";
 import { Navbar, NavDropdown, Nav } from "react-bootstrap";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Cookies from "js-cookie";
-const navigation = () => {
-  const username = Cookies.get("username");
+const navigation = (props) => {
+  console.log(props);
+  const user = props.user;
+  let logout;
+  if (user !== undefined) {
+    logout = <Nav.Link href="/logout">Odjava</Nav.Link>;
+  }
   return (
     <div>
       <div className="row">
@@ -48,13 +53,31 @@ const navigation = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown title="Usporedba" id="usporedba-nav-dropdown">
-                  <NavDropdown.Item href='/sqliComparison/department'> Sqli - odjeli</NavDropdown.Item>
-                  <NavDropdown.Item href='/sqliComparison/role'> Sqli - role</NavDropdown.Item>
-                  <NavDropdown.Item href='/xssComparison/department'> Xss - odjeli</NavDropdown.Item>
-                  <NavDropdown.Item href='/xssComparison/role'> Xss - role</NavDropdown.Item>
-                  <NavDropdown.Item href='/passwordStrength/department'>Lozinka - odjeli</NavDropdown.Item>
-                  <NavDropdown.Item href='/passwordStrength/role'>Lozinka - role</NavDropdown.Item>
-                  <NavDropdown.Item href='/comparison/user'>Korisnika i njegovih prošlih akcija</NavDropdown.Item>
+                  <NavDropdown.Item href="/sqliComparison/department">
+                    {" "}
+                    Sqli - odjeli
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/sqliComparison/role">
+                    {" "}
+                    Sqli - role
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/xssComparison/department">
+                    {" "}
+                    Xss - odjeli
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/xssComparison/role">
+                    {" "}
+                    Xss - role
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/passwordStrength/department">
+                    Lozinka - odjeli
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/passwordStrength/role">
+                    Lozinka - role
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/comparison/user">
+                    Korisnika i njegovih prošlih akcija
+                  </NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown
                   title="Konfiguracija"
@@ -62,15 +85,13 @@ const navigation = () => {
                 >
                   <NavDropdown.Item href="/config/sqli"> Sqli</NavDropdown.Item>
                   <NavDropdown.Item href="/config/xss">Xss</NavDropdown.Item>
-                  <NavDropdown.Item href='/config/password'>Lozinka</NavDropdown.Item>
+                  <NavDropdown.Item href="/config/password">
+                    Lozinka
+                  </NavDropdown.Item>
                 </NavDropdown>
-                
-                  <Nav.Link href='/evaluation'>Evaluacija</Nav.Link>
-                {username ? (
-                  <Nav.Link href="/logout">Odjava</Nav.Link>
-                ) : (
-                  <div></div>
-                )}
+
+                <Nav.Link href="/evaluation">Evaluacija</Nav.Link>
+                {logout}
               </Navbar.Collapse>
             </Navbar>
             <br />
@@ -86,10 +107,12 @@ const navigation = () => {
               <Route exact path="/login"></Route>
               <Route exact path="/xssList"></Route>
               <Route exact path="/logout"></Route>
-              <Route exact path='/sqliComparison/department'> </Route>
-              <Route exact path='/sqliComparison/role'></Route>
-              <Route exact path='/xssComparison/department'></Route>
-              <Route exact path='/xssComparison/role'></Route>
+              <Route exact path="/sqliComparison/department">
+                {" "}
+              </Route>
+              <Route exact path="/sqliComparison/role"></Route>
+              <Route exact path="/xssComparison/department"></Route>
+              <Route exact path="/xssComparison/role"></Route>
             </Switch>
           </Router>
         </div>

@@ -98,7 +98,17 @@ export default class CityList extends Component {
   };
 
   render() {
-    const { update, name, countryId } = this.state;
+    const { update, name, countryId, cityList } = this.state;
+    let table;
+    if (cityList.length > 0) {
+      table = (
+        <CityTable
+          cityList={this.state.cityList}
+          deleteCity={this.deleteCity}
+          updateCity={this.updateCity}
+        ></CityTable>
+      );
+    }
     if (update) {
       return (
         <React.Fragment>
@@ -114,11 +124,7 @@ export default class CityList extends Component {
     return (
       <React.Fragment>
         <Spinner loading={this.state.loading}></Spinner>
-        <CityTable
-          cityList={this.state.cityList}
-          deleteCity={this.deleteCity}
-          updateCity={this.updateCity}
-        ></CityTable>
+        {table}
       </React.Fragment>
     );
   }
