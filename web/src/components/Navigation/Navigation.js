@@ -3,7 +3,6 @@ import { Navbar, NavDropdown, Nav } from "react-bootstrap";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Cookies from "js-cookie";
 const navigation = (props) => {
-  console.log(props);
   const user = props.user;
   let logout;
   if (user !== undefined) {

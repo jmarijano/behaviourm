@@ -38,11 +38,11 @@ export default class AddressList extends Component {
           this.getAddressData();
         },
         (error) => {
-          console.log(error);
+          console.log({ error });
         }
       );
     } catch (error) {
-      console.log(error);
+      console.log({ error });
     }
   };
 
@@ -59,14 +59,11 @@ export default class AddressList extends Component {
         });
       },
       (error) => {
-        console.log(error.message);
         this.setState(
           {
             content: error.message,
           },
-          () => {
-            console.log("Content: " + this.state.content);
-          }
+          () => {}
         );
       }
     );
@@ -90,7 +87,7 @@ export default class AddressList extends Component {
         this.getAddressData();
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };

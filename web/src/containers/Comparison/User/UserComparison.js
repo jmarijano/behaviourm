@@ -34,13 +34,12 @@ export default class UserComparison extends Component {
             label: element.name + " " + element.surname,
           });
         }
-        console.log(options);
         this.setState({
           options: options,
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -52,45 +51,42 @@ export default class UserComparison extends Component {
   getSqli = () => {
     const { userId } = this.state;
     const request = { userId };
-    AxiosInstance.post("/uba/sqli/user",request, {
+    AxiosInstance.post("/uba/sqli/user", request, {
       headers: {
         Authorization: "Bearer " + Cookies.get("username"),
       },
     }).then(
       (response) => {
-        console.log(response.data.data);
         this.setState({
           dataSqli: response.data.data,
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
 
-  getXss= () => {
+  getXss = () => {
     const { userId } = this.state;
     const request = { userId };
-    AxiosInstance.post("/uba/xss/user",request, {
+    AxiosInstance.post("/uba/xss/user", request, {
       headers: {
         Authorization: "Bearer " + Cookies.get("username"),
       },
     }).then(
       (response) => {
-        console.log(response.data.data);
         this.setState({
           dataXss: response.data.data,
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
 
   onChangeInput = (event) => {
-    console.log(event);
     let value = event.value;
     this.setState(
       {
@@ -102,7 +98,6 @@ export default class UserComparison extends Component {
       }
     );
   };
-
 
   render() {
     const { redirect, dataSqli: data } = this.state;
@@ -129,7 +124,6 @@ export default class UserComparison extends Component {
         <h3>{this.state.labelSqli}</h3>
         <br></br>
 
-        
         {graph}
       </React.Fragment>
     );

@@ -42,11 +42,11 @@ export default class CityList extends Component {
           this.getCityData();
         },
         (error) => {
-          console.log(error);
+          console.log({ error });
         }
       );
     } catch (error) {
-      console.log(error);
+      console.log({ error });
     }
   };
 
@@ -61,14 +61,13 @@ export default class CityList extends Component {
       },
     }).then(
       (response) => {
-        console.log(response.data);
         this.setState({
           cityList: response.data.data,
           loading: false,
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -83,7 +82,7 @@ export default class CityList extends Component {
         this.getCityData();
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };

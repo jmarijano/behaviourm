@@ -28,12 +28,11 @@ export default class DepartmentList extends Component {
       },
     }).then(
       (response) => {
-        console.log(response.data);
         this.setState({ update: false });
         this.getDepartmentData();
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -45,14 +44,13 @@ export default class DepartmentList extends Component {
       },
     }).then(
       (response) => {
-        console.log(response.data);
         this.setState({
           departmentList: response.data.data,
           loading: false,
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -67,7 +65,7 @@ export default class DepartmentList extends Component {
         this.getDepartmentData();
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };

@@ -21,11 +21,10 @@ export default class RoleInput extends Component {
       },
     }).then(
       (response) => {
-        console.log(response);
         this.setState({ redirect: true });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };

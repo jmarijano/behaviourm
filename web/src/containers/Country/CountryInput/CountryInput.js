@@ -21,11 +21,10 @@ export default class CountryInput extends Component {
       },
     }).then(
       (response) => {
-
         this.setState({ redirect: true });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };

@@ -32,13 +32,12 @@ export default class XssComparisonDepartment extends Component {
             label: element.name + " " + element.surname,
           });
         }
-        console.log(options);
         this.setState({
           options: options,
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -55,19 +54,17 @@ export default class XssComparisonDepartment extends Component {
       },
     }).then(
       (response) => {
-        console.log(response.data.data);
         this.setState({
           generalData: response.data.data,
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
 
   onChangeInput = (event) => {
-    console.log(event);
     let value = event.value;
     this.setState(
       {
@@ -89,13 +86,12 @@ export default class XssComparisonDepartment extends Component {
       },
     }).then(
       (response) => {
-        console.log(response.data.data);
         this.setState({
           data: response.data.data,
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -109,13 +105,12 @@ export default class XssComparisonDepartment extends Component {
       },
     }).then(
       (response) => {
-        console.log(response.data.data);
         this.setState((prevState) => ({
           data: [...prevState.data, response.data.data[0]],
         }));
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };

@@ -8,9 +8,7 @@ class Logout extends React.Component {
   }
 
   async componentDidMount() {
-    console.log("Logout: "+ Cookies.get("username"))
     await Cookies.remove("username");
-    console.log("Logout: "+ Cookies.get("username"))
   }
 }
 

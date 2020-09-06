@@ -30,12 +30,11 @@ export default class XssList extends Component {
       },
     }).then(
       (response) => {
-        console.log(response);
         this.setState({ update: false });
         this.getRoleData();
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -47,14 +46,13 @@ export default class XssList extends Component {
       },
     }).then(
       (response) => {
-        console.log(response.data);
         this.setState({
           xssList: response.data.data,
           loading: false,
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -69,7 +67,7 @@ export default class XssList extends Component {
         this.getXssData();
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };

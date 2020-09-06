@@ -28,12 +28,11 @@ export default class RoleList extends Component {
       },
     }).then(
       (response) => {
-        console.log(response);
         this.setState({ update: false });
         this.getRoleData();
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -51,7 +50,7 @@ export default class RoleList extends Component {
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -66,7 +65,7 @@ export default class RoleList extends Component {
         this.getRoleData();
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };

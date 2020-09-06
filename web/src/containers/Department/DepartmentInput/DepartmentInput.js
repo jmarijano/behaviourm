@@ -21,12 +21,10 @@ export default class DepartmentInput extends Component {
       },
     }).then(
       (response) => {
-        console.log(response.data);
-
         this.setState({ redirect: true });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };

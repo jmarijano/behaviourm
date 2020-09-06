@@ -36,7 +36,7 @@ export default class SqliComparisonDepartment extends Component {
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -66,13 +66,12 @@ export default class SqliComparisonDepartment extends Component {
       },
     }).then(
       (response) => {
-        console.log(response.data.data);
         this.setState({
           generalData: response.data.data,
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -91,7 +90,7 @@ export default class SqliComparisonDepartment extends Component {
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -110,7 +109,7 @@ export default class SqliComparisonDepartment extends Component {
         }));
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };

@@ -28,12 +28,11 @@ export default class CountryList extends Component {
       },
     }).then(
       (response) => {
-        console.log(response.data);
         this.setState({ update: false });
         this.getCountryData();
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -45,14 +44,13 @@ export default class CountryList extends Component {
       },
     }).then(
       (response) => {
-        console.log(response.data);
         this.setState({
           countryList: response.data.data,
           loading: false,
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -67,7 +65,7 @@ export default class CountryList extends Component {
         this.getCountryData();
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };

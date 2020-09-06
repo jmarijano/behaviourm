@@ -31,7 +31,7 @@ export default class PasswordComparisonDepartment extends Component {
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
@@ -54,13 +54,12 @@ export default class PasswordComparisonDepartment extends Component {
         });
       },
       (error) => {
-        console.log(error);
+        console.log({ error });
       }
     );
   };
 
   onChangeInput = (event) => {
-    console.log(event);
     let value = event.value;
     this.setState(
       {
@@ -73,13 +72,13 @@ export default class PasswordComparisonDepartment extends Component {
   };
 
   render() {
-    const { data, label,departmentId } = this.state;
+    const { data, label, departmentId } = this.state;
     let graph;
     if (data.length > 0) {
       graph = <Graph data={data}></Graph>;
     }
-    if(data.length === 0 && departmentId.length !== 0){
-      graph = (<h3>Ne postoje zapisi!</h3>)
+    if (data.length === 0 && departmentId.length !== 0) {
+      graph = <h3>Ne postoje zapisi!</h3>;
     }
     return (
       <React.Fragment>

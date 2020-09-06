@@ -21,14 +21,12 @@ export default class LoginInput extends Component {
     const user = { username, password };
     AxiosInstance.post("/login", user).then(
       (response) => {
-        console.log(response.data);
         Cookies.set("username", response.data.accessToken);
         this.setState({
           redirect: true,
         });
       },
       (error) => {
-        console.log(this.state.error);
         this.setState(
           {
             show: true,
@@ -62,7 +60,6 @@ export default class LoginInput extends Component {
 
   render() {
     const { redirect } = this.state;
-    console.log(this.state);
     if (redirect) {
       return <Redirect to="/addressList"></Redirect>;
     }
