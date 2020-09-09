@@ -29,6 +29,7 @@ import XssComparisonDepartment from "../../containers/Comparison/Xss/XssComparis
 import XssComparisonRole from "../../containers/Comparison/Xss/XssComparisonRole";
 import UserComparison from "../../containers/Comparison/User/UserComparison";
 import Evaluation from "../../containers/Evaluation/Evaluation";
+import { LinkContainer } from "react-router-bootstrap";
 class navigation extends React.Component {
   constructor(props) {
     super(props);
@@ -50,7 +51,11 @@ class navigation extends React.Component {
     const { user } = this.state;
     let logout;
     if (user !== undefined) {
-      logout = <Nav.Link href="/logout">Odjava</Nav.Link>;
+      logout = (
+        <LinkContainer to="/logout">
+          <Nav.Link>Odjava</Nav.Link>
+        </LinkContainer>
+      );
     }
     return (
       <div>
@@ -62,85 +67,95 @@ class navigation extends React.Component {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                   <NavDropdown title="Tablice" id="tablice-nav-dropdown">
-                    <NavDropdown.Item href="/roleList">Role</NavDropdown.Item>
-                    <NavDropdown.Item href="/countryList">
-                      Države
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/cityList">
-                      Gradovi
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/addressList">
-                      Adrese
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/departmentList">
-                      Odjeli
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/userList">
-                      Korisnici
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/sqliList">Sqli</NavDropdown.Item>
-                    <NavDropdown.Item href="/xssList">Xss</NavDropdown.Item>
+                    <LinkContainer to="/roleList">
+                      <NavDropdown.Item>Role</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/countryList">
+                      <NavDropdown.Item href="/countryList">
+                        Države
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/cityList">
+                      <NavDropdown.Item>Gradovi</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/addressList">
+                      <NavDropdown.Item>Adrese</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/departmentList">
+                      <NavDropdown.Item>Odjeli</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/userList">
+                      <NavDropdown.Item>Korisnici</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/sqliList">
+                      <NavDropdown.Item>Sqli</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/xssList">
+                      <NavDropdown.Item>Xss</NavDropdown.Item>
+                    </LinkContainer>
                   </NavDropdown>
                   <NavDropdown title="Unos" id="unos-nav-dropdown">
-                    <NavDropdown.Item href="/roleInput">Role</NavDropdown.Item>
-                    <NavDropdown.Item href="/countryInput">
-                      Države
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/cityInput">
-                      Gradovi
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/addressInput">
-                      Adrese
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/departmentInput">
-                      Odjeli
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/userInput">
-                      Korisnici
-                    </NavDropdown.Item>
+                    <LinkContainer to="/roleInput">
+                      <NavDropdown.Item>Role</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/countryInput">
+                      <NavDropdown.Item>Države</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/cityInput">
+                      <NavDropdown.Item>Gradovi</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/addressInput">
+                      <NavDropdown.Item>Adrese</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/departmentInput">
+                      <NavDropdown.Item>Odjeli</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/userInput">
+                      <NavDropdown.Item>Korisnici</NavDropdown.Item>
+                    </LinkContainer>
                   </NavDropdown>
                   <NavDropdown title="Usporedba" id="usporedba-nav-dropdown">
-                    <NavDropdown.Item href="/sqliComparison/department">
-                      {" "}
-                      Sqli - odjeli
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/sqliComparison/role">
-                      {" "}
-                      Sqli - role
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/xssComparison/department">
-                      {" "}
-                      Xss - odjeli
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/xssComparison/role">
-                      {" "}
-                      Xss - role
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/passwordStrength/department">
-                      Lozinka - odjeli
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/passwordStrength/role">
-                      Lozinka - role
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/comparison/user">
-                      Korisnika i njegovih prošlih akcija
-                    </NavDropdown.Item>
+                    <LinkContainer to="/sqliComparison/department">
+                      <NavDropdown.Item>Sqli - odjeli</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/sqliComparison/role">
+                      <NavDropdown.Item> Sqli - role</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/xssComparison/department">
+                      <NavDropdown.Item> Xss - odjeli</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/xssComparison/role">
+                      <NavDropdown.Item> Xss - role</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/passwordStrength/department">
+                      <NavDropdown.Item>Lozinka - odjeli</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/passwordStrength/role">
+                      <NavDropdown.Item>Lozinka - role</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/comparison/user">
+                      <NavDropdown.Item>
+                        Korisnika i njegovih prošlih akcija
+                      </NavDropdown.Item>
+                    </LinkContainer>
                   </NavDropdown>
                   <NavDropdown
                     title="Konfiguracija"
                     id="konfiguracija-nav-dropdown"
                   >
-                    <NavDropdown.Item href="/config/sqli">
-                      {" "}
-                      Sqli
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/config/xss">Xss</NavDropdown.Item>
-                    <NavDropdown.Item href="/config/password">
-                      Lozinka
-                    </NavDropdown.Item>
+                    <LinkContainer to="/config/sqli">
+                      <NavDropdown.Item> Sqli</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/config/xss">
+                      <NavDropdown.Item>Xss</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/config/password">
+                      <NavDropdown.Item>Lozinka</NavDropdown.Item>
+                    </LinkContainer>
                   </NavDropdown>
-
-                  <Nav.Link href="/evaluation">Evaluacija</Nav.Link>
+                  <LinkContainer to="/evaluation">
+                    <Nav.Link>Evaluacija</Nav.Link>
+                  </LinkContainer>
                   {logout}
                 </Navbar.Collapse>
               </Navbar>
