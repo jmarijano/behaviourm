@@ -6,14 +6,18 @@ import Cookies from "js-cookie";
 import ModalComponent from "../../components/UI/Modal/Modal";
 
 export default class LoginInput extends Component {
-  state = {
-    username: "",
-    password: "",
-    redirect: false,
-    cookie: Cookies.get("username"),
-    error: "",
-    show: false,
-  };
+  constructor(props) {
+    super(props);
+    console.log({ props });
+    this.state = {
+      username: "",
+      password: "",
+      redirect: false,
+      cookie: Cookies.get("username"),
+      error: "",
+      show: false,
+    };
+  }
 
   handleLoginSubmit = (event) => {
     event.preventDefault();
@@ -22,6 +26,7 @@ export default class LoginInput extends Component {
     AxiosInstance.post("/login", user).then(
       (response) => {
         Cookies.set("username", response.data.accessToken);
+        this.props.handler(response.data.accessToken);
         this.setState({
           redirect: true,
         });
