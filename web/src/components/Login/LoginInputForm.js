@@ -1,6 +1,7 @@
 import React from "react";
 import "./LoginInputForm.css";
 import { Button } from "react-bootstrap";
+import PropTypes from "prop-types";
 
 const loginInputForm = (props) => {
   return (
@@ -35,6 +36,11 @@ const loginInputForm = (props) => {
       <Button type="submit">Prijava</Button>
     </form>
   );
+};
+
+loginInputForm.propTypes = {
+  onChangeInput: PropTypes.func.isRequired,
+  handleLoginSubmit: PropTypes.func.isRequired,
 };
 
 export default loginInputForm;

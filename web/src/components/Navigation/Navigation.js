@@ -53,7 +53,7 @@ class navigation extends React.Component {
     if (user !== undefined) {
       logout = (
         <LinkContainer to="/logout">
-          <Nav.Link>Odjava</Nav.Link>
+          <Nav.Link className="ml-auto">Odjava</Nav.Link>
         </LinkContainer>
       );
     }

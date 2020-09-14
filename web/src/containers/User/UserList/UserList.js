@@ -22,7 +22,7 @@ export default class UserList extends Component {
     event.preventDefault();
     const { id, name } = this.state;
     const role = { name };
-    AxiosInstance.put("/roles/" + id, role, {
+    AxiosInstance.put("/users/" + id, role, {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export default class UserList extends Component {
   };
 
   deleteUser = (id) => {
-    AxiosInstance.delete("/roles/" + id, {
+    AxiosInstance.delete("/users/" + id, {
       headers: {
         Authorization: "Bearer " + Cookies.get("username"),
       },

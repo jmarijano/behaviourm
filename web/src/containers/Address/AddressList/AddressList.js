@@ -53,6 +53,8 @@ export default class AddressList extends Component {
       },
     }).then(
       (response) => {
+        const kae = response.data.data;
+        console.log({ kae });
         this.setState({
           addressList: response.data.data,
           loading: false,
