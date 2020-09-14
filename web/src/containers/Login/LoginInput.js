@@ -16,31 +16,53 @@ export default class LoginInput extends Component {
       cookie: Cookies.get("username"),
       error: "",
       show: false,
+      errors: [],
     };
   }
+  hasError = (key) => {
+    return this.state.errors.indexOf(key) !== -1;
+  };
 
   handleLoginSubmit = (event) => {
     event.preventDefault();
     const { username, password } = this.state;
     const user = { username, password };
-    AxiosInstance.post("/login", user).then(
-      (response) => {
-        Cookies.set("username", response.data.accessToken);
-        this.props.handler(response.data.accessToken);
-        this.setState({
-          redirect: true,
-        });
-      },
-      (error) => {
-        this.setState(
-          {
-            show: true,
-            error: error.response.data.error,
-          },
-          () => {}
-        );
-      }
-    );
+    let errors = [];
+    if (username === "") errors.push("username");
+    if (password === "") errors.push("password");
+    this.setState({
+      errors: errors,
+    });
+    if (errors.length === 0) {
+      AxiosInstance.post("/login", user).then(
+        (response) => {
+          Cookies.set("username", response.data.accessToken);
+          this.props.handler(response.data.accessToken);
+          this.setState({
+            redirect: true,
+          });
+        },
+        (error) => {
+          this.setState(
+            {
+              show: true,
+              error: error.response.data.error,
+            },
+            () => {}
+          );
+        }
+      );
+    }
+  };
+
+  onFocus = (event) => {
+    event.preventDefault();
+    var array = [...this.state.errors];
+    var index = array.indexOf(event.target.name);
+    if (index !== -1) {
+      array.splice(index, 1);
+      this.setState({ errors: array });
+    }
   };
 
   onChangeInput = (event) => {
@@ -70,11 +92,12 @@ export default class LoginInput extends Component {
     }
     return (
       <React.Fragment>
-        <h3>{this.state.label}</h3>
         <LoginInputForm
           onChangeInput={this.onChangeInput}
           handleLoginSubmit={this.handleLoginSubmit}
           user={{}}
+          hasError={this.hasError}
+          onFocus={this.onFocus}
         ></LoginInputForm>
         <ModalComponent
           {...this.state}

@@ -10,30 +10,54 @@ export default class AddressInput extends Component {
     name: "",
     countryId: "",
     redirect: false,
+    errors: [],
+  };
+
+  hasError = (key) => {
+    return this.state.errors.indexOf(key) !== -1;
   };
 
   handleCitySubmit = (event) => {
     event.preventDefault();
     let { name, countryId } = this.state;
-    try {
-      countryId = parseInt(countryId);
-      const city = { name, countryId };
-      AxiosInstance.post("/cities", city, {
-        headers: {
-          Authorization: "Bearer " + Cookies.get("username"),
-        },
-      }).then(
-        (response) => {
-          this.setState({
-            redirect: true,
-          });
-        },
-        (error) => {
-          console.log({ error });
-        }
-      );
-    } catch (error) {
-      console.log({ error });
+    console.log({ name, countryId });
+    let errors = [];
+    if (name === "") errors.push("name");
+    if (countryId === "") errors.push("countryId");
+    this.setState({
+      errors: errors,
+    });
+    if (errors.length === 0) {
+      try {
+        countryId = parseInt(countryId);
+        const city = { name, countryId };
+        AxiosInstance.post("/cities", city, {
+          headers: {
+            Authorization: "Bearer " + Cookies.get("username"),
+          },
+        }).then(
+          (response) => {
+            this.setState({
+              redirect: true,
+            });
+          },
+          (error) => {
+            console.log({ error });
+          }
+        );
+      } catch (error) {
+        console.log({ error });
+      }
+    }
+  };
+
+  onFocus = (event) => {
+    event.preventDefault();
+    var array = [...this.state.errors];
+    var index = array.indexOf(event.target.name);
+    if (index !== -1) {
+      array.splice(index, 1);
+      this.setState({ errors: array });
     }
   };
 
@@ -58,6 +82,8 @@ export default class AddressInput extends Component {
           handleCitySubmit={this.handleCitySubmit}
           city={{}}
           onChangeInput={this.onChangeInput}
+          hasError={this.hasError}
+          onFocus={this.onFocus}
         ></CityInputForm>
       </React.Fragment>
     );
