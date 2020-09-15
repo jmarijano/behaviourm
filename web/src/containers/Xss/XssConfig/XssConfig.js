@@ -9,25 +9,46 @@ export default class SqliConfig extends Component {
     label: "Konfiguracija Xss",
     value: "",
     redirect: false,
+    errors: [],
+  };
+
+  hasError = (key) => {
+    return this.state.errors.indexOf(key) !== -1;
+  };
+
+  onFocus = (event) => {
+    event.preventDefault();
+    var array = [...this.state.errors];
+    var index = array.indexOf(event.target.name);
+    if (index !== -1) {
+      array.splice(index, 1);
+      this.setState({ errors: array });
+    }
   };
 
   handleXssSubmit = (event) => {
     event.preventDefault();
     const { value } = this.state;
     const xss = { value };
-    AxiosInstance.post("/config/xss", xss, {
-      headers: {
-        Authorization: "Bearer " + Cookies.get("username"),
-      },
-    }).then(
-      (response) => {
-        console.log({ response });
-        this.setState({ redirect: true });
-      },
-      (error) => {
-        console.log({ error });
-      }
-    );
+    let errors = [];
+    if (value === "") errors.push("value");
+    this.setState({
+      errors: errors,
+    });
+    if (errors.length === 0)
+      AxiosInstance.post("/config/xss", xss, {
+        headers: {
+          Authorization: "Bearer " + Cookies.get("username"),
+        },
+      }).then(
+        (response) => {
+          console.log({ response });
+          this.setState({ redirect: true });
+        },
+        (error) => {
+          console.log({ error });
+        }
+      );
   };
 
   onChangeInput = (event) => {
@@ -51,6 +72,8 @@ export default class SqliConfig extends Component {
           handleXssSubmit={this.handleXssSubmit}
           xss={{}}
           onChangeInput={this.onChangeInput}
+          hasError={this.hasError}
+          onFocus={this.onFocus}
         ></XssConfigForm>
       </React.Fragment>
     );

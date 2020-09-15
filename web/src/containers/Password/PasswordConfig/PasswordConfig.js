@@ -9,24 +9,44 @@ export default class SqliConfig extends Component {
     label: "Konfiguracija lozinka",
     value: "",
     redirect: false,
+    errors: [],
   };
 
+  hasError = (key) => {
+    return this.state.errors.indexOf(key) !== -1;
+  };
+
+  onFocus = (event) => {
+    event.preventDefault();
+    var array = [...this.state.errors];
+    var index = array.indexOf(event.target.name);
+    if (index !== -1) {
+      array.splice(index, 1);
+      this.setState({ errors: array });
+    }
+  };
   handlePasswordSubmit = (event) => {
     event.preventDefault();
     const { value } = this.state;
     const sqli = { value };
-    AxiosInstance.post("/config/password", sqli, {
-      headers: {
-        Authorization: "Bearer " + Cookies.get("username"),
-      },
-    }).then(
-      (response) => {
-        this.setState({ redirect: true });
-      },
-      (error) => {
-        console.log({ error });
-      }
-    );
+    let errors = [];
+    if (value === "") errors.push("value");
+    this.setState({
+      errors: errors,
+    });
+    if (errors.length === 0)
+      AxiosInstance.post("/config/password", sqli, {
+        headers: {
+          Authorization: "Bearer " + Cookies.get("username"),
+        },
+      }).then(
+        (response) => {
+          this.setState({ redirect: true });
+        },
+        (error) => {
+          console.log({ error });
+        }
+      );
   };
 
   onChangeInput = (event) => {
@@ -50,6 +70,8 @@ export default class SqliConfig extends Component {
           handlePasswordSubmit={this.handlePasswordSubmit}
           password={{}}
           onChangeInput={this.onChangeInput}
+          hasError={this.hasError}
+          onFocus={this.onFocus}
         ></PasswordConfigForm>
       </React.Fragment>
     );
