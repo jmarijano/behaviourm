@@ -31,3 +31,12 @@
     width: 100%;
     margin: 25px 0;
 }
+
+.inline-errormsg {
+    color: red;
+    font-size: 12px;
+  }
+  .hidden {
+    display: none;
+  }
+  

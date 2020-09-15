@@ -16,8 +16,21 @@ export default class AddressList extends Component {
     options: [],
     loading: true,
     content: "",
+    errors: [],
+  };
+  hasError = (key) => {
+    return this.state.errors.indexOf(key) !== -1;
   };
 
+  onFocus = (event) => {
+    event.preventDefault();
+    var array = [...this.state.errors];
+    var index = array.indexOf(event.target.name);
+    if (index !== -1) {
+      array.splice(index, 1);
+      this.setState({ errors: array });
+    }
+  };
   componentDidMount() {
     this.getAddressData();
   }
@@ -25,25 +38,32 @@ export default class AddressList extends Component {
   handleAddressSubmit = (event) => {
     event.preventDefault();
     let { id, streetName, cityId } = this.state;
-    try {
-      cityId = parseInt(cityId);
-      const address = { id, streetName, cityId };
-      AxiosInstance.put("/addresses/" + address.id, address, {
-        headers: {
-          Authorization: "Bearer " + Cookies.get("username"),
-        },
-      }).then(
-        (response) => {
-          this.setState({ update: false, loading: false });
-          this.getAddressData();
-        },
-        (error) => {
-          console.log({ error });
-        }
-      );
-    } catch (error) {
-      console.log({ error });
-    }
+    let errors = [];
+    if (streetName === "") errors.push("streetName");
+    if (cityId === "") errors.push("cityId");
+    this.setState({
+      errors: errors,
+    });
+    if (errors.length === 0)
+      try {
+        cityId = parseInt(cityId);
+        const address = { id, streetName, cityId };
+        AxiosInstance.put("/addresses/" + address.id, address, {
+          headers: {
+            Authorization: "Bearer " + Cookies.get("username"),
+          },
+        }).then(
+          (response) => {
+            this.setState({ update: false, loading: false });
+            this.getAddressData();
+          },
+          (error) => {
+            console.log({ error });
+          }
+        );
+      } catch (error) {
+        console.log({ error });
+      }
   };
 
   getAddressData = () => {
@@ -144,6 +164,8 @@ export default class AddressList extends Component {
           handleAddressSubmit={this.handleAddressSubmit}
           address={{ streetName, cityId }}
           onChangeInput={this.onChangeInput}
+          onFocus={this.onFocus}
+          hasError={this.hasError}
         ></AddressInputForm>
       </React.Fragment>
     );

@@ -10,31 +10,53 @@ export default class AddressInput extends Component {
     streetName: "",
     cityId: "",
     redirect: false,
+    errors: [],
+  };
+
+  hasError = (key) => {
+    return this.state.errors.indexOf(key) !== -1;
+  };
+
+  onFocus = (event) => {
+    event.preventDefault();
+    var array = [...this.state.errors];
+    var index = array.indexOf(event.target.name);
+    if (index !== -1) {
+      array.splice(index, 1);
+      this.setState({ errors: array });
+    }
   };
 
   handleAddressSubmit = (event) => {
     event.preventDefault();
     let { streetName, cityId } = this.state;
-    try {
-      cityId = parseInt(cityId);
-      const address = { streetName, cityId };
-      AxiosInstance.post("/addresses", address, {
-        headers: {
-          Authorization: "Bearer " + Cookies.get("username"),
-        },
-      }).then(
-        (response) => {
-          this.setState({
-            redirect: true,
-          });
-        },
-        (error) => {
-          console.log({ error });
-        }
-      );
-    } catch (error) {
-      console.log({ error });
-    }
+    let errors = [];
+    if (streetName === "") errors.push("streetName");
+    if (cityId === "") errors.push("cityId");
+    this.setState({
+      errors: errors,
+    });
+    if (errors.length === 0)
+      try {
+        cityId = parseInt(cityId);
+        const address = { streetName, cityId };
+        AxiosInstance.post("/addresses", address, {
+          headers: {
+            Authorization: "Bearer " + Cookies.get("username"),
+          },
+        }).then(
+          (response) => {
+            this.setState({
+              redirect: true,
+            });
+          },
+          (error) => {
+            console.log({ error });
+          }
+        );
+      } catch (error) {
+        console.log({ error });
+      }
   };
 
   onChangeInput = (event) => {
@@ -58,6 +80,8 @@ export default class AddressInput extends Component {
           handleAddressSubmit={this.handleAddressSubmit}
           address={{}}
           onChangeInput={this.onChangeInput}
+          onFocus={this.onFocus}
+          hasError={this.hasError}
         ></AddressInputForm>
       </React.Fragment>
     );
