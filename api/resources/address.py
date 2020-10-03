@@ -6,7 +6,7 @@ from database.schemas import AddressSchema
 from flask_restful import Resource
 import json
 from marshmallow import ValidationError
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required, get_jwt_claims
 from ml_models.sqli_model import predict_sqli
 from ml_models.xss_model import predict_xss
 
@@ -18,6 +18,9 @@ class AddressesApi(Resource):
     @jwt_required
     @cross_origin()
     def get(self):
+        username = get_jwt_identity()
+        claims = get_jwt_claims()
+        print(claims)
         all_addresses = Address.query.all()
         result = addresses_schema.dump(all_addresses)
         return jsonify({'data': result})
@@ -30,6 +33,8 @@ class AddressesApi(Resource):
         except ValidationError as err:
             return jsonify(err.messages), 500
         username = get_jwt_identity()
+        claims = get_jwt_claims()
+        print(claims)
         user_id = User.query.filter(User.username == username).first().id
         street_name = request.json['streetName']
         city_id = request.json['cityId']
@@ -43,7 +48,7 @@ class AddressesApi(Resource):
         db.session.add(new_product)
         value = predict_sqli(str(city_id))
         new_sqli = Sqli(value, user_id, False, str(city_id))
-        db.session.add(new_sqli)
+        #db.session.add(new_sqli)
         db.session.add(new_xss)
         db.session.commit()
         return address_schema.jsonify({'data': new_product})
@@ -83,8 +88,8 @@ class AddressApi(Resource):
         db.session.add(new_xss)
         db.session.add(new_sqli)
         value = predict_sqli(str(city_id))
-        new_sqli = Sqli(value, user_id, False, str(city_id))
-        db.session.add(new_sqli)
+        #new_sqli = Sqli(value, user_id, False, str(city_id))
+        #db.session.add(new_sqli)
         db.session.commit()
         return address_schema.jsonify({'data': address})
 

@@ -21,16 +21,18 @@ class LoginApi(Resource):
     def post(self):
         username = request.get_json().get('username')
         password = request.get_json().get('password')
-        if not username or not password:
-            return jsonify(error="Wrong request"),500
+        if not username:
+            return jsonify(error="Unesite korisnicko ime!"), 500
+        if not password:
+            return jsonify(error="Unesite lozinku!"), 500
         user = User.query.filter(User.username == username).first()
         if not user:
-            return jsonify(error="User not found"), 404
+            return jsonify(error="Korisnik ne postoji"), 404
         if check_password_hash(user.hashed_password, password):
-            access_token = create_access_token(identity=username)
+            access_token = create_access_token(identity=user)
             return jsonify(accessToken=access_token)
         else:
-            return jsonify(error="Wrong password"), 500
+            return jsonify(error="Kriva lozinka"), 500
 
     @cross_origin()
     def options(self):

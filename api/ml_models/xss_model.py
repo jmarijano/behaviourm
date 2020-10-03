@@ -17,7 +17,8 @@ import pickle
 
 def generate_xss_model():
     df = pd.read_csv('datasets/XSS_dataset.csv', encoding='utf-8-sig')
-    df = df[df.columns[-2:]]
+    print(df.columns)
+    df = df[df.columns[1:]]
     df.head()
     sentences = df['Sentence'].values
     print(len(sentences))
@@ -63,13 +64,13 @@ def generate_xss_model():
                           )
     pred = model.predict(testX)
     print(testX)
-    model.save("assets/cnn/xss_cnn.h5")
+    #model.save("assets/cnn/xss_cnn.h5")
 
 
 def convert_to_ascii(sentence):
     sentence_ascii = []
     for i in sentence:
-        if(ord(i) < 8222):      # ” has ASCII of 8221
+        if(ord(i) < 8222):      # ” : 8221
             if(ord(i) == 8217):  # ’  :  8217
                 sentence_ascii.append(134)
             if(ord(i) == 8221):  # ”  :  8221

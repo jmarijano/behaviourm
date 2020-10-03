@@ -1,4 +1,5 @@
 from .db import db
+from dataclasses import dataclass
 
 
 class Role(db.Model):
@@ -63,7 +64,7 @@ class Department(db.Model):
     def __init__(self, name):
         self.name = name
 
-
+@dataclass
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(45), nullable=False)

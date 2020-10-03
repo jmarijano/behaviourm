@@ -16,6 +16,7 @@ from config.config import dohvati_value
 
 
 class SqliAnomalyDepartmentUser(Resource):
+    @jwt_required
     @cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
@@ -38,6 +39,7 @@ class SqliAnomalyDepartmentUser(Resource):
 
 
 class SqliAnomalyUser(Resource):
+    @jwt_required
     @cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
@@ -74,7 +76,8 @@ class SqliAnomalyUser(Resource):
 
 
 class SqliAnomalyRoleUser(Resource):
-    @ cross_origin()
+    @jwt_required
+    @cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
@@ -97,6 +100,7 @@ class SqliAnomalyRoleUser(Resource):
 
 
 class SqliUserAverage(Resource):
+    @jwt_required
     @cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
@@ -119,6 +123,7 @@ class SqliUserAverage(Resource):
 
 
 class SqliDepartmentAverage(Resource):
+    @jwt_required
     @cross_origin()
     def get(self):
         sql = text(
@@ -144,6 +149,7 @@ class SqliDepartmentAverage(Resource):
 
 
 class SqliRoleAverage(Resource):
+    @jwt_required
     @cross_origin()
     def get(self):
         sql = text(
@@ -169,6 +175,7 @@ class SqliRoleAverage(Resource):
 
 
 class XssRoleAverage(Resource):
+    @jwt_required
     @cross_origin()
     def get(self):
         sql = text(
@@ -194,6 +201,7 @@ class XssRoleAverage(Resource):
 
 
 class XssDepartmentAverage(Resource):
+    @jwt_required
     @cross_origin()
     def get(self):
         sql = text(
@@ -219,6 +227,7 @@ class XssDepartmentAverage(Resource):
 
 
 class XssUserAverage(Resource):
+    @jwt_required
     @cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
@@ -241,7 +250,8 @@ class XssUserAverage(Resource):
 
 
 class XssAnomalyDepartmentUser(Resource):
-    @ cross_origin()
+    @jwt_required
+    @cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
@@ -263,7 +273,8 @@ class XssAnomalyDepartmentUser(Resource):
 
 
 class XssAnomalyUser(Resource):
-    @ cross_origin()
+    @jwt_required
+    @cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
@@ -299,7 +310,8 @@ class XssAnomalyUser(Resource):
 
 
 class XssAnomalyRoleUser(Resource):
-    @ cross_origin()
+    @jwt_required
+    @cross_origin()
     def post(self):
         user_id = request.get_json().get('userId')
         user = User.query.filter(User.id == user_id).first()
@@ -322,7 +334,8 @@ class XssAnomalyRoleUser(Resource):
 
 
 class PasswordStrengthDepartment(Resource):
-    @ cross_origin()
+    @jwt_required
+    @cross_origin()
     def post(self):
         department_id = request.get_json().get('departmentId')
         sql = text(
@@ -349,19 +362,25 @@ class PasswordStrengthDepartment(Resource):
 
 
 class PasswordStrengthRole(Resource):
-    @ cross_origin()
+    @jwt_required
+    @cross_origin()
     def post(self):
-        user_id = request.get_json().get('userId')
-        user = User.query.filter(User.id == user_id).first()
+        role_id = request.get_json().get('roleId')
         sql = text(
-            'SELECT PASSWORD '
+            'SELECT U.PASSWORD AS value, u.name || " " || u.surname as name '
             'FROM USER U '
-            'INNER JOIN Role r ON (r.id = u.department_id) '
-            'WHERE u.id != :tUserId'
+            'INNER JOIN Role r ON (r.id = u.role_id) '
+            'WHERE r.id = :tRoleId'
         )
         result = db.engine.execute(
-            sql, tUserId=user.id)
-        return jsonify({'data': [dict(row) for row in result]})
+            sql, tRoleId=role_id)
+        output = []
+        for row in result:
+            temp = dict(row)
+            value = predict_password_strength(temp['value'])[0]
+            temp['value'] = str(value)
+            output.append(temp)
+        return jsonify({'data': output})
 
     @jwt_required
     @cross_origin()
@@ -370,6 +389,7 @@ class PasswordStrengthRole(Resource):
 
 
 class Evaluation(Resource):
+    @jwt_required
     @cross_origin()
     def get(self):
 
