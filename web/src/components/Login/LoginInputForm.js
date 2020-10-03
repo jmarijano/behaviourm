@@ -15,16 +15,19 @@ const loginInputForm = (props) => {
       <label className="input-label">
         Korisničko ime:
         <input
-          className={
+          className={[
             props.hasError("username")
               ? "form-control is-invalid"
-              : "form-control"
-          }
+              : "form-control",
+            ,
+            props.proba ? "form-control is-valid" : "",
+          ].join(" ")}
           name="username"
           type="text"
           defaultValue={props.user.username}
           onChange={(event) => props.onChangeInput(event)}
           onFocus={(event) => props.onFocus(event)}
+          onBlur={(event) => props.onBlur(event)}
         ></input>
         <div
           className={props.hasError("username") ? "inline-errormsg" : "hidden"}
@@ -35,24 +38,30 @@ const loginInputForm = (props) => {
 
       <label className="input-label">
         Lozinka:
-        <input
-          className={
-            props.hasError("password")
-              ? "form-control is-invalid"
-              : "form-control"
-          }
-          name="password"
-          type="password"
-          defaultValue={props.user.password}
-          onChange={(event) => props.onChangeInput(event)}
-          onFocus={(event) => props.onFocus(event)}
-        ></input>
-        <div
-          className={props.hasError("password") ? "inline-errormsg" : "hidden"}
-        >
-          Unesite vrijednost!
+        <div className="wow">
+          <input
+            className={
+              props.hasError("password")
+                ? "form-control is-invalid"
+                : "form-control"
+            }
+            name="password"
+            type={props.showPassword ? "text" : "password"}
+            defaultValue={props.user.password}
+            onChange={(event) => props.onChangeInput(event)}
+            onFocus={(event) => props.onFocus(event)}
+            onBlur={(event) => props.onBlur(event)}
+          ></input>
+          <Button className="Ijao" onClick={props.handleShowPassword}>
+            Prikaži/sakrij
+          </Button>
         </div>
       </label>
+      <div
+        className={props.hasError("password") ? "inline-errormsg" : "hidden"}
+      >
+        Unesite vrijednost!
+      </div>
 
       <Button type="submit">Prijava</Button>
     </form>
@@ -64,6 +73,7 @@ loginInputForm.propTypes = {
   handleLoginSubmit: PropTypes.func.isRequired,
   hasError: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
 };
 
 export default loginInputForm;

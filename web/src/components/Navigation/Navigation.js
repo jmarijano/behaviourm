@@ -25,6 +25,7 @@ import PasswordConfig from "../../containers/Password/PasswordConfig/PasswordCon
 import SqliComparisonDepartment from "../../containers/Comparison/Sqli/SqliComparisonDepartment";
 import SqliComparisonRole from "../../containers/Comparison/Sqli/SqliComparisonRole";
 import PasswordComparisonDepartment from "../../containers/Comparison/Password/PasswordComparisonDepartment";
+import PasswordComparisonRole from "../../containers/Comparison/Password/PasswordComparisonRole";
 import XssComparisonDepartment from "../../containers/Comparison/Xss/XssComparisonDepartment";
 import XssComparisonRole from "../../containers/Comparison/Xss/XssComparisonRole";
 import UserComparison from "../../containers/Comparison/User/UserComparison";
@@ -266,6 +267,10 @@ class navigation extends React.Component {
                 <ProtectedRoute
                   path="/passwordStrength/department"
                   component={PasswordComparisonDepartment}
+                ></ProtectedRoute>
+                <ProtectedRoute
+                  path="/passwordStrength/role"
+                  component={PasswordComparisonRole}
                 ></ProtectedRoute>
                 <ProtectedRoute
                   path="/evaluation"

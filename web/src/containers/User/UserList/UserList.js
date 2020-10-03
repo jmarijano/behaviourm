@@ -46,6 +46,8 @@ export default class UserList extends Component {
       },
     }).then(
       (response) => {
+        const wow = response.data.data;
+        console.log({ wow });
         this.setState({
           userList: response.data.data,
           loading: false,
